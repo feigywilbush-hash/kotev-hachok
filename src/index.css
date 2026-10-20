@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Polin, the design typeface. Files live in public/fonts/. */
+@font-face {
+  font-family: "Polin";
+  src: url("/fonts/Polin-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Polin";
+  src: url("/fonts/Polin-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: "OH Yael Leibushor";
+  src: url("/fonts/OHYaelLeibushor-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+
+@layer base {
+  :root {
+    /* כותב החוק palette (from Figma) */
+    --background: 180 11.1% 98.2%; /* #FAFBFB main panel */
+    --foreground: 196.8 53.8% 33.9%; /* #286B85 text */
+    --card: 0 0% 100%;
+    --card-foreground: 196.8 53.8% 33.9%;
+    --primary: 9 79.5% 63.7%; /* #EC6F59 coral */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 189.4 64.6% 84.5%;
+    --secondary-foreground: 196.8 53.8% 33.9%;
+    --muted: 192 50% 96.1%;
+    --muted-foreground: 196.8 53.8% 33.9%;
+    --accent: 189.4 64.6% 84.5%;
+    --accent-foreground: 196.8 53.8% 33.9%;
+    --border: 191.2 48.2% 67.5%;
+    --input: 191.2 48.2% 67.5%;
+    --ring: 9 79.5% 63.7%;
+    --radius: 1rem;
+
+    --surface: 192 50% 96.1%; /* #F0F8FA top band */
+    --progress-track: 189.6 60.9% 82%; /* #B5E4ED */
+    --brand-sun: 46.9 98.5% 74.5%; /* #FEE27E */
+    --answer: 192.6 57.6% 93.5%; /* #E5F4F8 quiz answer cards */
+    --lime: 85.4 100% 79.4%; /* #D3FF96 quiz next button */
+    --lime-soft: 84.5 89.9% 84.5%; /* #DEFBB4 quiz back button */
+    --stage: 0 0% 85.1%; /* #D9D9D9 placeholder for step activities */
+    --plate: 190.5 55.3% 79.8%; /* #AFDEE8 card behind photos */
+    --alert: 4 85.6% 59.2%; /* #F04A3E warnings / fines */
+    --mist: 191.1 26.7% 80.2%; /* #BFD5DA soft card border + shadow (used at 30%) */
+
+    --sidebar-background: 190.4 66.7% 84.7%; /* #BEE9F2 */
+    --sidebar-foreground: 196.8 53.8% 33.9%;
+    --sidebar-accent: 189.4 64.6% 84.5%; /* #BEE9F1 nav pills */
+    --sidebar-accent-foreground: 196.8 53.8% 33.9%;
+    --sidebar-border: 191.2 48.2% 67.5%; /* #84C5D4 divider */
+    --sidebar-shape: 191.6 48.6% 66.3%; /* #7FC2D3 @ 13% */
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-sidebar font-sans text-foreground antialiased;
+  }
+}
