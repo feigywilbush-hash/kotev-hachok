@@ -18,6 +18,7 @@ export const lesson2: LessonContent = {
       </>
     ),
     wideTraffic: true,
+    compactCards: true,
     socialText: (
       <p>
         בכל מקום בו אנו נמצאים יש את האנשים "בעלי הסמכות" המקבלים את ההחלטות.
