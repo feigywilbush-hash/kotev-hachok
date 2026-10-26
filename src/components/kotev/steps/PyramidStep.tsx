@@ -236,7 +236,7 @@ export function PyramidStep({ lawNumber, title, instruction, rounds, onNext, onS
   const tray = cards.filter((c) => placed[c.id] === undefined);
 
   return (
-    <div className="flex flex-col gap-6 px-4 pb-10 pt-6 md:gap-8 md:px-8 md:pt-10 lg:flex-row lg:items-start lg:justify-between lg:gap-0 lg:pb-[calc(var(--u)*1.5)] lg:pl-[calc(var(--u)*4.375)] lg:pr-[calc(var(--u)*3.594)] lg:pt-[calc(var(--u)*2.03)]">
+    <div className="flex flex-col gap-6 px-4 pb-10 pt-6 md:gap-8 md:px-8 md:pt-10 lg:flex-row lg:items-start lg:justify-center lg:gap-[calc(var(--u)*2.5)] lg:pb-[calc(var(--u)*1.5)] lg:pl-[calc(var(--u)*4.375)] lg:pr-[calc(var(--u)*3.594)] lg:pt-[calc(var(--u)*2.03)]">
       {/* Text column: on mobile its children join the outer column so the pyramid can sit between them. */}
       <div className="contents lg:order-2 lg:flex lg:w-[calc(var(--u)*41.72)] lg:shrink-0 lg:flex-col lg:items-end">
         <LawTitle lawNumber={lawNumber} title={title} className="order-1 lg:self-stretch" />
