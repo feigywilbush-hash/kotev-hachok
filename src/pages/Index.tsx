@@ -6,84 +6,53 @@ import { LessonsBanner, LessonsPage, type Lesson } from "@/components/kotev/page
 import { HomePracticeStep } from "@/components/kotev/steps/HomePracticeStep";
 import { IntroStep } from "@/components/kotev/steps/IntroStep";
 import { LessonVideo } from "@/components/kotev/steps/LessonVideo";
-import { QuizStep, type QuizQuestion } from "@/components/kotev/steps/QuizStep";
+import { QuizStep } from "@/components/kotev/steps/QuizStep";
 import { StageStep } from "@/components/kotev/steps/StageStep";
+import { lesson1 } from "@/lessons/lesson1";
+import { lesson2 } from "@/lessons/lesson2";
+import type { LessonContent } from "@/lessons/types";
 
 const LESSON_STEPS = ["הקדמה", "בכביש התנועה", "בכביש החברתי", "משחק ותרגול", "יישום בבית"];
 const BUILT_STEPS = 5;
 /** How far the coral line reaches past the current step, per step (from the Figma frames). */
 const STEP_PROGRESS = [0.18, 0.16, 0.066, 0.122, 0];
 
-const DOOR = { src: "./assets/quiz-door.webp", alt: "ילד עומד מול דלת סגורה של בית" };
-
-const QUIZ: QuizQuestion[] = [
-  {
-    kind: "choice",
-    question: "קבעתי עם יוני שאבוא אליו אחר הצהריים. אני מגיע לבית שלו והדלת סגורה.\nאם קבענו, זה אומר שאפשר פשוט לפתוח ולהיכנס? 🤔",
-    answers: [
-      "אני אפתח את הדלת ואכנס לבד. יוני הזמין אותי, אז בטח אפשר להיכנס גם בלי לדפוק.",
-      "לא פותחים דלת בלי לדפוק, אבל אם הדלת פתוחה אני פשוט אכנס.",
-      "זה לא הבית שלי, אז אני אדפוק בדלת ואחכה שיפתחו לי ויזמינו אותי להיכנס.",
-    ],
-    correct: 2,
-    image: DOOR,
-  },
-  {
-    kind: "knock",
-    question: "יוני עוד לא פתח לי את הדלת אז אדפוק ואחכה בסבלנות שיפתחו לי 😊\nאבל רגע… איך דופקים בצורה נעימה ומקובלת?",
-    instruction:
-      "נסו לדפוק על הדלת בעזרת הכפתורים. שימו לב לעוצמה ולקצב:\nלא חזק מדי, לא מהר מדי ולא בלי הפסקה. דפיקות נעימות עוזרות לאנשים להרגיש בנוח לפתוח את הדלת.",
-    image: { src: "./assets/quiz-knock-door.webp", alt: "דלת כניסה סגורה של בית" },
-  },
-  {
-    kind: "choice",
-    question: "בבית של יוני אני רואה יומן שכתוב עליו: \"היומן האישי שלי\".\nהאם מותר להציץ ביומן של מישהו אחר? 🤔",
-    answers: [
-      "יוני חבר ממש טוב שלי, לכן אני חושב שמותר לי לפתוח ולהסתכל ביומן שלו.",
-      "היומן שייך ליוני, וזה חפץ אישי שלו, ולכן אני לא נוגע ולא מסתכל בו.",
-      "ליד יוני אני לא אסתכל כדי שלא יכעס, אבל כשלא יראה אני אציץ קצת.",
-    ],
-    correct: 1,
-    image: { src: "./assets/quiz-diary.webp", alt: "ילד מביט ביומן אישי שמונח על שולחן" },
-  },
-  {
-    kind: "choice",
-    question: "רציתי לשאול את יוני כמה הוא קיבל במבחן בחשבון.\nאבל שמתי לב שיוני לא מעוניין לדבר על זה. האם עדיין מתאים לשאול אותו? 🤔",
-    answers: [
-      "כיוון שיוני לא מעוניין לדבר על המבחן אני אהיה רגיש ולא אשאל אותו כמה קיבל.",
-      "אני אשאל אותו, כי אני כבר סיפרתי לו כמה אני קיבלתי, אז גם הוא צריך לספר לי.",
-      "כיוון שיוני לא מעוניין לספר זה נעשה מעניין יותר ולכן אני אשכנע אותו לספר לי.",
-    ],
-    correct: 0,
-    image: { src: "./assets/quiz-friends.webp", alt: "שני ילדים יושבים ומדברים בחדר" },
-  },
-];
-
 const LESSON_COUNT = 30;
 
-/** Law 1 is built; the rest keep an empty picture frame and a placeholder name until they're written. */
-const LESSONS: Lesson[] = Array.from({ length: LESSON_COUNT }, (_, i) =>
-  i === 0
-    ? {
-        number: 1,
-        title: "אין כניסה!",
-        image: { src: "./assets/lesson-1.webp", alt: "ילד עם תיק על הגב מביט בשלט אין כניסה" },
-        href: "#step-1",
-      }
-    : { number: i + 1, title: "בקרוב..." },
-);
+/** The laws that are built, in order. */
+const BUILT_LESSONS: LessonContent[] = [lesson1, lesson2];
+
+/** Built laws open from their card; the rest keep an empty picture frame and a placeholder name until they're written. */
+const LESSONS: Lesson[] = Array.from({ length: LESSON_COUNT }, (_, i) => {
+  const lesson = BUILT_LESSONS[i];
+  return lesson
+    ? { number: lesson.number, title: lesson.title, image: lesson.cardImage, href: stepHash(lesson.number, 0) }
+    : { number: i + 1, title: "בקרוב..." };
+});
 
 const LESSONS_HASH = "#lessons";
 const isLessonsPage = () => window.location.hash === LESSONS_HASH;
 
-/** The step to open, from the address (#step-2 opens the second step). */
-const stepFromHash = () => {
-  const n = Number(window.location.hash.match(/^#step-(\d+)$/)?.[1]) - 1;
-  return n >= 0 && n < BUILT_STEPS ? n : 0;
+/** Law 1 keeps its short address (#step-2); later laws add their number (#lesson-2-step-2). */
+function stepHash(lesson: number, step: number) {
+  return lesson === 1 ? `#step-${step + 1}` : `#lesson-${lesson}-step-${step + 1}`;
+}
+
+/** The law and step to open, from the address. */
+const placeFromHash = () => {
+  const match = window.location.hash.match(/^#(?:lesson-(\d+)-)?step-(\d+)$/);
+  const lesson = Number(match?.[1] ?? 1) - 1;
+  const step = Number(match?.[2]) - 1;
+  return {
+    lesson: lesson >= 0 && lesson < BUILT_LESSONS.length ? lesson : 0,
+    step: step >= 0 && step < BUILT_STEPS ? step : 0,
+  };
 };
 
 const Index = () => {
-  const [step, setStep] = useState(stepFromHash);
+  const [place, setPlace] = useState(placeFromHash);
+  const { step } = place;
+  const lesson = BUILT_LESSONS[place.lesson];
   const [showLessons, setShowLessons] = useState(isLessonsPage);
 
   // Snail points: start at 0, one for each step finished and each success inside a step.
@@ -98,23 +67,27 @@ const Index = () => {
 
   const goTo = (index: number) => {
     if (index < 0 || index >= BUILT_STEPS) return;
-    setStep(index);
-    window.history.replaceState(null, "", `#step-${index + 1}`);
+    setPlace({ lesson: place.lesson, step: index });
+    window.history.replaceState(null, "", stepHash(lesson.number, index));
     window.scrollTo({ top: 0 });
   };
 
   useEffect(() => {
     const onHash = () => {
       setShowLessons(isLessonsPage());
-      setStep(stepFromHash());
+      setPlace(placeFromHash());
       window.scrollTo({ top: 0 });
     };
     window.addEventListener("hashchange", onHash);
     return () => window.removeEventListener("hashchange", onHash);
   }, []);
 
-  const shared = { lawNumber: 1, title: "אין כניסה!", step: step + 1, totalSteps: LESSON_STEPS.length, onNext: () => {
-      earn(`step-${step}`);
+  // Points are keyed by law too, so finishing the same step in another law still counts.
+  const earnHere = (key: string) => earn(`${lesson.number}-${key}`);
+  const nextLesson = BUILT_LESSONS[place.lesson + 1];
+
+  const shared = { lawNumber: lesson.number, title: lesson.title, step: step + 1, totalSteps: LESSON_STEPS.length, onNext: () => {
+      earnHere(`step-${step}`);
       goTo(step + 1);
     },
   };
@@ -137,73 +110,64 @@ const Index = () => {
     >
       {step === 0 && (
         <IntroStep
-          key="intro"
+          key={`intro-${lesson.number}`}
           {...shared}
-          image={{ src: "./assets/intro-no-entry.webp", alt: "ילד עומד ליד שלט אין כניסה ומביט בו" }}
-          trafficText="שלט ‘אין כניסה’ אוסר על הנהג להכנס לשטח מסוים. כניסה לשטח זה מהווה סכנה."
-          trafficWarning="על נהג הנכנס בשלט אין כניסה לשלם קנס של כ - 500 ש”ח."
-          socialText={
-            <p>
-              מה לא ממש הוגן בעולם החברתי? ששלטי ה ’אין כניסה’ שקופים! מסתבר שיש הרבה מקומות אליהם אסור לנו להיכנס או
-              חפצים בהם אסור לנו לגעת! מעולם לא ראיתי חק המסביר זאת.
-              <br />
-              אז הנה אני דואג לכם!
-            </p>
-          }
+          image={lesson.intro.image}
+          trafficText={lesson.intro.trafficText}
+          trafficWarning={lesson.intro.trafficWarning}
+          socialText={lesson.intro.socialText}
         />
       )}
       {step === 1 && (
         <StageStep
-          key="traffic"
+          key={`traffic-${lesson.number}`}
           {...shared}
-          instruction={
-            <>
-              בוא נצא לנסיעה! סע בכביש, שים לב לתמרורים <br className="max-lg:hidden" />
-              <span className="lg:whitespace-nowrap">ובחר לאן לפנות. שים לב לא להיכנס ל״אין כניסה״&nbsp;🚫</span>
-            </>
-          }
+          instruction={lesson.drive.instruction}
         >
-          <NoEntryDriveGame onScore={(i) => earn(`drive-${i}`)} />
+          <NoEntryDriveGame onScore={(i) => earnHere(`drive-${i}`)} />
         </StageStep>
       )}
       {step === 2 && (
         <StageStep
-          key="social"
+          key={`social-${lesson.number}`}
           {...shared}
-          instruction="צפה בסרטון שבו כותב החוק מסביר מה זה “אין כניסה” גם במצבים חברתיים. תגלה איך לזהות מצבים כאלה ומה כדאי לעשות בהם."
+          instruction={lesson.video.instruction}
           instructionClassName="lg:pb-[calc(var(--u)*1.667)]"
           stageClassName="aspect-video md:aspect-video lg:aspect-video lg:h-auto"
           // Keeps the video's own 16:9 shape; on wide, short screens the column narrows so it still fits.
           columnClassName="lg:mr-auto lg:max-w-[calc(var(--u)*50.466)]"
         >
           <LessonVideo
-            title="כותב החוק מסביר: אין כניסה במצבים חברתיים"
-            src="./assets/social-road.mp4"
-            poster="./assets/social-road-poster.jpg"
+            title={lesson.video.title}
+            src={lesson.video.src}
+            poster={lesson.video.poster}
           />
         </StageStep>
       )}
       {step === 3 && (
         <QuizStep
-          key="quiz"
+          key={`quiz-${lesson.number}`}
           lawNumber={shared.lawNumber}
           title={shared.title}
-          questions={QUIZ}
+          questions={lesson.quiz}
           step={shared.step}
           totalSteps={shared.totalSteps}
           onFinish={shared.onNext}
-          onSolve={(i) => earn(`quiz-${i}`)}
+          onSolve={(i) => earnHere(`quiz-${i}`)}
         />
       )}
       {step === 4 && (
         <HomePracticeStep
-          key="home"
+          key={`home-${lesson.number}`}
           lawNumber={shared.lawNumber}
           title={shared.title}
-          sheet={{ src: "./files/no-entry-cutouts.svg", alt: "דף עם 12 תמרורי אין כניסה לגזירה" }}
-          downloadHref="./files/no-entry-signs.pdf"
-          downloadName="no-entry-signs.pdf"
-          onNextLaw={() => earn(`step-${step}`)}
+          sheet={lesson.home.sheet}
+          downloadHref={lesson.home.downloadHref}
+          downloadName={lesson.home.downloadName}
+          onNextLaw={() => {
+            earnHere(`step-${step}`);
+            if (nextLesson) window.location.hash = stepHash(nextLesson.number, 0);
+          }}
         />
       )}
     </KotevLayout>
