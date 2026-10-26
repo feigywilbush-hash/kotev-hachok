@@ -733,7 +733,7 @@ export function NoEntryDriveGame({
   );
 }
 
-function Panel({ children, tone }: { children: ReactNode; tone?: "alert" }) {
+export function Panel({ children, tone }: { children: ReactNode; tone?: "alert" }) {
   return (
     <div className="absolute inset-0 flex items-center justify-center bg-background/40 p-3 backdrop-blur-[2px]">
       <div
@@ -748,7 +748,7 @@ function Panel({ children, tone }: { children: ReactNode; tone?: "alert" }) {
   );
 }
 
-function PanelButton({ onClick, children }: { onClick: () => void; children: ReactNode }) {
+export function PanelButton({ onClick, children }: { onClick: () => void; children: ReactNode }) {
   return (
     <button
       type="button"
