@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 
+import type { PyramidRound } from "@/components/kotev/steps/PyramidStep";
 import type { QuizQuestion } from "@/components/kotev/steps/QuizStep";
 
 type Picture = { src: string; alt: string };
@@ -18,5 +19,7 @@ export type LessonContent = {
   drive: { instruction: ReactNode; title?: string; game?: "no-entry" | "hierarchy" };
   video: { instruction: string; title: string; src: string; poster: string };
   quiz: QuizQuestion[];
+  /** When set, the "משחק ותרגול" step is the pyramid game instead of the quiz. */
+  pyramid?: { instruction: ReactNode; rounds: PyramidRound[] };
   home: { sheet: Picture; downloadHref: string; downloadName: string };
 };

@@ -7,6 +7,7 @@ import { LessonsBanner, LessonsPage, type Lesson } from "@/components/kotev/page
 import { HomePracticeStep } from "@/components/kotev/steps/HomePracticeStep";
 import { IntroStep } from "@/components/kotev/steps/IntroStep";
 import { LessonVideo } from "@/components/kotev/steps/LessonVideo";
+import { PyramidStep } from "@/components/kotev/steps/PyramidStep";
 import { QuizStep } from "@/components/kotev/steps/QuizStep";
 import { StageStep } from "@/components/kotev/steps/StageStep";
 import { lesson1 } from "@/lessons/lesson1";
@@ -152,7 +153,20 @@ const Index = () => {
           />
         </StageStep>
       )}
-      {step === 3 && (
+      {step === 3 && lesson.pyramid && (
+        <PyramidStep
+          key={`pyramid-${lesson.number}`}
+          lawNumber={shared.lawNumber}
+          title={shared.title}
+          instruction={lesson.pyramid.instruction}
+          rounds={lesson.pyramid.rounds}
+          step={shared.step}
+          totalSteps={shared.totalSteps}
+          onNext={shared.onNext}
+          onSolve={(i) => earnHere(`pyramid-${i}`)}
+        />
+      )}
+      {step === 3 && !lesson.pyramid && (
         <QuizStep
           key={`quiz-${lesson.number}`}
           lawNumber={shared.lawNumber}
