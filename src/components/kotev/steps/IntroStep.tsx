@@ -18,6 +18,8 @@ type IntroStepProps = {
   trafficText: ReactNode;
   /** Shown in red under the traffic text, e.g. the fine. */
   trafficWarning?: ReactNode;
+  /** Gives the traffic card the wider share of the row instead of the social card. */
+  wideTraffic?: boolean;
   socialText: ReactNode;
   step: number;
   totalSteps: number;
@@ -48,6 +50,7 @@ export function IntroStep({
   image,
   trafficText,
   trafficWarning,
+  wideTraffic = false,
   socialText,
   step,
   totalSteps,
@@ -60,11 +63,11 @@ export function IntroStep({
         <LawTitle lawNumber={lawNumber} title={title} className="order-1" />
 
         <div className="order-3 flex flex-col gap-4 motion-safe:animate-fade-up motion-safe:[animation-delay:120ms] md:flex-row md:gap-5 lg:mt-[calc(var(--u)*1.615)] lg:gap-[calc(var(--u)*1.458)]">
-          <InfoCard title="בכביש התנועה:" className="md:flex-1 lg:flex-none lg:basis-[41.7%]">
+          <InfoCard title="בכביש התנועה:" className={cn("md:flex-1 lg:flex-none", wideTraffic ? "lg:basis-[55.39%]" : "lg:basis-[41.7%]")}>
             <p>{trafficText}</p>
             {trafficWarning && <p className="mt-[1.4em] text-alert">{trafficWarning}</p>}
           </InfoCard>
-          <InfoCard title="בכביש החברתי:" className="md:flex-1 lg:flex-none lg:basis-[55.39%]">
+          <InfoCard title="בכביש החברתי:" className={cn("md:flex-1 lg:flex-none", wideTraffic ? "lg:basis-[41.7%]" : "lg:basis-[55.39%]")}>
             {socialText}
           </InfoCard>
         </div>
