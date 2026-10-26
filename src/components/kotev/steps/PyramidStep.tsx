@@ -9,8 +9,9 @@ import { LawTitle, NextStepButton, softCard } from "./StepParts";
  * "משחק ותרגול" step of the hierarchy law: a fixed four-floor pyramid on one side and a row of
  * picture cards on the other. The player drags each card (or taps it, then taps a floor) onto the
  * pyramid; whoever has more authority must sit higher. A card shrinks to fit its floor. When every
- * card is in place: confetti and a success sound, then the pyramid empties and the next round's
- * cards come in.
+ * card is in place: confetti and a success sound. The yellow button counts the rounds inside
+ * this step: it empties the pyramid and brings in the next round's cards, and only after the last
+ * round moves on to the next step.
  * Sizes: px on mobile/tablet; on desktop multiples of --u (1vw on a 16:9 screen, smaller on short
  * screens so the step fits without scrolling; u = px / 19.2 from the 1920px Figma frame). See KotevLayout.
  * Mobile stacks: title → instruction → cards → pyramid → button.
@@ -36,8 +37,6 @@ type PyramidStepProps = {
   title: string;
   instruction: ReactNode;
   rounds: PyramidRound[];
-  step: number;
-  totalSteps: number;
   onNext?: () => void;
   /** Called with the round's index each time a round is solved. */
   onSolve?: (round: number) => void;
@@ -68,7 +67,7 @@ const floorPoints = ({ top, bottom }: { top: number; bottom: number }) =>
 
 type Drag = { id: string; x0: number; y0: number; dx: number; dy: number; moved: boolean };
 
-export function PyramidStep({ lawNumber, title, instruction, rounds, step, totalSteps, onNext, onSolve }: PyramidStepProps) {
+export function PyramidStep({ lawNumber, title, instruction, rounds, onNext, onSolve }: PyramidStepProps) {
   const [round, setRound] = useState(0);
   /** Card id → floor index, for the cards on the pyramid. */
   const [placed, setPlaced] = useState<Record<string, number>>({});
@@ -134,16 +133,18 @@ export function PyramidStep({ lawNumber, title, instruction, rounds, step, total
       return next;
     });
 
-  // After a solved round, empty the pyramid and bring in the next round's cards.
-  useEffect(() => {
-    if (!solved || round >= rounds.length - 1) return;
-    const t = window.setTimeout(() => {
-      setPlaced({});
-      setSolved(false);
-      setRound((r) => r + 1);
-    }, 2600);
-    return () => window.clearTimeout(t);
-  }, [solved, round, rounds.length]);
+  /** The yellow button walks through the rounds; after the last one it moves on to the next step. */
+  const nextRound = () => {
+    if (round >= rounds.length - 1) {
+      onNext?.();
+      return;
+    }
+    setPlaced({});
+    setSolved(false);
+    setSelected(null);
+    setHint(null);
+    setRound((r) => r + 1);
+  };
 
   useEffect(() => {
     if (!shaking) return;
@@ -267,9 +268,9 @@ export function PyramidStep({ lawNumber, title, instruction, rounds, step, total
         </p>
 
         <NextStepButton
-          step={step}
-          totalSteps={totalSteps}
-          onNext={onNext}
+          step={round + 1}
+          totalSteps={rounds.length}
+          onNext={nextRound}
           className="order-5 lg:mt-auto lg:w-[calc(var(--u)*24.48)] lg:self-end"
         />
       </div>
