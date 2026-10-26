@@ -48,9 +48,10 @@ const VW = 840;
 const VH = 748;
 const CX = 420;
 /*
- * The blue frame is the triangle (420,48) (801,700) (39,700) drawn with a 28-wide stroke, so its
- * inner edge sits 14 inside those lines. The floors fill the same triangle shrunk by 26 on every
- * side (a 12-wide white margin all round), cut into four equal floors with 12-wide white gaps.
+ * The blue frame is the triangle (420,59.9) (790.5,694) (49.5,694) drawn with a 16-wide stroke, so
+ * its inner edge sits 8 inside those lines (14 inside the outline (420,48) (801,700) (39,700)).
+ * The floors fill that outline shrunk by 26 on every side (a 12-wide white margin all round), cut
+ * into four equal floors with 12-wide white gaps.
  */
 const FLOORS_TOP = 99.5;
 const FLOORS_BOTTOM = 674;
@@ -301,7 +302,7 @@ export function PyramidStep({ lawNumber, title, instruction, rounds, onNext, onS
             </linearGradient>
           </defs>
           {/* A thick round-joined stroke gives the frame its rounded corners */}
-          <polygon points="420,48 801,700 39,700" fill="#ffffff" className="stroke-surface" strokeWidth={28} strokeLinejoin="round" />
+          <polygon points="420,59.9 790.5,694 49.5,694" fill="#ffffff" className="stroke-progress-track" strokeWidth={16} strokeLinejoin="round" />
           {FLOORS.map((f, i) => (
             <polygon
               key={i}
