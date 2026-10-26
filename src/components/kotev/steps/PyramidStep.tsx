@@ -3,14 +3,15 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { burstConfetti } from "@/lib/confetti";
 import { cn } from "@/lib/utils";
 import { playFail, playSuccess } from "../games/driveSounds";
-import { LawTitle, NextStepButton, softCard } from "./StepParts";
+import { NavButton } from "./QuizStep";
+import { LawTitle, softCard } from "./StepParts";
 
 /*
  * "משחק ותרגול" step of the hierarchy law: a fixed four-floor pyramid on one side and a row of
  * picture cards on the other. The player drags each card (or taps it, then taps a floor) onto the
  * pyramid; whoever has more authority must sit higher. A card shrinks to fit its floor. When every
- * card is in place: confetti and a success sound. The yellow button counts the rounds inside
- * this step: it empties the pyramid and brings in the next round's cards, and only after the last
+ * card is in place: confetti and a success sound. The green "next" button walks through the rounds
+ * inside this step: it empties the pyramid and brings in the next round's cards, and only after the last
  * round moves on to the next step.
  * Sizes: px on mobile/tablet; on desktop multiples of --u (1vw on a 16:9 screen, smaller on short
  * screens so the step fits without scrolling; u = px / 19.2 from the 1920px Figma frame). See KotevLayout.
@@ -47,12 +48,12 @@ const VW = 840;
 const VH = 748;
 const CX = 420;
 const halfWidth = (y: number) => (y - 50) * 0.466 * 1.2;
-/** The floors, top to bottom, and the size of a card sitting on each. */
+/** The floors, top to bottom (all the same height), and the size of a card sitting on each. */
 const FLOORS = [
-  { top: 50, bottom: 237, card: 96 },
-  { top: 251, bottom: 391, card: 128 },
-  { top: 406, bottom: 558, card: 140 },
-  { top: 573, bottom: 695, card: 112 },
+  { top: 50, bottom: 200, card: 80 },
+  { top: 215, bottom: 365, card: 128 },
+  { top: 380, bottom: 530, card: 140 },
+  { top: 545, bottom: 695, card: 128 },
 ];
 
 const floorPoints = ({ top, bottom }: { top: number; bottom: number }) =>
@@ -133,7 +134,7 @@ export function PyramidStep({ lawNumber, title, instruction, rounds, onNext, onS
       return next;
     });
 
-  /** The yellow button walks through the rounds; after the last one it moves on to the next step. */
+  /** The "next" button walks through the rounds; after the last one it moves on to the next step. */
   const nextRound = () => {
     if (round >= rounds.length - 1) {
       onNext?.();
@@ -271,12 +272,9 @@ export function PyramidStep({ lawNumber, title, instruction, rounds, onNext, onS
           {hint && <span key={hint.id} className="motion-safe:animate-fade-up">{hint.text}</span>}
         </p>
 
-        <NextStepButton
-          step={round + 1}
-          totalSteps={rounds.length}
-          onNext={nextRound}
-          className="order-5 lg:mt-auto lg:w-[calc(var(--u)*24.48)] lg:self-end"
-        />
+        <NavButton tone="next" onClick={nextRound} className="order-5 self-start lg:mt-auto">
+          לשאלה הבאה
+        </NavButton>
       </div>
 
       {/* The pyramid */}

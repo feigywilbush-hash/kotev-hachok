@@ -226,7 +226,7 @@ export function QuizStep({ lawNumber, title, questions, step, totalSteps, onFini
   );
 }
 
-function NavButton({
+export function NavButton({
   tone,
   onClick,
   disabled,
