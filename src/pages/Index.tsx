@@ -160,8 +160,6 @@ const Index = () => {
           title={shared.title}
           instruction={lesson.pyramid.instruction}
           rounds={lesson.pyramid.rounds}
-          step={shared.step}
-          totalSteps={shared.totalSteps}
           onNext={shared.onNext}
           onSolve={(i) => earnHere(`pyramid-${i}`)}
         />
