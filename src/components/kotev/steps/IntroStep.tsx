@@ -20,17 +20,20 @@ type IntroStepProps = {
   trafficWarning?: ReactNode;
   /** Gives the traffic card the wider share of the row instead of the social card. */
   wideTraffic?: boolean;
+  /** Less padding above and below the card texts on desktop, for longer texts that would otherwise scroll. */
+  compactCards?: boolean;
   socialText: ReactNode;
   step: number;
   totalSteps: number;
   onNext?: () => void;
 };
 
-function InfoCard({ title, children, className }: { title: string; children: ReactNode; className?: string }) {
+function InfoCard({ title, children, compact, className }: { title: string; children: ReactNode; compact?: boolean; className?: string }) {
   return (
     <section
       className={cn(
-        "flex flex-col items-start gap-2 rounded-[32px] bg-sidebar/35 px-6 py-8 md:rounded-[48px] md:px-8 md:py-10 lg:min-h-[calc(var(--u)*17.708)] lg:gap-[calc(var(--u)*0.521)] lg:rounded-[calc(var(--u)*3.125)] lg:px-[calc(var(--u)*2.083)] lg:py-[calc(var(--u)*2.604)]",
+        "flex flex-col items-start gap-2 rounded-[32px] bg-sidebar/35 px-6 py-8 md:rounded-[48px] md:px-8 md:py-10 lg:min-h-[calc(var(--u)*17.708)] lg:gap-[calc(var(--u)*0.521)] lg:rounded-[calc(var(--u)*3.125)] lg:px-[calc(var(--u)*2.083)]",
+        compact ? "lg:min-h-0 lg:py-[calc(var(--u)*1.25)]" : "lg:py-[calc(var(--u)*2.604)]",
         className,
       )}
     >
@@ -51,6 +54,7 @@ export function IntroStep({
   trafficText,
   trafficWarning,
   wideTraffic = false,
+  compactCards = false,
   socialText,
   step,
   totalSteps,
@@ -63,11 +67,11 @@ export function IntroStep({
         <LawTitle lawNumber={lawNumber} title={title} className="order-1" />
 
         <div className="order-3 flex flex-col gap-4 motion-safe:animate-fade-up motion-safe:[animation-delay:120ms] md:flex-row md:gap-5 lg:mt-[calc(var(--u)*1.615)] lg:gap-[calc(var(--u)*1.458)]">
-          <InfoCard title="בכביש התנועה:" className={cn("md:flex-1 lg:flex-none", wideTraffic ? "lg:basis-[55.39%]" : "lg:basis-[41.7%]")}>
+          <InfoCard title="בכביש התנועה:" compact={compactCards} className={cn("md:flex-1 lg:flex-none", wideTraffic ? "lg:basis-[55.39%]" : "lg:basis-[41.7%]")}>
             <p>{trafficText}</p>
             {trafficWarning && <p className="mt-[1.4em] text-alert">{trafficWarning}</p>}
           </InfoCard>
-          <InfoCard title="בכביש החברתי:" className={cn("md:flex-1 lg:flex-none", wideTraffic ? "lg:basis-[41.7%]" : "lg:basis-[55.39%]")}>
+          <InfoCard title="בכביש החברתי:" compact={compactCards} className={cn("md:flex-1 lg:flex-none", wideTraffic ? "lg:basis-[41.7%]" : "lg:basis-[55.39%]")}>
             {socialText}
           </InfoCard>
         </div>

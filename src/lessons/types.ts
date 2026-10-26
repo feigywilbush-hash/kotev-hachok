@@ -10,7 +10,7 @@ export type LessonContent = {
   title: string;
   /** The picture on the law's card in the lessons page. */
   cardImage: Picture;
-  intro: { image: Picture; trafficText: ReactNode; trafficWarning?: string; wideTraffic?: boolean; socialText: ReactNode };
+  intro: { image: Picture; trafficText: ReactNode; trafficWarning?: string; wideTraffic?: boolean; compactCards?: boolean; socialText: ReactNode };
   drive: { instruction: ReactNode };
   video: { instruction: string; title: string; src: string; poster: string };
   quiz: QuizQuestion[];

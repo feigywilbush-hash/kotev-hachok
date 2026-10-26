@@ -116,6 +116,7 @@ const Index = () => {
           trafficText={lesson.intro.trafficText}
           trafficWarning={lesson.intro.trafficWarning}
           wideTraffic={lesson.intro.wideTraffic}
+          compactCards={lesson.intro.compactCards}
           socialText={lesson.intro.socialText}
         />
       )}
