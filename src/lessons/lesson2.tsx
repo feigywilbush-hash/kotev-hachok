@@ -5,8 +5,8 @@ const DOOR = { src: "./assets/quiz-door.webp", alt: "ילד עומד מול דל
 /** Law 2: for now a copy of law 1, to be adjusted. */
 export const lesson2: LessonContent = {
   number: 2,
-  title: "הבנת היררכיות!",
-  cardImage: { src: "./assets/lesson-1.webp", alt: "ילד עם תיק על הגב מביט בשלט אין כניסה" },
+  title: "הבנת היררכיות",
+  cardImage: { src: "./assets/lesson-2.webp", alt: "שוטר מסביר משהו לילד עם תיק על הגב ליד הכביש" },
   intro: {
     image: { src: "./assets/intro-no-entry.webp", alt: "ילד עומד ליד שלט אין כניסה ומביט בו" },
     trafficText: "שלט ‘הבנת היררכיות’ אוסר על הנהג להכנס לשטח מסוים. כניסה לשטח זה מהווה סכנה.",
