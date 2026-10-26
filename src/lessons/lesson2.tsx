@@ -29,6 +29,7 @@ export const lesson2: LessonContent = {
     ),
   },
   drive: {
+    title: "היררכיות",
     instruction: (
       <>
         בוא נצא לנסיעה! סע בכביש, שים לב לתמרורים <br className="max-lg:hidden" />
