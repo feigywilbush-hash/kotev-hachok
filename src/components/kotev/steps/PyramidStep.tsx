@@ -4,7 +4,7 @@ import { burstConfetti } from "@/lib/confetti";
 import { cn } from "@/lib/utils";
 import { playFail, playSuccess } from "../games/driveSounds";
 import { NavButton } from "./QuizStep";
-import { LawTitle, softCard } from "./StepParts";
+import { LawTitle } from "./StepParts";
 
 /*
  * "משחק ותרגול" step of the hierarchy law: a fixed four-floor pyramid on one side and a row of
@@ -225,9 +225,8 @@ export function PyramidStep({ lawNumber, title, instruction, rounds, onNext, onS
         }}
         style={dragging ? { transform: `translate(${drag.dx}px, ${drag.dy}px) scale(1.04)` } : undefined}
         className={cn(
-          "block size-full touch-none overflow-hidden rounded-[16px] bg-card p-1 shadow-[0_6px_16px_hsl(var(--mist)/0.45)] transition-[box-shadow,scale] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring lg:rounded-[calc(var(--u)*1.25)]",
-          softCard,
-          inPyramid ? "cursor-grab p-0.5" : "cursor-grab hover:scale-[1.03]",
+          "block size-full touch-none overflow-hidden rounded-[16px] shadow-[0_6px_16px_hsl(var(--mist)/0.45)] transition-[box-shadow,scale] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring lg:rounded-[calc(var(--u)*1.25)]",
+          inPyramid ? "cursor-grab" : "cursor-grab hover:scale-[1.03]",
           dragging && "relative z-30 cursor-grabbing shadow-[0_14px_32px_hsl(var(--mist)/0.8)]",
           selected === card.id && "ring-4 ring-brand-sun",
           shaking === card.id && "motion-safe:animate-shake",
@@ -302,7 +301,7 @@ export function PyramidStep({ lawNumber, title, instruction, rounds, onNext, onS
             </linearGradient>
           </defs>
           {/* A thick round-joined stroke gives the frame its rounded corners */}
-          <polygon points="420,48 801,700 39,700" className="fill-surface stroke-progress-track" strokeWidth={28} strokeLinejoin="round" />
+          <polygon points="420,48 801,700 39,700" fill="#ffffff" className="stroke-surface" strokeWidth={28} strokeLinejoin="round" />
           {FLOORS.map((f, i) => (
             <polygon
               key={i}
