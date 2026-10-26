@@ -87,6 +87,25 @@ export const lesson2: LessonContent = {
       image: { src: "./assets/quiz-friends.webp", alt: "שני ילדים יושבים ומדברים בחדר" },
     },
   ],
+  pyramid: {
+    instruction: (
+      <>
+        מקמו את הדמויות למטה על גבי הפירמידה -
+        <br />
+        איך נראית פירמידה בבית? איך נראית בחנות? נסו לחשוב ולמקם!
+      </>
+    ),
+    rounds: [
+      {
+        cards: [
+          { id: "parents", image: { src: "./assets/pyramid-parents.webp", alt: "אבא ואמא" }, rank: 0 },
+          { id: "children", image: { src: "./assets/pyramid-children.webp", alt: "שלושה ילדים: בן, בת ותינוק" }, rank: 1 },
+        ],
+        hint: "רגע! בבית ההורים נמצאים מעל הילדים בפירמידה.",
+        praise: "כל הכבוד! בבית ההורים מעל הילדים",
+      },
+    ],
+  },
   home: {
     sheet: { src: "./files/no-entry-cutouts.svg", alt: "דף עם 12 תמרורי אין כניסה לגזירה" },
     downloadHref: "./files/no-entry-signs.pdf",
