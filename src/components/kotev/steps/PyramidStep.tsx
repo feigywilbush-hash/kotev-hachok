@@ -302,7 +302,7 @@ export function PyramidStep({ lawNumber, title, instruction, rounds, onNext, onS
             </linearGradient>
           </defs>
           {/* A thick round-joined stroke gives the frame its rounded corners */}
-          <polygon points="420,48 801,700 39,700" fill="#ffffff" className="stroke-progress-track" strokeWidth={28} strokeLinejoin="round" />
+          <polygon points="420,48 801,700 39,700" className="fill-surface stroke-progress-track" strokeWidth={28} strokeLinejoin="round" />
           {FLOORS.map((f, i) => (
             <polygon
               key={i}
