@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { NoEntryDriveGame } from "@/components/kotev/games/NoEntryDriveGame";
 import { KotevLayout } from "@/components/kotev/KotevLayout";
+import { LessonsBanner, LessonsPage, type Lesson } from "@/components/kotev/pages/LessonsPage";
 import { HomePracticeStep } from "@/components/kotev/steps/HomePracticeStep";
 import { IntroStep } from "@/components/kotev/steps/IntroStep";
 import { LessonVideo } from "@/components/kotev/steps/LessonVideo";
@@ -58,6 +59,23 @@ const QUIZ: QuizQuestion[] = [
   },
 ];
 
+const LESSON_COUNT = 30;
+
+/** Law 1 is built; the rest keep an empty picture frame and a placeholder name until they're written. */
+const LESSONS: Lesson[] = Array.from({ length: LESSON_COUNT }, (_, i) =>
+  i === 0
+    ? {
+        number: 1,
+        title: "אין כניסה!",
+        image: { src: "./assets/lesson-1.webp", alt: "ילד עם תיק על הגב מביט בשלט אין כניסה" },
+        href: "#step-1",
+      }
+    : { number: i + 1, title: "בקרוב..." },
+);
+
+const LESSONS_HASH = "#lessons";
+const isLessonsPage = () => window.location.hash === LESSONS_HASH;
+
 /** The step to open, from the address (#step-2 opens the second step). */
 const stepFromHash = () => {
   const n = Number(window.location.hash.match(/^#step-(\d+)$/)?.[1]) - 1;
@@ -66,6 +84,7 @@ const stepFromHash = () => {
 
 const Index = () => {
   const [step, setStep] = useState(stepFromHash);
+  const [showLessons, setShowLessons] = useState(isLessonsPage);
 
   // Snail points: start at 0, one for each step finished and each success inside a step.
   // Each success counts once (keyed), so replaying the game or revisiting a step doesn't add more.
@@ -85,7 +104,11 @@ const Index = () => {
   };
 
   useEffect(() => {
-    const onHash = () => setStep(stepFromHash());
+    const onHash = () => {
+      setShowLessons(isLessonsPage());
+      setStep(stepFromHash());
+      window.scrollTo({ top: 0 });
+    };
     window.addEventListener("hashchange", onHash);
     return () => window.removeEventListener("hashchange", onHash);
   }, []);
@@ -95,6 +118,14 @@ const Index = () => {
       goTo(step + 1);
     },
   };
+
+  if (showLessons) {
+    return (
+      <KotevLayout user={{ name: "דניאל", points }} banner={<LessonsBanner />} activeHref={LESSONS_HASH}>
+        <LessonsPage lessons={LESSONS} />
+      </KotevLayout>
+    );
+  }
 
   return (
     <KotevLayout

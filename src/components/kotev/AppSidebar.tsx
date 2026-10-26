@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type ComponentType, type SVGProps } from "
 import { Menu } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import {
   HomeIcon,
   KotevLogo,
@@ -33,7 +33,7 @@ type NavItem = {
 
 const NAV_ITEMS: NavItem[] = [
   { label: "דף הבית", href: "/", icon: HomeIcon },
-  { label: "שיעורים", href: "/lessons", icon: LessonsIcon },
+  { label: "שיעורים", href: "#lessons", icon: LessonsIcon },
   { label: "משימות", href: "/tasks", icon: TrophyIcon },
   { label: "קבצים להדפסה", href: "/printables", icon: PrintIcon },
   { label: "הדרכה להורים", href: "/parents", icon: ParentsIcon },
@@ -47,6 +47,8 @@ export type SidebarUser = {
 
 type AppSidebarProps = {
   user: SidebarUser;
+  /** The nav item of the page being shown is drawn highlighted. */
+  activeHref?: string;
   onLogout?: () => void;
 };
 
@@ -132,11 +134,11 @@ function PointsBadge({ points, className, snailClassName }: { points: number; cl
 const pillBase =
   "group/pill flex items-center justify-between rounded-full bg-sidebar-accent leading-none text-sidebar-foreground transition-[background-color,transform] duration-200 hover:bg-card/60 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
 
-function NavPill({ item, variant }: { item: NavItem; variant: Variant }) {
+function NavPill({ item, variant, active }: { item: NavItem; variant: Variant; active?: boolean }) {
   const s = SIZES[variant];
   const Icon = item.icon;
-  return (
-    <a href={item.href} className={cn(pillBase, s.pill)}>
+  const link = (
+    <a href={item.href} aria-current={active ? "page" : undefined} className={cn(pillBase, s.pill, active && "bg-card hover:bg-card")}>
       <span>{item.label}</span>
       {item.fullSize ? (
         <Icon className={cn("shrink-0 text-primary transition-transform duration-200 group-hover/pill:scale-110", s.iconBox)} />
@@ -147,10 +149,12 @@ function NavPill({ item, variant }: { item: NavItem; variant: Variant }) {
       )}
     </a>
   );
+  // In the drawer a link to another page of the site also closes the drawer.
+  return variant === "drawer" ? <SheetClose asChild>{link}</SheetClose> : link;
 }
 
 /** Greeting, navigation and logout. Shared by the desktop rail and the mobile drawer. */
-function SidebarBody({ user, onLogout, variant }: AppSidebarProps & { variant: Variant }) {
+function SidebarBody({ user, activeHref, onLogout, variant }: AppSidebarProps & { variant: Variant }) {
   const s = SIZES[variant];
   return (
     <>
@@ -163,7 +167,7 @@ function SidebarBody({ user, onLogout, variant }: AppSidebarProps & { variant: V
       {variant === "rail" && <div className="grow-[89]" />}
       <nav aria-label="ניווט ראשי" className={cn("flex flex-col", s.nav)}>
         {NAV_ITEMS.map((item) => (
-          <NavPill key={item.href} item={item} variant={variant} />
+          <NavPill key={item.href} item={item} variant={variant} active={item.href === activeHref} />
         ))}
       </nav>
 
@@ -200,7 +204,7 @@ function SidebarShape() {
 }
 
 /** Desktop: rail on the right. Tablet and mobile: top bar with a drawer. */
-export function AppSidebar({ user, onLogout }: AppSidebarProps) {
+export function AppSidebar({ user, activeHref, onLogout }: AppSidebarProps) {
   return (
     <>
       <aside className="sticky top-0 hidden h-[100vh] w-[var(--rail)] shrink-0 flex-col items-center overflow-hidden bg-sidebar text-sidebar-foreground [--rail:max(13.854vw,24.63vh)] lg:flex">
@@ -211,7 +215,7 @@ export function AppSidebar({ user, onLogout }: AppSidebarProps) {
             <KotevLogo className="h-auto w-[calc(var(--rail)*0.37970)]" />
           </a>
           <div className="grow-[75]" />
-          <SidebarBody user={user} onLogout={onLogout} variant="rail" />
+          <SidebarBody user={user} activeHref={activeHref} onLogout={onLogout} variant="rail" />
           <div className="grow-[50]" />
         </div>
       </aside>
@@ -230,7 +234,7 @@ export function AppSidebar({ user, onLogout }: AppSidebarProps) {
               className="flex w-[300px] flex-col items-center overflow-y-auto border-none bg-sidebar px-0 py-10 text-sidebar-foreground md:w-[340px]"
             >
               <SheetTitle className="sr-only">תפריט</SheetTitle>
-              <SidebarBody user={user} onLogout={onLogout} variant="drawer" />
+              <SidebarBody user={user} activeHref={activeHref} onLogout={onLogout} variant="drawer" />
             </SheetContent>
           </Sheet>
           <a href="/" aria-label="כותב החוק - דף הבית">
