@@ -121,6 +121,15 @@ export const lesson2: LessonContent = {
         hint: "רגע! כשבאים לבקר, המארח הוא בעל הבית, ולכן הוא מעל האורח.",
         praise: "כל הכבוד! המארח מעל האורח",
       },
+      {
+        cards: [
+          { id: "passengers", image: { src: "./assets/pyramid-passengers.webp", alt: "נוסעים עם מזוודות בשדה התעופה" }, rank: 2 },
+          { id: "attendant", image: { src: "./assets/pyramid-attendant.webp", alt: "דיילת במטוס" }, rank: 1 },
+          { id: "pilot", image: { src: "./assets/pyramid-pilot.webp", alt: "טייס בתא הטייס" }, rank: 0 },
+        ],
+        hint: "רגע! במטוס הטייס למעלה, מתחתיו הדיילת, ומתחתיה הנוסעים.",
+        praise: "כל הכבוד! במטוס הטייס, אחריו הדיילת ואז הנוסעים",
+      },
     ],
   },
   home: {
