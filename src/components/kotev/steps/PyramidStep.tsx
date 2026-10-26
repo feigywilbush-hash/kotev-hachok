@@ -279,11 +279,11 @@ export function PyramidStep({ lawNumber, title, instruction, rounds, onNext, onS
 
         <div className="order-5 flex flex-col-reverse gap-3 self-stretch md:flex-row md:gap-[14px] lg:mt-auto lg:gap-[calc(var(--u)*0.729)]">
           {round > 0 && (
-            <NavButton tone="back" onClick={() => goRound(round - 1)} className="lg:w-auto lg:flex-1">
+            <NavButton tone="back" onClick={() => goRound(round - 1)} className="md:max-w-none md:flex-1 lg:w-auto">
               לשאלה הקודמת
             </NavButton>
           )}
-          <NavButton tone="next" onClick={nextRound} className={cn(round > 0 && "lg:w-auto lg:flex-1")}>
+          <NavButton tone="next" onClick={nextRound} className="md:max-w-none md:flex-1 lg:w-auto">
             לשאלה הבאה
           </NavButton>
         </div>
