@@ -8,7 +8,7 @@ export const lesson2: LessonContent = {
   title: "הבנת היררכיות",
   cardImage: { src: "./assets/lesson-2.webp", alt: "שוטר מסביר משהו לילד עם תיק על הגב ליד הכביש" },
   intro: {
-    image: { src: "./assets/intro-no-entry.webp", alt: "ילד עומד ליד שלט אין כניסה ומביט בו" },
+    image: { src: "./assets/intro-lesson-2.webp", alt: "שוטר מסביר משהו לילד שמקשיב לו ליד הכביש" },
     trafficText: "שלט ‘הבנת היררכיות’ אוסר על הנהג להכנס לשטח מסוים. כניסה לשטח זה מהווה סכנה.",
     trafficWarning: "על נהג הנכנס בשלט הבנת היררכיות לשלם קנס של כ - 500 ש”ח.",
     socialText: (
