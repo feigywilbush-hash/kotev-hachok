@@ -42,14 +42,14 @@ type PyramidStepProps = {
   onSolve?: (round: number) => void;
 };
 
-// Pyramid geometry in the units of the 700×748 Figma frame.
-const VW = 700;
+// Pyramid geometry: the 700×748 Figma frame, stretched 1.2× wider.
+const VW = 840;
 const VH = 748;
-const CX = 350;
-const halfWidth = (y: number) => (y - 40) * 0.4589;
+const CX = 420;
+const halfWidth = (y: number) => (y - 50) * 0.466 * 1.2;
 /** The floors, top to bottom, and the size of a card sitting on each. */
 const FLOORS = [
-  { top: 63, bottom: 237, card: 96 },
+  { top: 50, bottom: 237, card: 96 },
   { top: 251, bottom: 391, card: 128 },
   { top: 406, bottom: 558, card: 140 },
   { top: 573, bottom: 695, card: 112 },
@@ -246,7 +246,11 @@ export function PyramidStep({ lawNumber, title, instruction, rounds, onNext, onS
         {/* The cards still waiting to be placed */}
         <div
           key={round}
-          className="order-3 flex min-h-[120px] flex-wrap justify-start gap-3 motion-safe:animate-fade-up md:min-h-[150px] lg:mt-[calc(var(--u)*2.4)] lg:min-h-[calc(var(--u)*12.6)] lg:w-full lg:gap-[calc(var(--u)*1.04)]"
+          className={cn(
+            "relative order-3 flex min-h-[120px] flex-wrap justify-start gap-3 motion-safe:animate-fade-up md:min-h-[150px] lg:mt-[calc(var(--u)*2.4)] lg:min-h-[calc(var(--u)*12.6)] lg:w-full lg:gap-[calc(var(--u)*1.04)]",
+            // Lift the tray over the pyramid while one of its cards is dragged
+            drag && tray.some((c) => c.id === drag.id) && "z-40",
+          )}
         >
           {tray.map((card) => (
             <div key={card.id} className={cn("size-[120px] md:size-[150px] lg:size-[calc(var(--u)*12.7)]", drag?.id === card.id && "relative z-30")}>
@@ -278,7 +282,7 @@ export function PyramidStep({ lawNumber, title, instruction, rounds, onNext, onS
       {/* The pyramid */}
       <div
         ref={pyramidRef}
-        className="relative order-4 mx-auto aspect-[700/748] w-full max-w-[420px] motion-safe:animate-fade-in-scale motion-safe:[animation-delay:80ms] md:max-w-[520px] lg:order-1 lg:mx-0 lg:w-[calc(var(--u)*36.46)] lg:max-w-none lg:shrink-0"
+        className="relative order-4 mx-auto aspect-[840/748] w-full max-w-[500px] motion-safe:animate-fade-in-scale motion-safe:[animation-delay:80ms] md:max-w-[620px] lg:order-1 lg:mx-0 lg:w-[calc(var(--u)*43.75)] lg:max-w-none lg:shrink-0"
       >
         <svg viewBox={`0 0 ${VW} ${VH}`} className="absolute inset-0 size-full" aria-hidden="true">
           <defs>
@@ -287,8 +291,8 @@ export function PyramidStep({ lawNumber, title, instruction, rounds, onNext, onS
               <stop offset="1" stopColor="#f0f7f9" />
             </linearGradient>
           </defs>
-          <polygon points="350,26 681,712 19,712" className="fill-progress-track" strokeLinejoin="round" />
-          <polygon points="350,46 662,700 38,700" fill="#ffffff" />
+          <polygon points="420,26 817,712 23,712" className="fill-progress-track" strokeLinejoin="round" />
+          <polygon points="420,46 794,700 46,700" fill="#ffffff" />
           {FLOORS.map((f, i) => (
             <polygon
               key={i}
