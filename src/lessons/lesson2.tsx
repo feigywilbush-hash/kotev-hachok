@@ -104,6 +104,15 @@ export const lesson2: LessonContent = {
         hint: "רגע! בבית ההורים נמצאים מעל הילדים בפירמידה.",
         praise: "כל הכבוד! בבית ההורים מעל הילדים",
       },
+      {
+        cards: [
+          { id: "principal", image: { src: "./assets/pyramid-principal.webp", alt: "מנהל בית הספר ליד שולחנו" }, rank: 0 },
+          { id: "students", image: { src: "./assets/pyramid-students.webp", alt: "שני תלמידים כותבים בכיתה" }, rank: 2 },
+          { id: "teacher", image: { src: "./assets/pyramid-teacher.webp", alt: "מורה מלמדת ליד הלוח" }, rank: 1 },
+        ],
+        hint: "רגע! בבית הספר המנהל למעלה, מתחתיו המורה, ומתחתיה התלמידים.",
+        praise: "כל הכבוד! בבית הספר המנהל, אחריו המורה ואז התלמידים",
+      },
     ],
   },
   home: {

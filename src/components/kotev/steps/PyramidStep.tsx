@@ -47,13 +47,20 @@ type PyramidStepProps = {
 const VW = 840;
 const VH = 748;
 const CX = 420;
-const halfWidth = (y: number) => (y - 50) * 0.466 * 1.2;
+/*
+ * The blue frame is the triangle (420,48) (801,700) (39,700) drawn with a 28-wide stroke, so its
+ * inner edge sits 14 inside those lines. The floors fill the same triangle shrunk by 26 on every
+ * side (a 12-wide white margin all round), cut into four equal floors with 12-wide white gaps.
+ */
+const FLOORS_TOP = 99.5;
+const FLOORS_BOTTOM = 674;
+const halfWidth = (y: number) => (y - FLOORS_TOP) * 0.5843;
 /** The floors, top to bottom (all the same height), and the size of a card sitting on each. */
 const FLOORS = [
-  { top: 50, bottom: 200, card: 80 },
-  { top: 215, bottom: 365, card: 128 },
-  { top: 380, bottom: 530, card: 140 },
-  { top: 545, bottom: 695, card: 128 },
+  { top: FLOORS_TOP, bottom: 234.1, card: 72 },
+  { top: 246.1, bottom: 380.7, card: 120 },
+  { top: 392.7, bottom: 527.3, card: 124 },
+  { top: 539.3, bottom: FLOORS_BOTTOM, card: 124 },
 ];
 
 const floorPoints = ({ top, bottom }: { top: number; bottom: number }) =>
@@ -135,17 +142,15 @@ export function PyramidStep({ lawNumber, title, instruction, rounds, onNext, onS
     });
 
   /** The "next" button walks through the rounds; after the last one it moves on to the next step. */
-  const nextRound = () => {
-    if (round >= rounds.length - 1) {
-      onNext?.();
-      return;
-    }
+  /** Empties the pyramid and brings in round `to`'s cards. */
+  const goRound = (to: number) => {
     setPlaced({});
     setSolved(false);
     setSelected(null);
     setHint(null);
-    setRound((r) => r + 1);
+    setRound(to);
   };
+  const nextRound = () => (round >= rounds.length - 1 ? onNext?.() : goRound(round + 1));
 
   useEffect(() => {
     if (!shaking) return;
@@ -272,9 +277,16 @@ export function PyramidStep({ lawNumber, title, instruction, rounds, onNext, onS
           {hint && <span key={hint.id} className="motion-safe:animate-fade-up">{hint.text}</span>}
         </p>
 
-        <NavButton tone="next" onClick={nextRound} className="order-5 self-start lg:mt-auto">
-          לשאלה הבאה
-        </NavButton>
+        <div className="order-5 flex flex-col-reverse gap-3 self-stretch md:flex-row md:gap-[14px] lg:mt-auto lg:gap-[calc(var(--u)*0.729)]">
+          {round > 0 && (
+            <NavButton tone="back" onClick={() => goRound(round - 1)} className="lg:w-auto lg:flex-1">
+              לשאלה הקודמת
+            </NavButton>
+          )}
+          <NavButton tone="next" onClick={nextRound} className={cn(round > 0 && "lg:w-auto lg:flex-1")}>
+            לשאלה הבאה
+          </NavButton>
+        </div>
       </div>
 
       {/* The pyramid */}
@@ -289,9 +301,8 @@ export function PyramidStep({ lawNumber, title, instruction, rounds, onNext, onS
               <stop offset="1" stopColor="#f0f7f9" />
             </linearGradient>
           </defs>
-          {/* Thick round-joined strokes give the triangle its rounded corners */}
-          <polygon points="420,48 801,700 39,700" className="fill-progress-track stroke-progress-track" strokeWidth={28} strokeLinejoin="round" />
-          <polygon points="420,54 788,692 52,692" fill="#ffffff" stroke="#ffffff" strokeWidth={12} strokeLinejoin="round" />
+          {/* A thick round-joined stroke gives the frame its rounded corners */}
+          <polygon points="420,48 801,700 39,700" fill="#ffffff" className="stroke-progress-track" strokeWidth={28} strokeLinejoin="round" />
           {FLOORS.map((f, i) => (
             <polygon
               key={i}
