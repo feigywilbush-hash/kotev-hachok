@@ -124,6 +124,7 @@ const Index = () => {
         <StageStep
           key={`traffic-${lesson.number}`}
           {...shared}
+          title={lesson.drive.title ?? lesson.title}
           instruction={lesson.drive.instruction}
         >
           <NoEntryDriveGame onScore={(i) => earnHere(`drive-${i}`)} />

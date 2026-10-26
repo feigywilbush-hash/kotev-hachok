@@ -11,7 +11,8 @@ export type LessonContent = {
   /** The picture on the law's card in the lessons page. */
   cardImage: Picture;
   intro: { image: Picture; trafficText: ReactNode; trafficWarning?: string; wideTraffic?: boolean; compactCards?: boolean; socialText: ReactNode };
-  drive: { instruction: ReactNode };
+  /** `title` replaces the law's name on this step only, e.g. a shorter one that fits beside the game. */
+  drive: { instruction: ReactNode; title?: string };
   video: { instruction: string; title: string; src: string; poster: string };
   quiz: QuizQuestion[];
   home: { sheet: Picture; downloadHref: string; downloadName: string };
