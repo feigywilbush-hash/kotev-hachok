@@ -48,12 +48,12 @@ const VW = 840;
 const VH = 748;
 const CX = 420;
 const halfWidth = (y: number) => (y - 50) * 0.466 * 1.2;
-/** The floors, top to bottom, and the size of a card sitting on each. */
+/** The floors, top to bottom (all the same height), and the size of a card sitting on each. */
 const FLOORS = [
-  { top: 50, bottom: 237, card: 96 },
-  { top: 251, bottom: 391, card: 128 },
-  { top: 406, bottom: 558, card: 140 },
-  { top: 573, bottom: 695, card: 112 },
+  { top: 50, bottom: 200, card: 80 },
+  { top: 215, bottom: 365, card: 128 },
+  { top: 380, bottom: 530, card: 140 },
+  { top: 545, bottom: 695, card: 128 },
 ];
 
 const floorPoints = ({ top, bottom }: { top: number; bottom: number }) =>
