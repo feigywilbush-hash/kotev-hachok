@@ -289,8 +289,9 @@ export function PyramidStep({ lawNumber, title, instruction, rounds, onNext, onS
               <stop offset="1" stopColor="#f0f7f9" />
             </linearGradient>
           </defs>
-          <polygon points="420,26 817,712 23,712" className="fill-progress-track" strokeLinejoin="round" />
-          <polygon points="420,46 794,700 46,700" fill="#ffffff" />
+          {/* Thick round-joined strokes give the triangle its rounded corners */}
+          <polygon points="420,48 801,700 39,700" className="fill-progress-track stroke-progress-track" strokeWidth={28} strokeLinejoin="round" />
+          <polygon points="420,54 788,692 52,692" fill="#ffffff" stroke="#ffffff" strokeWidth={12} strokeLinejoin="round" />
           {FLOORS.map((f, i) => (
             <polygon
               key={i}
