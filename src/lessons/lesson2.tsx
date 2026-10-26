@@ -30,10 +30,11 @@ export const lesson2: LessonContent = {
   },
   drive: {
     title: "היררכיות",
+    game: "hierarchy",
     instruction: (
       <>
-        בוא נצא לנסיעה! סע בכביש, שים לב לתמרורים <br className="max-lg:hidden" />
-        <span className="lg:whitespace-nowrap">ובחר לאן לפנות. שים לב לא להיכנס ל״הבנת היררכיות״&nbsp;🚫</span>
+        בוא נצא לנסיעה! בכל צומת בחר למי מקשיבים: <br className="max-lg:hidden" />
+        <span className="lg:whitespace-nowrap">קודם לשוטר, אחר כך לרמזור ואחר כך לתמרור&nbsp;👮</span>
       </>
     ),
   },
