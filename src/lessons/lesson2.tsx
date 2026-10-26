@@ -113,6 +113,14 @@ export const lesson2: LessonContent = {
         hint: "רגע! בבית הספר המנהל למעלה, מתחתיו המורה, ומתחתיה התלמידים.",
         praise: "כל הכבוד! בבית הספר המנהל, אחריו המורה ואז התלמידים",
       },
+      {
+        cards: [
+          { id: "host", image: { src: "./assets/pyramid-host.webp", alt: "ילד מארח מוזג מים לכוסות" }, rank: 0 },
+          { id: "guest", image: { src: "./assets/pyramid-guest.webp", alt: "ילד אורח עם תיק נכנס בדלת" }, rank: 1 },
+        ],
+        hint: "רגע! כשבאים לבקר, המארח הוא בעל הבית, ולכן הוא מעל האורח.",
+        praise: "כל הכבוד! המארח מעל האורח",
+      },
     ],
   },
   home: {
