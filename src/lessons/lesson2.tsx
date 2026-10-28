@@ -40,10 +40,10 @@ export const lesson2: LessonContent = {
   },
   video: {
     instruction:
-      "צפה בסרטון שבו כותב החוק מסביר מה זה “היררכיות” גם במצבים חברתיים. תגלה איך לזהות מצבים כאלה ומה כדאי לעשות בהם.",
-    title: "כותב החוק מסביר: היררכיות במצבים חברתיים",
-    src: "./assets/social-road.mp4",
-    poster: "./assets/social-road-poster.jpg",
+      "צפה בסרטון שבו כותב החוק מגלה מי מחליט בבית, בבית הספר ובחנות. תבין למה כדאי להקשיב לכללים של המקום שבו אתה נמצא.",
+    title: "כותב החוק מסביר: מי מחליט?",
+    src: "./assets/who-decides.mp4",
+    poster: "./assets/who-decides-poster.jpg",
   },
   quiz: [
     {
