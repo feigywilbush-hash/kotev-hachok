@@ -130,6 +130,15 @@ export const lesson2: LessonContent = {
         hint: "רגע! במטוס הטייס למעלה, מתחתיו הדיילת, ומתחתיה הנוסעים.",
         praise: "כל הכבוד! במטוס הטייס, אחריו הדיילת ואז הנוסעים",
       },
+      {
+        cards: [
+          { id: "customer", image: { src: "./assets/pyramid-customer.webp", alt: "צרכן עם עגלת קניות" }, rank: 2 },
+          { id: "manager", image: { src: "./assets/pyramid-manager.webp", alt: "מנהל הסופר בחליפה" }, rank: 0 },
+          { id: "cashier", image: { src: "./assets/pyramid-cashier.webp", alt: "קופאי סורק מוצרים בקופה" }, rank: 1 },
+        ],
+        hint: "רגע! בסופר המנהל למעלה, מתחתיו הקופאי, ומתחתיו הצרכן.",
+        praise: "כל הכבוד! בסופר המנהל, אחריו הקופאי ואז הצרכן",
+      },
     ],
   },
   home: {
