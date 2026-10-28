@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>פירמידות היררכיה</title>
+<style>
+@font-face { font-family: "Polin"; src: url("fonts/Polin-Regular.woff2") format("woff2"); font-weight: 400; }
+@font-face { font-family: "Polin"; src: url("fonts/Polin-Bold.ttf") format("truetype"); font-weight: 700; }
+@font-face { font-family: "Yael"; src: url("fonts/OHYaelLeibushor-Regular.woff2") format("woff2"); }
+@page { size: A4; margin: 0; }
+:root {
+  --fg: #286B85; --coral: #EC6F59; --sun: #FEE27E; --track: #B5E4ED; --sky: #BEE9F2;
+  --surface: #F0F8FA; --plate: #AFDEE8; --mist: #BFD5DA;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 210mm; height: 297mm; background: #fff; }
+body { font-family: "Polin", sans-serif; color: var(--fg); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.page { position: relative; width: 210mm; height: 297mm; overflow: hidden; padding: 11mm 11mm 9mm; display: flex; flex-direction: column; }
+/* soft brand shapes in the corners */
+.blob { position: absolute; border-radius: 50%; z-index: 0; }
+.blob.a { width: 90mm; height: 90mm; background: var(--surface); top: -38mm; left: -30mm; }
+.blob.b { width: 70mm; height: 70mm; background: var(--surface); bottom: -34mm; right: -26mm; }
+header { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; }
+.titles { text-align: right; }
+.law { font-family: "Yael", "Polin"; font-size: 26pt; line-height: 1; }
+h1 { font-size: 34pt; font-weight: 700; color: var(--coral); line-height: 1.05; margin-top: -1mm; }
+.lead { font-size: 12.5pt; line-height: 1.45; margin-top: 2mm; max-width: 140mm; }
+.lead b { font-weight: 700; }
+.logo { width: 27mm; flex-shrink: 0; align-self: flex-start; margin-top: 2mm; }
+.grid { position: relative; z-index: 1; flex: 1; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(3, 1fr); gap: 4mm 5mm; margin-top: 5mm; }
+.cell { background: #fff; border: 0.35mm solid rgba(191,213,218,.6); border-radius: 6mm; box-shadow: 0.8mm 2mm 4mm rgba(191,213,218,.35); padding: 2.5mm 3mm 3mm; display: flex; flex-direction: column; align-items: center; }
+.place { display: flex; align-items: center; gap: 2mm; font-size: 14pt; font-weight: 700; background: var(--sky); border-radius: 99mm; padding: 1mm 4mm 1mm 4.5mm; }
+.place .n { display: inline-flex; align-items: center; justify-content: center; width: 6mm; height: 6mm; border-radius: 50%; background: var(--coral); color: #fff; font-size: 10pt; }
+.pyr { position: relative; flex: 1; width: 100%; margin-top: 1.5mm; }
+.pyr svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.card { position: absolute; }
+.card img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 2.2mm; border: 0.6mm solid #fff; box-shadow: 0 0.6mm 1.6mm rgba(40,107,133,.25); }
+.tag { position: absolute; left: 50%; transform: translate(-50%, -55%); white-space: nowrap; background: #fff; color: var(--fg); font-weight: 700; border-radius: 99mm; padding: 0.3mm 2mm 0.4mm; box-shadow: 0 0.4mm 1.2mm rgba(40,107,133,.25); line-height: 1.25; }
+footer { position: relative; z-index: 1; margin-top: 5mm; display: flex; align-items: center; justify-content: center; gap: 3mm; background: var(--sun); border-radius: 99mm; padding: 2.4mm 6mm; font-size: 12.5pt; font-weight: 700; text-align: center; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="blob a"></div><div class="blob b"></div>
+  <header>
+    <div class="titles">
+      <p class="law">חוק מספר 2</p>
+      <h1>הבנת היררכיות</h1>
+      <p class="lead">בכל מקום יש <b>"בעלי סמכות"</b> שמקבלים את ההחלטות.<br>מי שנמצא למעלה בפירמידה הוא זה שמקשיבים לו!</p>
+    </div>
+    <svg class="logo" viewBox="0 0 101 100" aria-label="כותב החוק">
+      <circle cx="38" cy="9" r="9" fill="#EC6F59"/>
+      <circle cx="63" cy="9" r="9" fill="#FEE27E"/>
+      <g fill="#286B85">
+        <rect x="0" y="26" width="14" height="42" rx="1"/>
+        <rect x="29" y="26" width="14" height="42" rx="1"/>
+        <rect x="58" y="26" width="14" height="42" rx="1"/>
+        <rect x="87" y="26" width="14" height="42" rx="1"/>
+        <text x="50.5" y="97.6" text-anchor="middle" font-family="Polin" font-weight="700" font-size="21" textLength="101" lengthAdjust="spacingAndGlyphs" direction="rtl">כותב החוק</text>
+      </g>
+    </svg>
+  </header>
+  <main class="grid" id="grid"></main>
+  <footer>בכל מקום חדש שאלו את עצמכם: מי נמצא בראש הפירמידה כאן? 🤔</footer>
+</div>
+<script>
+const A = "assets/pyramid-";
+const PLACES = [
+  { title: "בבית", cards: [["parents", "הורים"], ["children", "ילדים"]] },
+  { title: "בבית הספר", cards: [["principal", "מנהל"], ["teacher", "מורה"], ["students", "תלמידים"]] },
+  { title: "בביקור אצל חבר", cards: [["host", "המארח"], ["guest", "האורח"]] },
+  { title: "במטוס", cards: [["pilot", "טייס"], ["attendant", "דיילת"], ["passengers", "נוסעים"]] },
+  { title: "בסופר", cards: [["manager", "מנהל"], ["cashier", "קופאי"], ["customer", "צרכן"]] },
+  { title: "בכביש", cards: [["police", "שוטר"], ["traffic-light", "רמזור"], ["sign", "תמרור"], ["driver", "נהג"]] },
+];
+// Floor fills top to bottom: the top floor is the brand's sun, the rest fade from light blue to pale.
+const FILLS = { 2: ["#FEE27E", "#D6F0F5"], 3: ["#FEE27E", "#BEE9F2", "#E5F4F8"], 4: ["#FEE27E", "#BEE9F2", "#D6F0F5", "#E5F4F8"] };
+
+const grid = document.getElementById("grid");
+PLACES.forEach((p, idx) => {
+  const cell = document.createElement("section");
+  cell.className = "cell";
+  cell.innerHTML = `<div class="place"><span class="n">${idx + 1}</span>${p.title}</div><div class="pyr"></div>`;
+  grid.appendChild(cell);
+});
+
+// Lay out every pyramid once the cells have their size (px, at 96px per inch).
+requestAnimationFrame(() => {
+  document.querySelectorAll(".pyr").forEach((box, idx) => {
+    const p = PLACES[idx];
+    const n = p.cards.length;
+    const BW = box.clientWidth, BH = box.clientHeight;
+    const H = BH - 2, W = Math.min(BW - 4, H * 1.35);
+    const x0 = (BW - W) / 2, y0 = BH - H;            // apex at (x0 + W/2, y0)
+    const k = W / (2 * H);                           // half-width per unit of height
+    const stroke = 5, gap = 3, pad = 5;
+    const inner = { top: y0 + pad * 2.2, bottom: BH - pad };
+    const half = (y) => Math.max(0, (y - y0) * k - pad);
+    const cx = x0 + W / 2;
+    const m = 4;
+    // Every floor holds the same size card: the lower floors are just tall enough for it and the top
+    // floor (the narrow tip) gets the rest. Find the largest card size for which the tip still fits it.
+    const floorsFor = (s) => {
+      const fl = [];
+      let b = inner.bottom;
+      for (let i = n - 1; i > 0; i--) { fl.unshift([b - s - 2 * m, b]); b -= s + 2 * m + gap; }
+      fl.unshift([inner.top, b]);
+      return fl;
+    };
+    const fits = (s) => {
+      const [t, b] = floorsFor(s)[0];
+      return b - t >= s + 2 * m && ((b - m - y0) * k - pad - m) / (k + 0.5) >= s;
+    };
+    let lo = 10, hi = BH;
+    for (let it = 0; it < 40; it++) { const mid = (lo + hi) / 2; fits(mid) ? (lo = mid) : (hi = mid); }
+    const s = lo, floors = floorsFor(s);
+    let svg = `<svg viewBox="0 0 ${BW} ${BH}"><polygon points="${cx},${y0} ${x0 + W},${BH} ${x0},${BH}" fill="#fff" stroke="#B5E4ED" stroke-width="${stroke}" stroke-linejoin="round"/>`;
+    const cardsHtml = [];
+    const fs = Math.max(8.5, Math.min(12, s * 0.16));
+    floors.forEach(([t, b], i) => {
+      svg += `<polygon points="${cx - half(t)},${t} ${cx + half(t)},${t} ${cx + half(b)},${b} ${cx - half(b)},${b}" fill="${FILLS[n][i]}"/>`;
+      const [id, label] = p.cards[i];
+      cardsHtml.push(`<div class="card" style="left:${cx - s / 2}px;top:${b - m - s}px;width:${s}px;height:${s}px"><img src="${A}${id}.webp" alt="${label}"><span class="tag" style="top:${s}px;font-size:${fs}px">${label}</span></div>`);
+    });
+    box.innerHTML = svg + "</svg>" + cardsHtml.join("");
+  });
+  document.body.dataset.ready = "1";
+});
+</script>
+</body>
+</html>
