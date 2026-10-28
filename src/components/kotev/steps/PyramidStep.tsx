@@ -279,8 +279,9 @@ export function PyramidStep({ lawNumber, title, instruction, rounds, step, total
           {solved && (
             <p
               role="status"
-              className="self-center rounded-full bg-primary px-5 py-2 text-[16px] font-bold text-primary-foreground motion-safe:animate-fade-up md:text-[20px] lg:px-[calc(var(--u)*1.25)] lg:py-[calc(var(--u)*0.52)] lg:text-[calc(var(--u)*1.25)]"
+              className="flex items-center gap-2 self-start text-[18px] font-bold text-primary motion-safe:animate-fade-up md:text-[22px] lg:gap-[calc(var(--u)*0.52)] lg:text-[calc(var(--u)*1.46)]"
             >
+              <span aria-hidden="true">🎉</span>
               {current.praise}
             </p>
           )}
