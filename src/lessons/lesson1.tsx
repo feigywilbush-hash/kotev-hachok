@@ -78,6 +78,21 @@ export const lesson1: LessonContent = {
     },
   ],
   home: {
+    text: (
+      <>
+        <p>
+          מצורף קובץ תמרורי אין כניסה.
+          <br />
+          גזרו אותם והדביקו במקומות המתאימים ברחבי הבית או הכיתה.
+        </p>
+        <p className="mt-[1.5em] font-bold">
+          חשבו: אילו חפצים / ארונות / חדרים נחשבים פרטיים לאדם אחר? חבר או אח?
+          <br />
+          הדביקו עליהם מדבקת אין כניסה.
+        </p>
+        <p>אבל רגע, זכרו לשאול את רשותם לפני ההדבקה - הסבירו להם מדוע אתם מדביקים תמרור זה!</p>
+      </>
+    ),
     sheet: { src: "./files/no-entry-cutouts.svg", alt: "דף עם 12 תמרורי אין כניסה לגזירה" },
     downloadHref: "./files/no-entry-signs.pdf",
     downloadName: "no-entry-signs.pdf",

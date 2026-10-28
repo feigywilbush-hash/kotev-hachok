@@ -183,6 +183,7 @@ const Index = () => {
           key={`home-${lesson.number}`}
           lawNumber={shared.lawNumber}
           title={shared.title}
+          text={lesson.home.text}
           sheet={lesson.home.sheet}
           downloadHref={lesson.home.downloadHref}
           downloadName={lesson.home.downloadName}
