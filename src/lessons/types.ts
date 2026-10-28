@@ -21,5 +21,5 @@ export type LessonContent = {
   quiz: QuizQuestion[];
   /** When set, the "משחק ותרגול" step is the pyramid game instead of the quiz. */
   pyramid?: { instruction: ReactNode; rounds: PyramidRound[] };
-  home: { sheet: Picture; downloadHref: string; downloadName: string };
+  home: { text: ReactNode; sheet: Picture; downloadHref: string; downloadName: string };
 };

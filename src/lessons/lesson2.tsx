@@ -152,8 +152,23 @@ export const lesson2: LessonContent = {
     ],
   },
   home: {
-    sheet: { src: "./files/no-entry-cutouts.svg", alt: "דף עם 12 תמרורי אין כניסה לגזירה" },
-    downloadHref: "./files/no-entry-signs.pdf",
-    downloadName: "no-entry-signs.pdf",
+    text: (
+      <>
+        <p>
+          מצורפת חוברת צביעה של היררכיות.
+          <br />
+          בכל עמוד יש פירמידה של מקום אחר: בבית, בבית הספר, בביקור אצל חבר, במטוס, בסופר ובכביש.
+        </p>
+        <p className="mt-[1.5em] font-bold">
+          צבעו את הדמויות, ובכל פירמידה שאלו: מי נמצא למעלה ומחליט, ומי מקשיב?
+          <br />
+          בעמוד "היררכיה נוספת" רשמו פירמידה של מקום נוסף מהחיים שלכם.
+        </p>
+        <p>את העמוד האחרון, עם כל ההיררכיות, תלו במקום בולט בבית!</p>
+      </>
+    ),
+    sheet: { src: "./assets/hierarchies-sheet.webp", alt: "דף עם שש פירמידות היררכיה לצביעה: בבית, בבית הספר, בביקור אצל חבר, במטוס, בסופר ובכביש" },
+    downloadHref: "./files/hierarchies-coloring-book.pdf",
+    downloadName: "hierarchies-coloring-book.pdf",
   },
 };

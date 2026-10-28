@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { FileDown } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -5,8 +6,8 @@ import { ArrowLeftIcon } from "../icons";
 import { LawTitle, softCard, softShadow } from "./StepParts";
 
 /*
- * "יישום בבית" step, the last one of the lesson: a sheet of "no entry" signs to print, cut out and
- * stick (with permission) on things that are private to someone else, then a button to the next law.
+ * "יישום בבית" step, the last one of the lesson: the law's printable sheet with its instructions,
+ * a download button, then a button to the next law.
  * Sizes: px on mobile/tablet; on desktop multiples of --u (1vw on a 16:9 screen, smaller on short
  * screens so the step fits without scrolling; u = px / 19.2 from the 1920px Figma frame). See KotevLayout.
  * Mobile stacks: title → sheet → text → download → finish. Desktop: sheet column on the left.
@@ -15,6 +16,8 @@ import { LawTitle, softCard, softShadow } from "./StepParts";
 type HomePracticeStepProps = {
   lawNumber: number;
   title: string;
+  /** What to do with the sheet. */
+  text: ReactNode;
   /** Preview of the printable sheet. */
   sheet: { src: string; alt: string };
   /** The file the download button saves (e.g. an A4 PDF). */
@@ -23,7 +26,7 @@ type HomePracticeStepProps = {
   onNextLaw?: () => void;
 };
 
-export function HomePracticeStep({ lawNumber, title, sheet, downloadHref, downloadName, onNextLaw }: HomePracticeStepProps) {
+export function HomePracticeStep({ lawNumber, title, text, sheet, downloadHref, downloadName, onNextLaw }: HomePracticeStepProps) {
   return (
     <div className="flex flex-col gap-6 px-4 pb-10 pt-6 md:gap-8 md:px-8 md:pt-10 lg:flex-row lg:items-center lg:gap-[calc(var(--u)*4.01)] lg:py-[calc(var(--u)*1.5)] lg:pl-[2.865vw] lg:pr-[3.594vw]">
       {/* Text column: on mobile its children join the outer column so the sheet can sit after the title. */}
@@ -31,17 +34,7 @@ export function HomePracticeStep({ lawNumber, title, sheet, downloadHref, downlo
         <LawTitle lawNumber={lawNumber} title={title} className="order-1" />
 
         <div className="order-3 text-right text-[18px] leading-normal motion-safe:animate-fade-up motion-safe:[animation-delay:120ms] md:text-[22px] lg:max-w-[calc(var(--u)*41.719)] lg:self-start lg:text-[calc(var(--u)*1.25)]">
-          <p>
-            מצורף קובץ תמרורי אין כניסה.
-            <br />
-            גזרו אותם והדביקו במקומות המתאימים ברחבי הבית או הכיתה.
-          </p>
-          <p className="mt-[1.5em] font-bold">
-            חשבו: אילו חפצים / ארונות / חדרים נחשבים פרטיים לאדם אחר? חבר או אח?
-            <br />
-            הדביקו עליהם מדבקת אין כניסה.
-          </p>
-          <p>אבל רגע, זכרו לשאול את רשותם לפני ההדבקה - הסבירו להם מדוע אתם מדביקים תמרור זה!</p>
+          {text}
         </div>
 
         <a
