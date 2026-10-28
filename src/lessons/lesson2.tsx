@@ -139,6 +139,16 @@ export const lesson2: LessonContent = {
         hint: "רגע! בסופר המנהל למעלה, מתחתיו הקופאי, ומתחתיו הצרכן.",
         praise: "כל הכבוד! בסופר המנהל, אחריו הקופאי ואז הצרכן",
       },
+      {
+        cards: [
+          { id: "sign", image: { src: "./assets/pyramid-sign.webp", alt: "תמרור אסור לפנות פניית פרסה" }, rank: 2 },
+          { id: "police", image: { src: "./assets/pyramid-police.webp", alt: "שוטר מסמן עצור ביד" }, rank: 0 },
+          { id: "traffic-light", image: { src: "./assets/pyramid-traffic-light.webp", alt: "רמזור" }, rank: 1 },
+          { id: "driver", image: { src: "./assets/pyramid-driver.webp", alt: "נהג ברכב" }, rank: 3 },
+        ],
+        hint: "רגע! בכביש השוטר למעלה, מתחתיו הרמזור, אחריו התמרור, ולמטה הנהג.",
+        praise: "כל הכבוד! בכביש השוטר, אחריו הרמזור, התמרור ואז הנהג",
+      },
     ],
   },
   home: {

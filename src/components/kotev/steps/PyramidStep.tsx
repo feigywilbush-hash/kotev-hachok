@@ -4,15 +4,15 @@ import { burstConfetti } from "@/lib/confetti";
 import { cn } from "@/lib/utils";
 import { playFail, playSuccess } from "../games/driveSounds";
 import { NavButton } from "./QuizStep";
-import { LawTitle } from "./StepParts";
+import { LawTitle, NextStepButton } from "./StepParts";
 
 /*
  * "משחק ותרגול" step of the hierarchy law: a fixed four-floor pyramid on one side and a row of
  * picture cards on the other. The player drags each card (or taps it, then taps a floor) onto the
  * pyramid; whoever has more authority must sit higher. A card shrinks to fit its floor. When every
  * card is in place: confetti and a success sound. The green "next" button walks through the rounds
- * inside this step: it empties the pyramid and brings in the next round's cards, and only after the last
- * round moves on to the next step.
+ * inside this step: it empties the pyramid and brings in the next round's cards. The last round has the
+ * wide yellow "התקדם לשלב הבא" button instead, which moves on to the next step.
  * Sizes: px on mobile/tablet; on desktop multiples of --u (1vw on a 16:9 screen, smaller on short
  * screens so the step fits without scrolling; u = px / 19.2 from the 1920px Figma frame). See KotevLayout.
  * Mobile stacks: title → instruction → cards → pyramid → button.
@@ -38,6 +38,9 @@ type PyramidStepProps = {
   title: string;
   instruction: ReactNode;
   rounds: PyramidRound[];
+  /** Lesson step shown on the last round's "next step" button. */
+  step: number;
+  totalSteps: number;
   onNext?: () => void;
   /** Called with the round's index each time a round is solved. */
   onSolve?: (round: number) => void;
@@ -76,7 +79,7 @@ const floorPoints = ({ top, bottom }: { top: number; bottom: number }) =>
 
 type Drag = { id: string; x0: number; y0: number; dx: number; dy: number; moved: boolean };
 
-export function PyramidStep({ lawNumber, title, instruction, rounds, onNext, onSolve }: PyramidStepProps) {
+export function PyramidStep({ lawNumber, title, instruction, rounds, step, totalSteps, onNext, onSolve }: PyramidStepProps) {
   const [round, setRound] = useState(0);
   /** Card id → floor index, for the cards on the pyramid. */
   const [placed, setPlaced] = useState<Record<string, number>>({});
@@ -90,6 +93,8 @@ export function PyramidStep({ lawNumber, title, instruction, rounds, onNext, onS
 
   const current = rounds[round];
   const cards = current.cards;
+  /** A four-card round shrinks its cards so they still fit one row. */
+  const fourCards = cards.length > 3;
 
   /** The floor under a viewport point, or null when it is off the pyramid. */
   const floorAt = (x: number, y: number) => {
@@ -142,7 +147,6 @@ export function PyramidStep({ lawNumber, title, instruction, rounds, onNext, onS
       return next;
     });
 
-  /** The "next" button walks through the rounds; after the last one it moves on to the next step. */
   /** Empties the pyramid and brings in round `to`'s cards. */
   const goRound = (to: number) => {
     setPlaced({});
@@ -151,7 +155,7 @@ export function PyramidStep({ lawNumber, title, instruction, rounds, onNext, onS
     setHint(null);
     setRound(to);
   };
-  const nextRound = () => (round >= rounds.length - 1 ? onNext?.() : goRound(round + 1));
+  const nextRound = () => goRound(round + 1);
 
   useEffect(() => {
     if (!shaking) return;
@@ -254,12 +258,21 @@ export function PyramidStep({ lawNumber, title, instruction, rounds, onNext, onS
           key={round}
           className={cn(
             "relative order-3 flex min-h-[120px] flex-wrap justify-start gap-3 motion-safe:animate-fade-up md:min-h-[150px] lg:mt-[calc(var(--u)*2.4)] lg:min-h-[calc(var(--u)*12.6)] lg:w-full lg:gap-[calc(var(--u)*1.04)]",
+            fourCards && "lg:gap-[calc(var(--u)*0.78)]",
             // Lift the tray over the pyramid while one of its cards is dragged
             drag && tray.some((c) => c.id === drag.id) && "z-40",
           )}
         >
           {tray.map((card) => (
-            <div key={card.id} className={cn("size-[120px] md:size-[150px] lg:size-[calc(var(--u)*12.7)]", drag?.id === card.id && "relative z-30")}>
+            <div
+              key={card.id}
+              className={cn(
+                fourCards
+                  ? "aspect-square w-[calc((100%-2.25rem)/4)] md:size-[150px] lg:size-[calc(var(--u)*9.84)]"
+                  : "size-[120px] md:size-[150px] lg:size-[calc(var(--u)*12.7)]",
+                drag?.id === card.id && "relative z-30",
+              )}
+            >
               {cardBody(card, false)}
             </div>
           ))}
@@ -277,6 +290,10 @@ export function PyramidStep({ lawNumber, title, instruction, rounds, onNext, onS
           {hint && <span key={hint.id} className="motion-safe:animate-fade-up">{hint.text}</span>}
         </p>
 
+        {round === rounds.length - 1 ? (
+          // The last round ends the step: one wide "next step" button, as on the other steps.
+          <NextStepButton step={step} totalSteps={totalSteps} onNext={onNext} className="order-5 lg:mt-auto" />
+        ) : (
         <div className="order-5 flex flex-col-reverse gap-3 self-stretch md:flex-row md:gap-[14px] lg:mt-auto lg:gap-[calc(var(--u)*0.729)]">
           {round > 0 && (
             <NavButton tone="back" onClick={() => goRound(round - 1)} className="md:max-w-none md:flex-1 lg:w-auto">
@@ -287,6 +304,7 @@ export function PyramidStep({ lawNumber, title, instruction, rounds, onNext, onS
             לשאלה הבאה
           </NavButton>
         </div>
+        )}
       </div>
 
       {/* The pyramid */}
