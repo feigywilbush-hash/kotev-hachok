@@ -157,6 +157,14 @@ export function PyramidStep({ lawNumber, title, instruction, rounds, step, total
   };
   const nextRound = () => goRound(round + 1);
 
+  // Escape closes the hint popup
+  useEffect(() => {
+    if (!hint) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setHint(null);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [hint]);
+
   useEffect(() => {
     if (!shaking) return;
     const t = window.setTimeout(() => setShaking(null), 450);
@@ -287,9 +295,35 @@ export function PyramidStep({ lawNumber, title, instruction, rounds, step, total
           )}
         </div>
 
-        <p aria-live="polite" className="order-3 -mt-3 min-h-[1.5em] text-right text-[15px] font-bold text-alert md:text-[18px] lg:mt-[calc(var(--u)*0.6)] lg:self-stretch lg:text-[calc(var(--u)*1.04)]">
-          {hint && <span key={hint.id} className="motion-safe:animate-fade-up">{hint.text}</span>}
-        </p>
+        {/* A wrong placement opens a popup with the round's hint */}
+        {hint && (
+          <div
+            key={hint.id}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/40 p-4 duration-300 motion-safe:animate-in motion-safe:fade-in-0"
+            onClick={() => setHint(null)}
+          >
+            <div
+              role="alertdialog"
+              aria-modal="true"
+              aria-labelledby="pyramid-hint"
+              onClick={(e) => e.stopPropagation()}
+              className="flex w-full max-w-[420px] flex-col items-center gap-4 rounded-[24px] bg-card px-6 py-7 text-center shadow-[0_12px_32px_hsl(var(--mist)/0.6)] motion-safe:animate-fade-in-scale md:max-w-[480px] md:gap-5 md:px-8 md:py-9 lg:max-w-[calc(var(--u)*26)] lg:gap-[calc(var(--u)*1.25)] lg:rounded-[calc(var(--u)*1.67)] lg:px-[calc(var(--u)*2.08)] lg:py-[calc(var(--u)*2.08)]"
+            >
+              <span aria-hidden="true" className="text-[44px] leading-none md:text-[52px] lg:text-[calc(var(--u)*3)]">🤔</span>
+              <p id="pyramid-hint" className="text-[18px] font-bold leading-normal text-alert md:text-[22px] lg:text-[calc(var(--u)*1.35)]">
+                {hint.text}
+              </p>
+              <button
+                type="button"
+                autoFocus
+                onClick={() => setHint(null)}
+                className="rounded-full bg-brand-sun px-8 py-3 text-[18px] transition-[filter,transform] duration-200 hover:brightness-[1.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.98] md:text-[20px] lg:px-[calc(var(--u)*2.08)] lg:py-[calc(var(--u)*0.73)] lg:text-[calc(var(--u)*1.15)]"
+              >
+                הבנתי, ננסה שוב
+              </button>
+            </div>
+          </div>
+        )}
 
         {round === rounds.length - 1 ? (
           // The last round ends the step: one wide "next step" button, as on the other steps.
