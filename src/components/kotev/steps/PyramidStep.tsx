@@ -247,7 +247,7 @@ export function PyramidStep({ lawNumber, title, instruction, rounds, step, total
   return (
     <div className="flex flex-col gap-6 px-4 pb-10 pt-6 md:gap-8 md:px-8 md:pt-10 lg:flex-row lg:items-start lg:justify-center lg:gap-[calc(var(--u)*2.5)] lg:pb-[calc(var(--u)*1.5)] lg:pl-[calc(var(--u)*4.375)] lg:pr-[calc(var(--u)*3.594)] lg:pt-[calc(var(--u)*2.03)]">
       {/* Text column: on mobile its children join the outer column so the pyramid can sit between them. */}
-      <div className="contents lg:order-2 lg:flex lg:w-[calc(var(--u)*41.72)] lg:shrink-0 lg:flex-col lg:items-end">
+      <div className="contents lg:order-2 lg:flex lg:w-[calc(var(--u)*41.72)] lg:min-w-0 lg:shrink lg:flex-col lg:items-end">
         <LawTitle lawNumber={lawNumber} title={title} className="order-1 lg:self-stretch" />
         <p className="order-2 text-right text-[17px] leading-normal motion-safe:animate-fade-up motion-safe:[animation-delay:120ms] md:text-[20px] lg:-mt-[calc(var(--u)*0.6)] lg:self-stretch lg:text-[calc(var(--u)*1.25)]">
           {instruction}
@@ -268,8 +268,8 @@ export function PyramidStep({ lawNumber, title, instruction, rounds, step, total
               key={card.id}
               className={cn(
                 fourCards
-                  ? "aspect-square w-[calc((100%-2.25rem)/4)] md:size-[150px] lg:size-[calc(var(--u)*9.84)]"
-                  : "size-[120px] md:size-[150px] lg:size-[calc(var(--u)*12.7)]",
+                  ? "aspect-square w-[calc((100%-2.25rem)/4)] md:size-[150px] lg:size-auto lg:w-[min(calc(var(--u)*9.84),calc((100%-var(--u)*2.34)/4))]"
+                  : "size-[120px] md:size-[150px] lg:aspect-square lg:size-auto lg:w-[min(calc(var(--u)*12.7),calc((100%-var(--u)*2.08)/3))]",
                 drag?.id === card.id && "relative z-30",
               )}
             >
@@ -310,7 +310,7 @@ export function PyramidStep({ lawNumber, title, instruction, rounds, step, total
       {/* The pyramid */}
       <div
         ref={pyramidRef}
-        className="relative order-4 mx-auto aspect-[840/748] w-full max-w-[500px] motion-safe:animate-fade-in-scale motion-safe:[animation-delay:80ms] md:max-w-[620px] lg:order-1 lg:mx-0 lg:w-[calc(var(--u)*43.75)] lg:max-w-none lg:shrink-0"
+        className="relative order-4 mx-auto aspect-[840/748] w-full max-w-[500px] motion-safe:animate-fade-in-scale motion-safe:[animation-delay:80ms] md:max-w-[620px] lg:order-1 lg:mx-0 lg:w-[calc(var(--u)*43.75)] lg:min-w-0 lg:max-w-none lg:shrink"
       >
         <svg viewBox={`0 0 ${VW} ${VH}`} className="absolute inset-0 size-full" aria-hidden="true">
           <defs>
