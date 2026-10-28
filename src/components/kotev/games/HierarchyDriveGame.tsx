@@ -9,7 +9,7 @@ import { playChoice, playFail, playSuccess, playWin, setDriveMuted, setEngine, s
 const MUTE_KEY = "kotev-drive-muted";
 
 /*
- * Driving game for the "הבנת היררכיות" law: the car drives down the same road as the no-entry
+ * Driving game for the "היררכיות" law: the car drives down the same road as the no-entry
  * game and stops at a series of crossroads. Each one has some of: a police officer, a traffic
  * light, a sign. The player picks whom to listen to, by the order of authority: the officer
  * first, then the light, then the sign. The car then does what that one says.

@@ -5,7 +5,7 @@ const DOOR = { src: "./assets/quiz-door.webp", alt: "ילד עומד מול דל
 /** Law 2: for now a copy of law 1, to be adjusted. */
 export const lesson2: LessonContent = {
   number: 2,
-  title: "הבנת היררכיות",
+  title: "היררכיות",
   cardImage: { src: "./assets/lesson-2.webp", alt: "שוטר מסביר משהו לילד עם תיק על הגב ליד הכביש" },
   intro: {
     image: { src: "./assets/intro-lesson-2.webp", alt: "שוטר מסביר משהו לילד שמקשיב לו ליד הכביש" },
@@ -40,8 +40,8 @@ export const lesson2: LessonContent = {
   },
   video: {
     instruction:
-      "צפה בסרטון שבו כותב החוק מסביר מה זה “הבנת היררכיות” גם במצבים חברתיים. תגלה איך לזהות מצבים כאלה ומה כדאי לעשות בהם.",
-    title: "כותב החוק מסביר: הבנת היררכיות במצבים חברתיים",
+      "צפה בסרטון שבו כותב החוק מסביר מה זה “היררכיות” גם במצבים חברתיים. תגלה איך לזהות מצבים כאלה ומה כדאי לעשות בהם.",
+    title: "כותב החוק מסביר: היררכיות במצבים חברתיים",
     src: "./assets/social-road.mp4",
     poster: "./assets/social-road-poster.jpg",
   },
