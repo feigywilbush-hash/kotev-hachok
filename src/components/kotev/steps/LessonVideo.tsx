@@ -9,6 +9,9 @@ export function LessonVideo({ src, poster, title }: { src?: string; poster?: str
       src={src}
       poster={poster}
       controls
+      // No download in the player's menu, and no "save video" on right-click
+      controlsList="nodownload"
+      onContextMenu={(e) => e.preventDefault()}
       playsInline
       preload="metadata"
       aria-label={title}
