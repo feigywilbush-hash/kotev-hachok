@@ -8,7 +8,7 @@ export const lesson3: LessonContent = {
   title: "הצטרפות לקבוצה",
   cardImage: { src: "./assets/lesson-3.webp", alt: "שני ילדים משוחחים על ספסל בפארק וילד שלישי עומד לידם וחושב" },
   intro: {
-    image: { src: "./assets/intro-lesson-2.webp", alt: "שוטר מסביר משהו לילד שמקשיב לו ליד הכביש" },
+    image: { src: "./assets/intro-lesson-3.webp", alt: "שני ילדים משוחחים על ספסל, וילד שלישי עומד לידם ומתבונן וחושב איך להצטרף" },
     trafficText: (
       <>
         רכב העומד בצד הכביש ורוצה להשתלב בדרך חייב לבדוק קודם את מצב הכביש: עד כמה הוא עמוס? מה קצב הנסיעה? האם הרכבים נוסעים לאט או מהר?
