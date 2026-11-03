@@ -150,3 +150,21 @@ export function playWin() {
   const t = ac.currentTime;
   [72, 76, 79, 84, 79, 84].forEach((m, i) => note(hz(m), t + i * 0.11, i === 5 ? 0.9 : 0.3, 0.07, "triangle"));
 }
+
+/** A quiet click for each flash of the turn signal. */
+export function playBlink(on: boolean) {
+  const ac = audio();
+  if (!ac) return;
+  note(on ? 1900 : 1500, ac.currentTime, 0.035, 0.03, "square");
+}
+
+/** A short, friendly double honk, for a car that has to brake. */
+export function playHorn() {
+  const ac = audio();
+  if (!ac) return;
+  const t = ac.currentTime;
+  [0, 0.22].forEach((d) => {
+    note(392, t + d, 0.16, 0.035, "square");
+    note(494, t + d, 0.16, 0.03, "square");
+  });
+}

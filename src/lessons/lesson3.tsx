@@ -31,12 +31,11 @@ export const lesson3: LessonContent = {
     ),
   },
   drive: {
-    title: "הצטרפות לקבוצה",
-    game: "hierarchy",
+    game: "merge",
     instruction: (
       <>
-        בוא נצא לנסיעה! בכל צומת בחר למי מקשיבים: <br className="max-lg:hidden" />
-        <span className="lg:whitespace-nowrap">קודם לשוטר, אחר כך לרמזור ואחר כך לתמרור&nbsp;👮</span>
+        הרכב שלך עומד בצד הכביש ורוצה להצטרף לנסיעה. בדוק אם הכביש עמוס ואם המכוניות נוסעות מהר, אותת, וצא לנתיב רק כשיש
+        רווח גדול&nbsp;🚗
       </>
     ),
   },
