@@ -1,7 +1,6 @@
 import { ImageIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { ArrowLeftIcon } from "../icons";
 import { softCard, softShadow } from "../steps/StepParts";
 
 /*
@@ -53,16 +52,11 @@ function LessonCard({ lesson, index }: { lesson: Lesson; index: number }) {
         )}
       </div>
 
-      <div className="flex items-end justify-between gap-2 px-1 pb-1 pt-2 sm:gap-3 sm:px-2 sm:pt-3">
+      <div className="px-1 pb-1 pt-2 sm:px-2 sm:pt-3">
         <div className="min-w-0 text-right">
           <p className="font-hand text-[20px] leading-normal sm:text-[28px] xl:text-[32px]">חוק מספר {number}</p>
           <h2 className="-mt-2 text-[22px] font-bold leading-snug text-primary sm:-mt-3 sm:text-[30px] xl:text-[34px]">{title}</h2>
         </div>
-        {href && (
-          <span className="mb-1.5 flex size-8 shrink-0 sm:mb-2 sm:size-11 items-center justify-center rounded-full bg-brand-sun">
-            <ArrowLeftIcon className="size-5 sm:size-6 text-primary transition-transform duration-300 ease-out motion-safe:group-hover:-translate-x-1" />
-          </span>
-        )}
       </div>
     </>
   );
