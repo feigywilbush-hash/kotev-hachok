@@ -10,6 +10,7 @@ import { IntroStep } from "@/components/kotev/steps/IntroStep";
 import { LessonVideo } from "@/components/kotev/steps/LessonVideo";
 import { PyramidStep } from "@/components/kotev/steps/PyramidStep";
 import { QuizStep } from "@/components/kotev/steps/QuizStep";
+import { SocialVideosStep } from "@/components/kotev/steps/SocialVideosStep";
 import { StageStep } from "@/components/kotev/steps/StageStep";
 import { lesson1 } from "@/lessons/lesson1";
 import { lesson2 } from "@/lessons/lesson2";
@@ -141,7 +142,15 @@ const Index = () => {
           )}
         </StageStep>
       )}
-      {step === 2 && (
+      {step === 2 && lesson.socialParts && (
+        <SocialVideosStep
+          key={`social-${lesson.number}`}
+          {...shared}
+          parts={lesson.socialParts}
+          onSolve={(i) => earnHere(`social-${i}`)}
+        />
+      )}
+      {step === 2 && !lesson.socialParts && (
         <StageStep
           key={`social-${lesson.number}`}
           {...shared}

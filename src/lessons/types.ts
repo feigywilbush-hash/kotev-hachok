@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 
 import type { PyramidRound } from "@/components/kotev/steps/PyramidStep";
 import type { QuizQuestion } from "@/components/kotev/steps/QuizStep";
+import type { SocialPart } from "@/components/kotev/steps/SocialVideosStep";
 
 type Picture = { src: string; alt: string };
 
@@ -18,6 +19,8 @@ export type LessonContent = {
    */
   drive: { instruction: ReactNode; title?: string; game?: "no-entry" | "hierarchy" | "merge" };
   video: { instruction: string; title: string; src: string; poster: string };
+  /** When set, the "בכביש החברתי" step is these short videos, each followed by an activity, instead of the one video. */
+  socialParts?: SocialPart[];
   quiz: QuizQuestion[];
   /** When set, the "משחק ותרגול" step is the pyramid game instead of the quiz. */
   pyramid?: { instruction: ReactNode; rounds: PyramidRound[] };
