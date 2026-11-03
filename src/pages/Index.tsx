@@ -120,6 +120,7 @@ const Index = () => {
           trafficWarning={lesson.intro.trafficWarning}
           wideTraffic={lesson.intro.wideTraffic}
           compactCards={lesson.intro.compactCards}
+          smallText={lesson.intro.smallText}
           socialText={lesson.intro.socialText}
         />
       )}
