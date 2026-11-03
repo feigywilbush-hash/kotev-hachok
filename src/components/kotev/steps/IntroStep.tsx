@@ -22,13 +22,15 @@ type IntroStepProps = {
   wideTraffic?: boolean;
   /** Less padding above and below the card texts on desktop, for longer texts that would otherwise scroll. */
   compactCards?: boolean;
+  /** Slightly smaller card texts on desktop, for the longest texts. */
+  smallText?: boolean;
   socialText: ReactNode;
   step: number;
   totalSteps: number;
   onNext?: () => void;
 };
 
-function InfoCard({ title, children, compact, className }: { title: string; children: ReactNode; compact?: boolean; className?: string }) {
+function InfoCard({ title, children, compact, small, className }: { title: string; children: ReactNode; compact?: boolean; small?: boolean; className?: string }) {
   return (
     <section
       className={cn(
@@ -41,7 +43,14 @@ function InfoCard({ title, children, compact, className }: { title: string; chil
         <h2 className="flex items-end text-[22px] font-bold leading-normal md:text-[3.385vw] lg:min-h-[calc(var(--u)*2.604)] lg:text-[max(18px,min(1.719vw,calc(var(--u)*1.85)))]">
           {title}
         </h2>
-        <div className="mt-2 text-[17px] leading-normal md:text-[2.604vw] lg:mt-[calc(var(--u)*0.521)] lg:text-[max(15px,min(1.198vw,calc(var(--u)*1.32)))]">{children}</div>
+        <div
+          className={cn(
+            "mt-2 text-[17px] leading-normal md:text-[2.604vw] lg:mt-[calc(var(--u)*0.521)]",
+            small ? "lg:text-[max(14px,min(1.09vw,calc(var(--u)*1.2)))]" : "lg:text-[max(15px,min(1.198vw,calc(var(--u)*1.32)))]",
+          )}
+        >
+          {children}
+        </div>
       </div>
     </section>
   );
@@ -55,6 +64,7 @@ export function IntroStep({
   trafficWarning,
   wideTraffic = false,
   compactCards = false,
+  smallText = false,
   socialText,
   step,
   totalSteps,
@@ -67,11 +77,11 @@ export function IntroStep({
         <LawTitle lawNumber={lawNumber} title={title} className="order-1" />
 
         <div className="order-3 flex flex-col gap-4 motion-safe:animate-fade-up motion-safe:[animation-delay:120ms] md:flex-row md:gap-5 lg:mt-[calc(var(--u)*1.615)] lg:gap-[calc(var(--u)*1.458)]">
-          <InfoCard title="בכביש התנועה:" compact={compactCards} className={cn("md:flex-1 lg:flex-none", wideTraffic ? "lg:basis-[55.39%]" : "lg:basis-[41.7%]")}>
+          <InfoCard title="בכביש התנועה:" compact={compactCards} small={smallText} className={cn("md:flex-1 lg:flex-none", wideTraffic ? "lg:basis-[55.39%]" : "lg:basis-[41.7%]")}>
             <p>{trafficText}</p>
             {trafficWarning && <p className="mt-[1.4em] text-alert">{trafficWarning}</p>}
           </InfoCard>
-          <InfoCard title="בכביש החברתי:" compact={compactCards} className={cn("md:flex-1 lg:flex-none", wideTraffic ? "lg:basis-[41.7%]" : "lg:basis-[55.39%]")}>
+          <InfoCard title="בכביש החברתי:" compact={compactCards} small={smallText} className={cn("md:flex-1 lg:flex-none", wideTraffic ? "lg:basis-[41.7%]" : "lg:basis-[55.39%]")}>
             {socialText}
           </InfoCard>
         </div>

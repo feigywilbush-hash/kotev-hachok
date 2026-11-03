@@ -11,7 +11,7 @@ export type LessonContent = {
   title: string;
   /** The picture on the law's card in the lessons page. */
   cardImage: Picture;
-  intro: { image: Picture; trafficText: ReactNode; trafficWarning?: string; wideTraffic?: boolean; compactCards?: boolean; socialText: ReactNode };
+  intro: { image: Picture; trafficText: ReactNode; trafficWarning?: string; wideTraffic?: boolean; compactCards?: boolean; smallText?: boolean; socialText: ReactNode };
   /**
    * `title` replaces the law's name on this step only, e.g. a shorter one that fits beside the game.
    * `game` picks the driving game; the no-entry one when left out.
