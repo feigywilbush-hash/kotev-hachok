@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import { HierarchyDriveGame } from "@/components/kotev/games/HierarchyDriveGame";
+import { MergeDriveGame } from "@/components/kotev/games/MergeDriveGame";
 import { NoEntryDriveGame } from "@/components/kotev/games/NoEntryDriveGame";
 import { KotevLayout } from "@/components/kotev/KotevLayout";
 import { LessonsBanner, LessonsPage, type Lesson } from "@/components/kotev/pages/LessonsPage";
@@ -133,6 +134,8 @@ const Index = () => {
         >
           {lesson.drive.game === "hierarchy" ? (
             <HierarchyDriveGame onScore={(i) => earnHere(`drive-${i}`)} />
+          ) : lesson.drive.game === "merge" ? (
+            <MergeDriveGame onScore={(i) => earnHere(`drive-${i}`)} />
           ) : (
             <NoEntryDriveGame onScore={(i) => earnHere(`drive-${i}`)} />
           )}

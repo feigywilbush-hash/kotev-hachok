@@ -16,7 +16,7 @@ export type LessonContent = {
    * `title` replaces the law's name on this step only, e.g. a shorter one that fits beside the game.
    * `game` picks the driving game; the no-entry one when left out.
    */
-  drive: { instruction: ReactNode; title?: string; game?: "no-entry" | "hierarchy" };
+  drive: { instruction: ReactNode; title?: string; game?: "no-entry" | "hierarchy" | "merge" };
   video: { instruction: string; title: string; src: string; poster: string };
   quiz: QuizQuestion[];
   /** When set, the "משחק ותרגול" step is the pyramid game instead of the quiz. */
