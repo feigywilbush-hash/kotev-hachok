@@ -158,25 +158,14 @@ export function SocialVideosStep({ lawNumber, title, parts, step, totalSteps, on
             between them, "לסרטון הבא" opens the next video, and the last question of the last video
             ends the step with the wide "התקדם לשלב הבא" button. */}
         {lastPart && (videoOnly || (view === "activity" && lastActivity)) ? (
-          // A last video with no questions has nothing to wait for; back still reaches the video before it.
-          videoOnly ? (
-            <div className="order-5 flex flex-col-reverse gap-3 md:flex-row md:items-center md:gap-[14px] lg:mt-[calc(var(--u)*1.042)] lg:gap-[calc(var(--u)*0.729)]">
-              {part > 0 && (
-                <NavButton tone="back" onClick={() => goPart(part - 1)} className="md:max-w-none md:flex-1 lg:w-auto">
-                  לסרטון הקודם
-                </NavButton>
-              )}
-              <NextStepButton step={step} totalSteps={totalSteps} onNext={onNext} className="md:flex-1" />
-            </div>
-          ) : (
-            <NextStepButton
-              step={step}
-              totalSteps={totalSteps}
-              onNext={onNext}
-              disabled={!partDone}
-              className="order-5 lg:mt-[calc(var(--u)*1.042)]"
-            />
-          )
+          // A last video with no questions has nothing to wait for: one wide button, no back button.
+          <NextStepButton
+            step={step}
+            totalSteps={totalSteps}
+            onNext={onNext}
+            disabled={!videoOnly && !partDone}
+            className="order-5 lg:mt-[calc(var(--u)*1.042)]"
+          />
         ) : (
           <div className="order-5 flex flex-col-reverse gap-3 md:flex-row md:items-center md:justify-between md:gap-[14px] lg:mt-[calc(var(--u)*1.042)] lg:gap-[calc(var(--u)*0.729)]">
             {view === "activity" && activity > 0 && (
