@@ -261,15 +261,16 @@ export function TopicBubbleStep({ lawNumber, title, instruction, scene, bubble, 
           </div>
         </div>
 
-        {/* Buttons: back on the right, next (or the yellow next-step button) on the left */}
+        {/* Buttons: back on the right, next on the left; the last round has only the wide yellow next-step button */}
         <div className="order-5 flex flex-col-reverse gap-3 md:flex-row md:gap-[14px] lg:gap-[calc(var(--u)*0.729)]">
-          {round > 0 && (
+          {round > 0 && !last && (
             <NavButton tone="back" onClick={() => goRound(round - 1)} className="md:max-w-none md:flex-1 lg:w-auto">
               לשאלה הקודמת
             </NavButton>
           )}
           {last ? (
-            <NextStepButton step={step} totalSteps={totalSteps} onNext={onNext} className="md:ms-auto md:w-[calc(50%-7px)] lg:w-[calc(50%-var(--u)*0.365)]" />
+            // The last round ends the step: one wide button, no back button.
+            <NextStepButton step={step} totalSteps={totalSteps} onNext={onNext} />
           ) : (
             <NavButton tone="next" onClick={() => goRound(round + 1)} className="md:ms-auto md:w-[calc(50%-7px)] md:max-w-none lg:w-[calc(50%-var(--u)*0.365)]">
               לשאלה הבאה
