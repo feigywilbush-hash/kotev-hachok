@@ -74,9 +74,9 @@ export const lesson3: LessonContent = {
           kind: "choice",
           question: "על מה החברים דיברו?",
           answers: [
-            { icon: "🐶🐰", text: "על בעלי חיים" },
-            { icon: "🎁", text: "על מתנות" },
-            { icon: "⚽", text: "על כדורגל" },
+            { image: "./assets/join-topic-animals.webp", imageFit: "contain", text: "על בעלי חיים" },
+            { image: "./assets/join-topic-gift.webp", imageFit: "contain", text: "על מתנות" },
+            { image: "./assets/join-topic-ball.webp", imageFit: "contain", text: "על כדורגל" },
           ],
           correct: 0,
           explain: "החברים דיברו על בעלי חיים, והילד דיבר על מתנה.",
