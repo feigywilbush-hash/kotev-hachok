@@ -39,6 +39,7 @@ export type SocialPart = {
   label: string;
   instruction: string;
   video: { src: string; poster: string; title: string };
+  /** Empty for a video with no questions after it. */
   activities: SocialActivity[];
 };
 
@@ -81,6 +82,8 @@ export function SocialVideosStep({ lawNumber, title, parts, step, totalSteps, on
     setView("video");
   };
 
+  /** A video with no questions after it: its buttons sit under the video itself. */
+  const videoOnly = p.activities.length === 0;
   const lastActivity = activity === p.activities.length - 1;
   const finishActivity = () => {
     setDoneActs((d) => new Set(d).add(`${part}-${activity}`));
@@ -128,7 +131,7 @@ export function SocialVideosStep({ lawNumber, title, parts, step, totalSteps, on
               controls
               controlsList="nodownload"
               onContextMenu={(e) => e.preventDefault()}
-              onEnded={() => setView("activity")}
+              onEnded={() => !videoOnly && setView("activity")}
               playsInline
               preload="metadata"
               aria-label={p.video.title}
@@ -154,14 +157,26 @@ export function SocialVideosStep({ lawNumber, title, parts, step, totalSteps, on
         {/* Bottom buttons, as in the quiz: "לשאלה הבאה" moves from the video to its questions and
             between them, "לסרטון הבא" opens the next video, and the last question of the last video
             ends the step with the wide "התקדם לשלב הבא" button. */}
-        {lastPart && view === "activity" && lastActivity ? (
-          <NextStepButton
-            step={step}
-            totalSteps={totalSteps}
-            onNext={onNext}
-            disabled={!partDone}
-            className="order-5 lg:mt-[calc(var(--u)*1.042)]"
-          />
+        {lastPart && (videoOnly || (view === "activity" && lastActivity)) ? (
+          // A last video with no questions has nothing to wait for; back still reaches the video before it.
+          videoOnly ? (
+            <div className="order-5 flex flex-col-reverse gap-3 md:flex-row md:items-center md:gap-[14px] lg:mt-[calc(var(--u)*1.042)] lg:gap-[calc(var(--u)*0.729)]">
+              {part > 0 && (
+                <NavButton tone="back" onClick={() => goPart(part - 1)} className="md:max-w-none md:flex-1 lg:w-auto">
+                  לסרטון הקודם
+                </NavButton>
+              )}
+              <NextStepButton step={step} totalSteps={totalSteps} onNext={onNext} className="md:flex-1" />
+            </div>
+          ) : (
+            <NextStepButton
+              step={step}
+              totalSteps={totalSteps}
+              onNext={onNext}
+              disabled={!partDone}
+              className="order-5 lg:mt-[calc(var(--u)*1.042)]"
+            />
+          )
         ) : (
           <div className="order-5 flex flex-col-reverse gap-3 md:flex-row md:items-center md:justify-between md:gap-[14px] lg:mt-[calc(var(--u)*1.042)] lg:gap-[calc(var(--u)*0.729)]">
             {view === "activity" && activity > 0 && (
@@ -180,7 +195,11 @@ export function SocialVideosStep({ lawNumber, title, parts, step, totalSteps, on
                 לסרטון הקודם
               </NavButton>
             )}
-            {view === "video" ? (
+            {view === "video" && videoOnly ? (
+              <NavButton tone="next" onClick={() => goPart(part + 1, true)} className="md:ms-auto md:max-w-none md:flex-1 lg:w-auto">
+                לסרטון הבא
+              </NavButton>
+            ) : view === "video" ? (
               <NavButton tone="next" onClick={() => goActivity(0)} className="md:ms-auto md:max-w-none md:flex-1 lg:w-auto">
                 לשאלה הבאה
               </NavButton>
