@@ -175,6 +175,12 @@ export function SocialVideosStep({ lawNumber, title, parts, step, totalSteps, on
                 לשאלה הקודמת
               </NavButton>
             )}
+            {/* From the first question, back goes to the video it is about. */}
+            {view === "activity" && activity === 0 && (
+              <NavButton tone="back" onClick={() => goPart(part)} className="md:max-w-none md:flex-1 lg:w-auto">
+                לסרטון הקודם
+              </NavButton>
+            )}
             {view === "video" && part > 0 && (
               <NavButton tone="back" onClick={() => goPart(part - 1)} className="md:max-w-none md:flex-1 lg:w-auto">
                 לסרטון הקודם
