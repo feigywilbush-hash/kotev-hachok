@@ -101,11 +101,11 @@ export const lesson3: LessonContent = {
       activities: [
         {
           kind: "choice",
-          question: "מה הילד עשה הפעם, ולמה החברים שמחו שהצטרף?",
+          question: "מה עשיתי הפעם, ולמה החברים שמחו שהצטרפתי?",
           answers: [
-            { image: "./assets/join-answer-offtopic.webp", imageFocus: "65% center", text: "הוא סיפר על המתנה שקיבל, כי זה הכי מעניין." },
-            { image: "./assets/join-answer-snake.webp", imageFocus: "65% center", text: "הוא הקשיב, הבין שמדברים על בעלי חיים, וסיפר על נחש. זה התאים לשיחה." },
-            { image: "./assets/join-answer-loud.webp", imageFocus: "70% center", text: "הוא דיבר הכי חזק, כדי שכולם ישמעו אותו." },
+            { image: "./assets/join-answer-offtopic.webp", imageFocus: "65% center", text: "סיפרתי על המתנה שקיבלתי, כי זה הכי מעניין." },
+            { image: "./assets/join-answer-snake.webp", imageFocus: "65% center", text: "הקשבתי, הבנתי שמדברים על בעלי חיים, וסיפרתי על נחש. זה התאים לשיחה." },
+            { image: "./assets/join-answer-loud.webp", imageFocus: "70% center", text: "דיברתי הכי חזק, כדי שכולם ישמעו אותי." },
           ],
           correct: 1,
           explain: "הוא התאים את עצמו לשיחה, כמו רכב שמתאים את עצמו לקצב הנסיעה.",
