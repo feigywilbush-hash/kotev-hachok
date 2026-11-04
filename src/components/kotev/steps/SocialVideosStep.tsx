@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Check, RotateCcw, X } from "lucide-react";
+import { Check, X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { playFail, playSuccess } from "../games/driveSounds";
@@ -20,8 +20,9 @@ export type SocialActivity =
   | {
       kind: "choice";
       question: string;
-      /** Each answer can open with an emoji, shown large. */
-      answers: { text: string; icon?: string }[];
+      /** Each answer can open with an emoji, shown large, or a picture: picture answers show as
+       *  cards side by side, the picture above the text. */
+      answers: { text: string; icon?: string; image?: string }[];
       correct: number;
       /** Shown once the right answer is picked. */
       explain: string;
@@ -141,14 +142,6 @@ export function SocialVideosStep({ lawNumber, title, parts, step, totalSteps, on
                 done={answered}
               />
               <div className="mt-4 flex flex-wrap items-center justify-between gap-2 lg:mt-auto lg:pt-[calc(var(--u)*0.833)]">
-                <button
-                  type="button"
-                  onClick={() => goPart(part, true)}
-                  className="flex items-center gap-1.5 rounded-full px-2 py-1 text-[14px] text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:text-[16px] lg:gap-[calc(var(--u)*0.39)] lg:text-[calc(var(--u)*0.938)]"
-                >
-                  <RotateCcw aria-hidden="true" className="size-4 lg:size-[calc(var(--u)*0.938)]" />
-                  לצפות שוב בסרטון
-                </button>
                 {partDone && lastPart && (
                   <p className="text-[15px] font-bold text-primary md:text-[18px] lg:text-[calc(var(--u)*1.042)]">כל הכבוד! סיימת את כל הסרטונים 🎉</p>
                 )}
@@ -222,6 +215,7 @@ function ChoiceActivity({ activity, onSolved, done }: { activity: Extract<Social
   const [wrong, setWrong] = useState<number[]>([]);
   const [right, setRight] = useState(done);
   const icons = activity.answers.some((a) => a.icon);
+  const pictures = activity.answers.some((a) => a.image);
 
   const pick = (i: number) => {
     if (right || wrong.includes(i)) return;
@@ -243,7 +237,7 @@ function ChoiceActivity({ activity, onSolved, done }: { activity: Extract<Social
         aria-label="בחר תשובה"
         className={cn(
           "mt-3 flex gap-2 lg:mt-[calc(var(--u)*0.833)] lg:gap-[calc(var(--u)*0.625)]",
-          icons ? "flex-row" : "flex-col",
+          pictures ? "grid grid-cols-1 sm:grid-cols-3" : icons ? "flex-row" : "flex-col",
         )}
       >
         {activity.answers.map((a, i) => {
@@ -259,22 +253,34 @@ function ChoiceActivity({ activity, onSolved, done }: { activity: Extract<Social
               className={cn(
                 "flex items-center gap-3 rounded-[18px] bg-card px-3 py-2 text-right text-[15px] leading-snug transition-[transform,box-shadow,opacity] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:text-[17px] lg:gap-[calc(var(--u)*0.729)] lg:rounded-[calc(var(--u)*1.042)] lg:px-[calc(var(--u)*0.833)] lg:py-[calc(var(--u)*0.521)] lg:text-[calc(var(--u)*0.99)]",
                 icons && "flex-1 flex-col justify-center gap-1 text-center lg:gap-[calc(var(--u)*0.26)]",
+                pictures && "flex-col items-stretch gap-2 p-2 lg:gap-[calc(var(--u)*0.417)] lg:p-[calc(var(--u)*0.417)]",
                 !right && !isWrong && "hover:-translate-y-0.5 hover:shadow-[0_6px_16px_hsl(var(--mist)/0.45)]",
                 isWrong && "opacity-55 motion-safe:animate-shake",
                 right && !isRight && "opacity-55",
                 isRight && "shadow-[0_0_0_2px_hsl(var(--primary)/0.45)]",
               )}
             >
-              <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-answer lg:size-[calc(var(--u)*1.875)]">
-                {isRight && <Check aria-hidden="true" strokeWidth={3} className="size-4 text-primary lg:size-[calc(var(--u)*1.042)]" />}
-                {isWrong && <X aria-hidden="true" strokeWidth={3} className="size-4 text-alert lg:size-[calc(var(--u)*1.042)]" />}
-              </span>
+              {a.image && (
+                <img
+                  src={a.image}
+                  alt=""
+                  draggable={false}
+                  className="aspect-[4/3] w-full rounded-[12px] object-cover lg:rounded-[calc(var(--u)*0.729)]"
+                />
+              )}
+              {/* With a picture, the mark and the text sit in a row under it. */}
+              <span className={cn("flex items-center gap-3 lg:gap-[calc(var(--u)*0.729)]", !pictures && "contents")}>
+                <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-answer lg:size-[calc(var(--u)*1.875)]">
+                  {isRight && <Check aria-hidden="true" strokeWidth={3} className="size-4 text-primary lg:size-[calc(var(--u)*1.042)]" />}
+                  {isWrong && <X aria-hidden="true" strokeWidth={3} className="size-4 text-alert lg:size-[calc(var(--u)*1.042)]" />}
+                </span>
               {a.icon && (
                 <span aria-hidden="true" className="text-[26px] leading-none md:text-[34px] lg:text-[calc(var(--u)*2.1)]">
                   {a.icon}
                 </span>
               )}
-              <span>{a.text}</span>
+                <span>{a.text}</span>
+              </span>
             </button>
           );
         })}
