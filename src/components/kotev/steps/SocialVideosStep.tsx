@@ -114,8 +114,9 @@ export function SocialVideosStep({ lawNumber, title, parts, step, totalSteps, on
 
         <div
           className={cn(
-            "relative order-4 w-full overflow-hidden rounded-[32px] bg-stage motion-safe:animate-fade-in-scale md:rounded-[48px] lg:aspect-video lg:rounded-[calc(var(--u)*3.125)]",
-            view === "video" && "aspect-video",
+            "relative order-4 w-full motion-safe:animate-fade-in-scale lg:aspect-video",
+            // The video sits in a rounded stage; the questions sit straight on the page.
+            view === "video" && "aspect-video overflow-hidden rounded-[32px] bg-stage md:rounded-[48px] lg:rounded-[calc(var(--u)*3.125)]",
           )}
         >
           {view === "video" ? (
@@ -134,7 +135,7 @@ export function SocialVideosStep({ lawNumber, title, parts, step, totalSteps, on
               className="absolute inset-0 size-full bg-foreground object-contain"
             />
           ) : (
-            <div className="flex h-full flex-col bg-sidebar/35 px-4 py-5 md:px-8 md:py-7 lg:absolute lg:inset-0 lg:px-[calc(var(--u)*2.5)] lg:py-[calc(var(--u)*1.75)]">
+            <div className="flex h-full flex-col py-2 lg:absolute lg:inset-0 lg:py-[calc(var(--u)*0.5)]">
               <ActivityView
                 key={`${part}-${activity}`}
                 activity={p.activities[activity]}
@@ -207,9 +208,10 @@ function ActivityView({ activity, onSolved, done }: { activity: SocialActivity; 
   );
 }
 
-const QUESTION = "text-right text-[17px] font-bold leading-snug md:text-[21px] lg:text-[calc(var(--u)*1.25)]";
+// In vw: 18px on a 390px phone, 22px at 768, 28px at 1920.
+const QUESTION = "text-right text-[4.6vw] font-bold leading-snug md:text-[2.865vw] lg:text-[1.458vw]";
 const EXPLAIN =
-  "mt-3 rounded-[16px] bg-card px-4 py-2 text-right text-[15px] leading-snug motion-safe:animate-fade-up md:text-[17px] lg:mt-[calc(var(--u)*0.833)] lg:rounded-[calc(var(--u)*0.833)] lg:px-[calc(var(--u)*1.042)] lg:py-[calc(var(--u)*0.521)] lg:text-[calc(var(--u)*0.99)]";
+  "mt-3 rounded-[16px] bg-card px-4 shadow-[0_4px_14px_hsl(var(--mist)/0.4)] py-2 text-right text-[15px] leading-snug motion-safe:animate-fade-up md:text-[17px] lg:mt-[calc(var(--u)*0.833)] lg:rounded-[calc(var(--u)*0.833)] lg:px-[calc(var(--u)*1.042)] lg:py-[calc(var(--u)*0.521)] lg:text-[calc(var(--u)*0.99)]";
 
 function ChoiceActivity({ activity, onSolved, done }: { activity: Extract<SocialActivity, { kind: "choice" }>; onSolved: () => void; done: boolean }) {
   const [wrong, setWrong] = useState<number[]>([]);
@@ -251,9 +253,9 @@ function ChoiceActivity({ activity, onSolved, done }: { activity: Extract<Social
               aria-checked={isRight}
               onClick={() => pick(i)}
               className={cn(
-                "flex items-center gap-3 rounded-[18px] bg-card px-3 py-2 text-right text-[15px] leading-snug transition-[transform,box-shadow,opacity] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:text-[17px] lg:gap-[calc(var(--u)*0.729)] lg:rounded-[calc(var(--u)*1.042)] lg:px-[calc(var(--u)*0.833)] lg:py-[calc(var(--u)*0.521)] lg:text-[calc(var(--u)*0.99)]",
+                "flex items-center gap-3 rounded-[18px] bg-card px-3 shadow-[0_4px_14px_hsl(var(--mist)/0.4)] py-2 text-right text-[15px] leading-snug transition-[transform,box-shadow,opacity] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:text-[17px] lg:gap-[calc(var(--u)*0.729)] lg:rounded-[calc(var(--u)*1.042)] lg:px-[calc(var(--u)*0.833)] lg:py-[calc(var(--u)*0.521)] lg:text-[calc(var(--u)*0.99)]",
                 icons && "flex-1 flex-col justify-center gap-1 text-center lg:gap-[calc(var(--u)*0.26)]",
-                pictures && "flex-col items-stretch gap-2 p-2 lg:gap-[calc(var(--u)*0.417)] lg:p-[calc(var(--u)*0.417)]",
+                pictures && "relative flex-col items-stretch gap-2 p-2 lg:gap-[calc(var(--u)*0.417)] lg:p-[calc(var(--u)*0.417)]",
                 !right && !isWrong && "hover:-translate-y-0.5 hover:shadow-[0_6px_16px_hsl(var(--mist)/0.45)]",
                 isWrong && "opacity-55 motion-safe:animate-shake",
                 right && !isRight && "opacity-55",
@@ -268,9 +270,14 @@ function ChoiceActivity({ activity, onSolved, done }: { activity: Extract<Social
                   className="aspect-[4/3] w-full rounded-[12px] object-cover lg:rounded-[calc(var(--u)*0.729)]"
                 />
               )}
-              {/* With a picture, the mark and the text sit in a row under it. */}
+              {/* With a picture, the mark sits on the picture's corner and the text under it. */}
               <span className={cn("flex items-center gap-3 lg:gap-[calc(var(--u)*0.729)]", !pictures && "contents")}>
-                <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-answer lg:size-[calc(var(--u)*1.875)]">
+                <span
+                  className={cn(
+                    "flex size-8 shrink-0 items-center justify-center rounded-full bg-answer lg:size-[calc(var(--u)*1.875)]",
+                    pictures && "absolute right-4 top-4 bg-card shadow-md lg:right-[calc(var(--u)*0.833)] lg:top-[calc(var(--u)*0.833)]",
+                  )}
+                >
                   {isRight && <Check aria-hidden="true" strokeWidth={3} className="size-4 text-primary lg:size-[calc(var(--u)*1.042)]" />}
                   {isWrong && <X aria-hidden="true" strokeWidth={3} className="size-4 text-alert lg:size-[calc(var(--u)*1.042)]" />}
                 </span>
@@ -279,7 +286,7 @@ function ChoiceActivity({ activity, onSolved, done }: { activity: Extract<Social
                   {a.icon}
                 </span>
               )}
-                <span>{a.text}</span>
+                <span className={cn(pictures && "w-full text-center")}>{a.text}</span>
               </span>
             </button>
           );
@@ -331,7 +338,7 @@ function OrderActivity({ activity, onSolved, done }: { activity: Extract<SocialA
               onClick={() => pick(i)}
               aria-label={n ? `${n}. ${activity.steps[i]}` : activity.steps[i]}
               className={cn(
-                "flex items-center gap-3 rounded-[18px] bg-card px-3 py-2 text-right text-[15px] leading-snug transition-[transform,box-shadow,background-color] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:text-[17px] lg:gap-[calc(var(--u)*0.625)] lg:rounded-[calc(var(--u)*1.042)] lg:px-[calc(var(--u)*0.833)] lg:py-[calc(var(--u)*0.469)] lg:text-[calc(var(--u)*0.99)]",
+                "flex items-center gap-3 rounded-[18px] bg-card px-3 shadow-[0_4px_14px_hsl(var(--mist)/0.4)] py-2 text-right text-[15px] leading-snug transition-[transform,box-shadow,background-color] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:text-[17px] lg:gap-[calc(var(--u)*0.625)] lg:rounded-[calc(var(--u)*1.042)] lg:px-[calc(var(--u)*0.833)] lg:py-[calc(var(--u)*0.469)] lg:text-[calc(var(--u)*0.99)]",
                 n ? "bg-brand-sun/45" : "hover:-translate-y-0.5 hover:shadow-[0_6px_16px_hsl(var(--mist)/0.45)]",
                 shake === i && "motion-safe:animate-shake",
               )}
