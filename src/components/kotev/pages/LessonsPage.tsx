@@ -85,7 +85,8 @@ function LessonCard({ lesson, index }: { lesson: Lesson; index: number }) {
 export function LessonsPage({ lessons }: { lessons: Lesson[] }) {
   return (
     <div className="px-4 pb-12 pt-6 md:px-8 md:pt-10 lg:px-[3.5vw] lg:pb-[4vw] lg:pt-[2.6vw]">
-      <ul className="grid grid-cols-2 gap-4 md:gap-8 lg:grid-cols-3 2xl:grid-cols-4">
+      {/* Gaps in vw on tablet and desktop, so they grow and shrink with the screen (32px at 768 and at 1920). */}
+      <ul className="grid grid-cols-2 gap-4 md:gap-[4.167vw] lg:grid-cols-3 lg:gap-[1.667vw] 2xl:grid-cols-4">
         {lessons.map((lesson, i) => (
           <LessonCard key={lesson.number} lesson={lesson} index={i} />
         ))}
