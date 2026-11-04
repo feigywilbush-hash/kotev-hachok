@@ -210,8 +210,10 @@ function ActivityView({ activity, onSolved, done }: { activity: SocialActivity; 
 
 // In vw: 18px on a 390px phone, 22px at 768, 28px at 1920.
 const QUESTION = "text-right text-[4.6vw] font-bold leading-snug md:text-[2.865vw] lg:text-[1.458vw]";
+// Plain text under the answers, no box. In vw: 16px on a 390px phone, 18px at 768, 22px at 1920
+// (on desktop never larger than the card scale allows, so short screens still fit).
 const EXPLAIN =
-  "mt-3 rounded-[16px] bg-card px-4 shadow-[0_4px_14px_hsl(var(--mist)/0.4)] py-2 text-right text-[15px] leading-snug motion-safe:animate-fade-up md:text-[17px] lg:mt-[calc(var(--u)*0.833)] lg:rounded-[calc(var(--u)*0.833)] lg:px-[calc(var(--u)*1.042)] lg:py-[calc(var(--u)*0.521)] lg:text-[calc(var(--u)*0.99)]";
+  "mt-3 text-right text-[4.1vw] leading-snug motion-safe:animate-fade-up md:text-[2.344vw] lg:mt-[calc(var(--u)*0.833)] lg:text-[min(1.146vw,calc(var(--u)*1.146))]";
 
 function ChoiceActivity({ activity, onSolved, done }: { activity: Extract<SocialActivity, { kind: "choice" }>; onSolved: () => void; done: boolean }) {
   const [wrong, setWrong] = useState<number[]>([]);
