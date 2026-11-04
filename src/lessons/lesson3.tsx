@@ -204,21 +204,14 @@ export const lesson3: LessonContent = {
   home: {
     text: (
       <>
-        <p>
-          מצורפת חוברת צביעה של היררכיות.
-          <br />
-          בכל עמוד יש היררכיה של מקום אחר: בבית, בבית הספר, בביקור אצל חבר, במטוס, בסופר ובכביש.
-        </p>
+        <p>מצורף קובץ סיכום להצטרפות לקבוצה.</p>
         <p className="mt-[1.5em] font-bold">
-          צבעו את הדמויות, ובכל פירמידה שימו לב: מי נמצא למעלה ומחליט, ומי מקשיב?
-          <br />
-          בעמוד היררכיה נוספת רשמו היררכיה של מקום נוסף מהחיים שלכם.
+          תלו את הדפים במקום בולט בבית, ונסו להיזכר בכללים בפעם הבאה שתרצו להצטרף למשחק או לשיחה.
         </p>
-        <p>את העמוד האחרון, עם כל ההיררכיות, תלו במקום בולט בבית!</p>
       </>
     ),
-    sheet: { src: "./assets/hierarchies-sheet.webp", alt: "דף עם שש פירמידות היררכיה לצביעה: בבית, בבית הספר, בביקור אצל חבר, במטוס, בסופר ובכביש" },
-    downloadHref: "./files/hierarchies-coloring-book.pdf",
-    downloadName: "hierarchies-coloring-book.pdf",
+    sheet: { src: "./assets/joining-road-sheet.webp", alt: "דף \"אז איך מצטרפים לקבוצה?\": כביש עם שש תחנות, מבדיקת הקצב ועד ההצטרפות" },
+    downloadHref: "./files/joining-road.pdf",
+    downloadName: "joining-road.pdf",
   },
 };
