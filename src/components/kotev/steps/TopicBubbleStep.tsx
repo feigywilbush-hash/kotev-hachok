@@ -193,7 +193,11 @@ export function TopicBubbleStep({ lawNumber, title, instruction, scene, bubble, 
       <div className="contents lg:flex lg:w-[calc(var(--u)*47.9)] lg:shrink-0 lg:flex-col lg:gap-[calc(var(--u)*3.4)]">
         <div className="contents lg:flex lg:items-stretch lg:gap-[calc(var(--u)*1.98)]">
           {/* The picture cards: a row on mobile, a column beside the scene on desktop */}
-          <div key={`cards-${round}`} className="order-4 grid grid-cols-3 gap-3 motion-safe:animate-fade-up md:gap-4 lg:order-none lg:flex lg:w-[calc(var(--u)*9.43)] lg:shrink-0 lg:flex-col lg:justify-between lg:gap-0">
+          <div
+            key={`cards-${round}`}
+            // Lift the cards over the scene while one of them is dragged onto it
+            className={cn("relative order-4 grid grid-cols-3 gap-3 motion-safe:animate-fade-up md:gap-4 lg:order-none lg:flex lg:w-[calc(var(--u)*9.43)] lg:shrink-0 lg:flex-col lg:justify-between lg:gap-0", drag && "z-40")}
+          >
             {current.options.map((o) => {
               const used = solved && o.id === current.correct;
               const isDragged = drag?.id === o.id && drag.moved;
