@@ -288,8 +288,17 @@ function ChoiceActivity({ activity, onSolved, done }: { activity: Extract<Social
                   {a.icon}
                 </span>
               )}
-                {/* Picture answers: text in vw (16px on a 390px phone, 18px at 768, 22px at 1920), with room above and below. */}
-                <span className={cn(pictures && "w-full py-2 text-center text-[4.1vw] leading-snug md:text-[2.344vw] lg:py-[0.625vw] lg:text-[1.146vw]")}>{a.text}</span>
+                {/* Picture answers: text in vw (16px on a 390px phone, 17px at 768, 20px at 1920; on desktop
+                    never larger than the card scale allows, so short screens still fit). On desktop the text
+                    box is always three lines tall, so every picture above it has the same height. */}
+                <span
+                  className={cn(
+                    pictures &&
+                      "flex w-full items-center justify-center py-2 text-center text-[4.1vw] leading-snug md:text-[2.214vw] lg:h-[calc(1.375em*3+1.25vw)] lg:py-[0.625vw] lg:text-[min(1.042vw,calc(var(--u)*1.042))]",
+                  )}
+                >
+                  {a.text}
+                </span>
               </span>
             </button>
           );
