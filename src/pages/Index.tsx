@@ -12,6 +12,7 @@ import { PyramidStep } from "@/components/kotev/steps/PyramidStep";
 import { QuizStep } from "@/components/kotev/steps/QuizStep";
 import { SocialVideosStep } from "@/components/kotev/steps/SocialVideosStep";
 import { StageStep } from "@/components/kotev/steps/StageStep";
+import { TopicBubbleStep } from "@/components/kotev/steps/TopicBubbleStep";
 import { lesson1 } from "@/lessons/lesson1";
 import { lesson2 } from "@/lessons/lesson2";
 import { lesson3 } from "@/lessons/lesson3";
@@ -167,7 +168,22 @@ const Index = () => {
           />
         </StageStep>
       )}
-      {step === 3 && lesson.pyramid && (
+      {step === 3 && lesson.topicGame && (
+        <TopicBubbleStep
+          key={`topic-${lesson.number}`}
+          lawNumber={shared.lawNumber}
+          title={shared.title}
+          instruction={lesson.topicGame.instruction}
+          scene={lesson.topicGame.scene}
+          bubble={lesson.topicGame.bubble}
+          rounds={lesson.topicGame.rounds}
+          step={shared.step}
+          totalSteps={shared.totalSteps}
+          onNext={shared.onNext}
+          onSolve={(i) => earnHere(`topic-${i}`)}
+        />
+      )}
+      {step === 3 && !lesson.topicGame && lesson.pyramid && (
         <PyramidStep
           key={`pyramid-${lesson.number}`}
           lawNumber={shared.lawNumber}
@@ -180,7 +196,7 @@ const Index = () => {
           onSolve={(i) => earnHere(`pyramid-${i}`)}
         />
       )}
-      {step === 3 && !lesson.pyramid && (
+      {step === 3 && !lesson.topicGame && !lesson.pyramid && (
         <QuizStep
           key={`quiz-${lesson.number}`}
           lawNumber={shared.lawNumber}

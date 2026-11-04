@@ -167,67 +167,43 @@ export const lesson3: LessonContent = {
       image: { src: "./assets/quiz-friends.webp", alt: "שני ילדים יושבים ומדברים בחדר" },
     },
   ],
-  pyramid: {
-    instruction: (
-      <>
-        מקמו את הדמויות למטה על גבי הפירמידה -
-        <br />
-        איך נראית פירמידה בבית? איך נראית בחנות? נסו לחשוב ולמקם!
-      </>
-    ),
+  topicGame: {
+    instruction: "החברים מדברים על נושא מסוים. גררו לבועה של הילד שרוצה להצטרף תמונה שקשורה למה שהם מדברים עליו!",
+    scene: { src: "./assets/game-scene.webp", alt: "שני ילדים יושבים על ספסל ומדברים, וילד שלישי עומד לידם ורוצה להצטרף" },
+    bubble: "./assets/game-bubble.webp",
     rounds: [
       {
-        cards: [
-          { id: "parents", image: { src: "./assets/pyramid-parents.webp", alt: "אבא ואמא" }, rank: 0 },
-          { id: "children", image: { src: "./assets/pyramid-children.webp", alt: "שלושה ילדים: בן, בת ותינוק" }, rank: 1 },
+        topic: { src: "./assets/game-topic-animals.webp", alt: "החברים מדברים על בעלי חיים: אריה, פיל וארנב" },
+        options: [
+          { id: "snake", image: { src: "./assets/game-snake.webp", alt: "נחש ירוק" } },
+          { id: "slide", image: { src: "./assets/game-slide.webp", alt: "מגלשה" } },
+          { id: "car", image: { src: "./assets/game-car.webp", alt: "מכונית אדומה" } },
         ],
-        hint: "רגע! בבית ההורים נמצאים מעל הילדים בפירמידה.",
-        praise: "כל הכבוד! בבית ההורים מעל הילדים",
+        correct: "snake",
+        hint: "זה לא קשור לשיחה. על מה החברים מדברים? נסו שוב!",
+        praise: "נכון! הם מדברים על בעלי חיים, ונחש מתאים לשיחה.",
       },
       {
-        cards: [
-          { id: "principal", image: { src: "./assets/pyramid-principal.webp", alt: "מנהל בית הספר ליד שולחנו" }, rank: 0 },
-          { id: "students", image: { src: "./assets/pyramid-students.webp", alt: "שני תלמידים כותבים בכיתה" }, rank: 2 },
-          { id: "teacher", image: { src: "./assets/pyramid-teacher.webp", alt: "מורה מלמדת ליד הלוח" }, rank: 1 },
+        topic: { src: "./assets/game-topic-ferris.webp", alt: "החברים מדברים על גלגל ענק בלונה פארק" },
+        options: [
+          { id: "carousel", image: { src: "./assets/game-carousel.webp", alt: "קרוסלת סוסים" } },
+          { id: "cake", image: { src: "./assets/game-cake.webp", alt: "עוגת יום הולדת עם בלונים" } },
+          { id: "ball", image: { src: "./assets/game-ball.webp", alt: "כדורגל" } },
         ],
-        hint: "רגע! בבית הספר המנהל למעלה, מתחתיו המורה, ומתחתיה התלמידים.",
-        praise: "כל הכבוד! בבית הספר המנהל, אחריו המורה ואז התלמידים",
+        correct: "carousel",
+        hint: "זה לא קשור לשיחה. על מה החברים מדברים? נסו שוב!",
+        praise: "נכון! הם מדברים על לונה פארק, וקרוסלה מתאימה לשיחה.",
       },
       {
-        cards: [
-          { id: "host", image: { src: "./assets/pyramid-host.webp", alt: "ילד מארח מוזג מים לכוסות" }, rank: 0 },
-          { id: "guest", image: { src: "./assets/pyramid-guest.webp", alt: "ילד אורח עם תיק נכנס בדלת" }, rank: 1 },
+        topic: { src: "./assets/game-topic-crash.webp", alt: "החברים מדברים על תאונה בין שתי מכוניות" },
+        options: [
+          { id: "carousel", image: { src: "./assets/game-carousel.webp", alt: "קרוסלת סוסים" } },
+          { id: "police", image: { src: "./assets/game-police.webp", alt: "שוטר" } },
+          { id: "ball", image: { src: "./assets/game-ball.webp", alt: "כדורגל" } },
         ],
-        hint: "רגע! כשבאים לבקר, המארח הוא בעל הבית, ולכן הוא מעל האורח.",
-        praise: "כל הכבוד! המארח מעל האורח",
-      },
-      {
-        cards: [
-          { id: "passengers", image: { src: "./assets/pyramid-passengers.webp", alt: "נוסעים עם מזוודות בשדה התעופה" }, rank: 2 },
-          { id: "attendant", image: { src: "./assets/pyramid-attendant.webp", alt: "דיילת במטוס" }, rank: 1 },
-          { id: "pilot", image: { src: "./assets/pyramid-pilot.webp", alt: "טייס בתא הטייס" }, rank: 0 },
-        ],
-        hint: "רגע! במטוס הטייס למעלה, מתחתיו הדיילת, ומתחתיה הנוסעים.",
-        praise: "כל הכבוד! במטוס הטייס, אחריו הדיילת ואז הנוסעים",
-      },
-      {
-        cards: [
-          { id: "customer", image: { src: "./assets/pyramid-customer.webp", alt: "צרכן עם עגלת קניות" }, rank: 2 },
-          { id: "manager", image: { src: "./assets/pyramid-manager.webp", alt: "מנהל הסופר בחליפה" }, rank: 0 },
-          { id: "cashier", image: { src: "./assets/pyramid-cashier.webp", alt: "קופאי סורק מוצרים בקופה" }, rank: 1 },
-        ],
-        hint: "רגע! בסופר המנהל למעלה, מתחתיו הקופאי, ומתחתיו הצרכן.",
-        praise: "כל הכבוד! בסופר המנהל, אחריו הקופאי ואז הצרכן",
-      },
-      {
-        cards: [
-          { id: "sign", image: { src: "./assets/pyramid-sign.webp", alt: "תמרור אסור לפנות פניית פרסה" }, rank: 2 },
-          { id: "police", image: { src: "./assets/pyramid-police.webp", alt: "שוטר מסמן עצור ביד" }, rank: 0 },
-          { id: "traffic-light", image: { src: "./assets/pyramid-traffic-light.webp", alt: "רמזור" }, rank: 1 },
-          { id: "driver", image: { src: "./assets/pyramid-driver.webp", alt: "נהג ברכב" }, rank: 3 },
-        ],
-        hint: "רגע! בכביש השוטר למעלה, מתחתיו הרמזור, אחריו התמרור, ולמטה הנהג.",
-        praise: "כל הכבוד! בכביש השוטר, אחריו הרמזור, התמרור ואז הנהג",
+        correct: "police",
+        hint: "זה לא קשור לשיחה. על מה החברים מדברים? נסו שוב!",
+        praise: "נכון! הם מדברים על תאונה, ושוטר מתאים לשיחה.",
       },
     ],
   },
