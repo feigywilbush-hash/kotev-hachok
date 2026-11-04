@@ -54,11 +54,11 @@ export const lesson3: LessonContent = {
       activities: [
         {
           kind: "choice",
-          question: "הילד עמד בצד וחיכה שיזמינו אותו, ונשאר לבד. מה כדאי לו לעשות?",
+          question: "אני רוצה להצטרף למשחק של יוני ודני, מה כדאי לי לעשות? 🤔",
           answers: [
-            { image: "./assets/join-answer-wait.webp", imageFocus: "78% center", text: "להמשיך לחכות. אם ירצו בו, הם יזמינו אותו." },
-            { image: "./assets/join-answer-leave.webp", imageFocus: "55% center", text: "ללכת משם. אם לא הזמינו אותו, הם בטח לא רוצים אותו." },
-            { image: "./assets/join-answer-join.webp", imageFocus: "72% center", text: "להתקרב ולהראות שהוא רוצה להצטרף. הם פשוט עסוקים בשיחה שלהם." },
+            { image: "./assets/join-answer-wait.webp", imageFocus: "78% center", text: "אני אמשיך לחכות. אם ירצו, הם יזמינו אותי." },
+            { image: "./assets/join-answer-leave.webp", imageFocus: "55% center", text: "אני אלך משם. אם לא הזמינו אותי, הם בטח לא רוצים אותי." },
+            { image: "./assets/join-answer-join.webp", imageFocus: "72% center", text: "אני אתקרב והראה להם שאני רוצה להצטרף. הם פשוט עסוקים בשיחה שלהם." },
           ],
           correct: 2,
           explain: "אם לא מזמינים אותנו, זה לא אומר שלא רוצים בנו. החברים פשוט עסוקים \"בנסיעה\" שלהם, ומי שרוצה להצטרף צריך לאותת ולהצטרף.",
