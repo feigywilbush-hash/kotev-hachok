@@ -83,11 +83,11 @@ export const lesson3: LessonContent = {
         },
         {
           kind: "choice",
-          question: "למה החברים לא התעניינו במה שהילד סיפר?",
+          question: "ניסיתי לספר לחברים משהו, אבל הם לא התעניינו. למה זה קרה? 🤔",
           answers: [
-            { image: "./assets/join-answer-unloved.webp", imageFocus: "62% center", text: "כי הם לא אוהבים אותו." },
-            { image: "./assets/join-answer-offtopic.webp", imageFocus: "65% center", text: "כי הוא דיבר על נושא אחר, שלא קשור לשיחה שלהם." },
-            { image: "./assets/join-answer-quiet.webp", imageFocus: "70% center", text: "כי הוא דיבר בשקט מדי." },
+            { image: "./assets/join-answer-unloved.webp", imageFocus: "62% center", text: "אולי הם לא אוהבים אותי." },
+            { image: "./assets/join-answer-offtopic.webp", imageFocus: "65% center", text: "אולי דיברתי על משהו שלא קשור לשיחה שלהם." },
+            { image: "./assets/join-answer-quiet.webp", imageFocus: "70% center", text: "אולי דיברתי בשקט מדי." },
           ],
           correct: 1,
           explain: "לפני שמצטרפים בודקים על מה מדברים, ומצטרפים עם משהו שקשור לנושא.",
