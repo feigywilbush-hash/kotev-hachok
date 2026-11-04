@@ -3,14 +3,13 @@ import { Check, RotateCcw, X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { playFail, playSuccess } from "../games/driveSounds";
-import { ArrowLeftIcon } from "../icons";
+import { NavButton } from "./QuizStep";
 import { LawTitle, NextStepButton } from "./StepParts";
 
 /*
  * "בכביש החברתי" step made of a few short videos: each video plays in the stage, and when it
  * ends the stage turns into a short activity about it (a choice question, or putting steps in
- * order). Solving the activity opens the next video. Tabs over the stage go back to any part
- * already opened.
+ * order). Buttons under the stage move to the next question or video, as in the quiz step.
  * Layout follows StageStep: the law's title and the part's instruction on the right, the stage
  * and the next-step button on the left. On a phone the activity grows the stage to its own height.
  * Sizes: px on mobile/tablet; on desktop multiples of --u (1vw on a 16:9 screen, smaller on short
@@ -55,16 +54,16 @@ type Props = {
 
 export function SocialVideosStep({ lawNumber, title, parts, step, totalSteps, onNext, onSolve }: Props) {
   const [part, setPart] = useState(0);
-  const [opened, setOpened] = useState(1); // parts the learner can go to
   const [solved, setSolved] = useState<Set<number>>(() => new Set());
+  // Activities answered, as "part-activity", so going back shows them already solved.
+  const [doneActs, setDoneActs] = useState<Set<string>>(() => new Set());
   const [view, setView] = useState<"video" | "activity">("video");
   const [activity, setActivity] = useState(0);
-  const [answered, setAnswered] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const autoplay = useRef(false);
 
   const p = parts[part];
-  const allDone = solved.size === parts.length;
+  const answered = doneActs.has(`${part}-${activity}`);
 
   // Moving on to a new video by a click may start it right away.
   useEffect(() => {
@@ -78,22 +77,25 @@ export function SocialVideosStep({ lawNumber, title, parts, step, totalSteps, on
     autoplay.current = play;
     setPart(i);
     setActivity(0);
-    setAnswered(false);
     setView("video");
   };
 
   const lastActivity = activity === p.activities.length - 1;
   const finishActivity = () => {
-    setAnswered(true);
+    setDoneActs((d) => new Set(d).add(`${part}-${activity}`));
     if (!lastActivity) return;
     if (!solved.has(part)) {
       setSolved((s) => new Set(s).add(part));
       onSolve?.(part);
-      setOpened((o) => Math.max(o, Math.min(parts.length, part + 2)));
     }
   };
 
   const partDone = solved.has(part) && lastActivity;
+  const lastPart = part === parts.length - 1;
+  const goActivity = (i: number) => {
+    setActivity(i);
+    setView("activity");
+  };
 
   return (
     <div className="flex flex-col gap-6 px-4 pb-10 pt-6 md:gap-8 md:px-8 md:pt-10 lg:flex-row lg:items-stretch lg:gap-[calc(var(--u)*4.5)] lg:py-[calc(var(--u)*1.5)] lg:pl-[2.448vw] lg:pr-[4.427vw]">
@@ -108,30 +110,6 @@ export function SocialVideosStep({ lawNumber, title, parts, step, totalSteps, on
       </div>
 
       <div className="contents lg:mr-auto lg:flex lg:min-w-0 lg:max-w-[calc(var(--u)*50.466)] lg:flex-1 lg:flex-col lg:pt-[calc(var(--u)*1.2)]">
-        {/* Parts: open ones can be revisited */}
-        <div role="tablist" aria-label="סרטונים" className="order-3 flex gap-2 lg:mb-[calc(var(--u)*0.625)] lg:gap-[calc(var(--u)*0.521)]">
-          {parts.map((pt, i) => {
-            const locked = i >= opened;
-            return (
-              <button
-                key={i}
-                type="button"
-                role="tab"
-                aria-selected={i === part}
-                disabled={locked}
-                onClick={() => goPart(i)}
-                className={cn(
-                  "flex items-center gap-1.5 rounded-full px-3 py-1 text-[14px] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-45 md:text-[16px] lg:gap-[calc(var(--u)*0.39)] lg:px-[calc(var(--u)*0.833)] lg:py-[calc(var(--u)*0.26)] lg:text-[calc(var(--u)*0.938)]",
-                  i === part ? "bg-primary text-primary-foreground" : "bg-sidebar/45 hover:bg-sidebar/70",
-                )}
-              >
-                {solved.has(i) && <Check aria-hidden="true" strokeWidth={3} className="size-4 lg:size-[calc(var(--u)*0.833)]" />}
-                סרטון {i + 1}
-                <span className="sr-only">: {pt.label}</span>
-              </button>
-            );
-          })}
-        </div>
 
         <div
           className={cn(
@@ -160,7 +138,7 @@ export function SocialVideosStep({ lawNumber, title, parts, step, totalSteps, on
                 key={`${part}-${activity}`}
                 activity={p.activities[activity]}
                 onSolved={finishActivity}
-                done={solved.has(part) && activity === p.activities.length - 1}
+                done={answered}
               />
               <div className="mt-4 flex flex-wrap items-center justify-between gap-2 lg:mt-auto lg:pt-[calc(var(--u)*0.833)]">
                 <button
@@ -171,20 +149,7 @@ export function SocialVideosStep({ lawNumber, title, parts, step, totalSteps, on
                   <RotateCcw aria-hidden="true" className="size-4 lg:size-[calc(var(--u)*0.938)]" />
                   לצפות שוב בסרטון
                 </button>
-                {answered && !lastActivity && (
-                  <PillButton
-                    onClick={() => {
-                      setActivity(activity + 1);
-                      setAnswered(false);
-                    }}
-                  >
-                    לשאלה הבאה
-                  </PillButton>
-                )}
-                {partDone && part + 1 < parts.length && (
-                  <PillButton onClick={() => goPart(part + 1, true)}>לסרטון הבא</PillButton>
-                )}
-                {partDone && part + 1 === parts.length && (
+                {partDone && lastPart && (
                   <p className="text-[15px] font-bold text-primary md:text-[18px] lg:text-[calc(var(--u)*1.042)]">כל הכבוד! סיימת את כל הסרטונים 🎉</p>
                 )}
               </div>
@@ -192,12 +157,44 @@ export function SocialVideosStep({ lawNumber, title, parts, step, totalSteps, on
           )}
         </div>
 
-        <NextStepButton
-          step={step}
-          totalSteps={totalSteps}
-          onNext={onNext}
-          className={cn("order-5 lg:mt-[calc(var(--u)*1.042)]", allDone && "ring-4 ring-primary/30")}
-        />
+        {/* Bottom buttons, as in the quiz: "לשאלה הבאה" moves from the video to its questions and
+            between them, "לסרטון הבא" opens the next video, and the last question of the last video
+            ends the step with the wide "התקדם לשלב הבא" button. */}
+        {lastPart && view === "activity" && lastActivity ? (
+          <NextStepButton
+            step={step}
+            totalSteps={totalSteps}
+            onNext={onNext}
+            disabled={!partDone}
+            className="order-5 lg:mt-[calc(var(--u)*1.042)]"
+          />
+        ) : (
+          <div className="order-5 flex flex-col-reverse gap-3 md:flex-row md:items-center md:justify-between md:gap-[14px] lg:mt-[calc(var(--u)*1.042)] lg:gap-[calc(var(--u)*0.729)]">
+            {view === "activity" && activity > 0 && (
+              <NavButton tone="back" onClick={() => goActivity(activity - 1)} className="md:max-w-none md:flex-1 lg:w-auto">
+                לשאלה הקודמת
+              </NavButton>
+            )}
+            {view === "video" && part > 0 && (
+              <NavButton tone="back" onClick={() => goPart(part - 1)} className="md:max-w-none md:flex-1 lg:w-auto">
+                לסרטון הקודם
+              </NavButton>
+            )}
+            {view === "video" ? (
+              <NavButton tone="next" onClick={() => goActivity(0)} className="md:ms-auto md:max-w-none md:flex-1 lg:w-auto">
+                לשאלה הבאה
+              </NavButton>
+            ) : lastActivity ? (
+              <NavButton tone="next" onClick={() => goPart(part + 1, true)} disabled={!partDone} className="md:ms-auto md:max-w-none md:flex-1 lg:w-auto">
+                לסרטון הבא
+              </NavButton>
+            ) : (
+              <NavButton tone="next" onClick={() => goActivity(activity + 1)} disabled={!answered} className="md:ms-auto md:max-w-none md:flex-1 lg:w-auto">
+                לשאלה הבאה
+              </NavButton>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -344,21 +341,6 @@ function OrderActivity({ activity, onSolved, done }: { activity: Extract<SocialA
         {complete ? `מצוין! ${activity.explain}` : hint}
       </p>
     </div>
-  );
-}
-
-function PillButton({ onClick, children }: { onClick: () => void; children: string }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="group flex items-center gap-2 rounded-full bg-lime py-1.5 pe-1.5 ps-4 text-[15px] transition-[filter,transform] duration-200 hover:brightness-[1.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.98] motion-safe:animate-fade-up md:text-[18px] lg:gap-[calc(var(--u)*0.625)] lg:py-[calc(var(--u)*0.365)] lg:pe-[calc(var(--u)*0.365)] lg:ps-[calc(var(--u)*1.042)] lg:text-[calc(var(--u)*1.042)]"
-    >
-      {children}
-      <span className="flex size-8 items-center justify-center rounded-full bg-card lg:size-[calc(var(--u)*2.083)]">
-        <ArrowLeftIcon className="size-4 text-primary transition-transform duration-300 motion-safe:group-hover:-translate-x-0.5 lg:size-[calc(var(--u)*1.042)]" />
-      </span>
-    </button>
   );
 }
 
