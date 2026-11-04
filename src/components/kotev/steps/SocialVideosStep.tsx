@@ -22,7 +22,7 @@ export type SocialActivity =
       question: string;
       /** Each answer can open with an emoji, shown large, or a picture: picture answers show as
        *  cards side by side, the picture above the text. */
-      answers: { text: string; icon?: string; image?: string; /** CSS object-position, so a tall card keeps the picture's subject in view. */ imageFocus?: string }[];
+      answers: { text: string; icon?: string; image?: string; /** CSS object-position, so a tall card keeps the picture's subject in view. */ imageFocus?: string; /** "contain" shows the whole picture (for objects on white). */ imageFit?: "contain" }[];
       correct: number;
       /** Shown once the right answer is picked. */
       explain: string;
@@ -269,7 +269,7 @@ function ChoiceActivity({ activity, onSolved, done }: { activity: Extract<Social
                 <img
                   src={a.image}
                   alt=""
-                  style={a.imageFocus ? { objectPosition: a.imageFocus } : undefined}
+                  style={{ objectPosition: a.imageFocus, objectFit: a.imageFit }}
                   draggable={false}
                   className="aspect-[4/3] w-full rounded-[12px] object-cover lg:aspect-auto lg:min-h-0 lg:flex-1 lg:rounded-[calc(var(--u)*0.729)]"
                 />
@@ -279,7 +279,7 @@ function ChoiceActivity({ activity, onSolved, done }: { activity: Extract<Social
                 <span
                   className={cn(
                     "flex size-8 shrink-0 items-center justify-center rounded-full bg-answer lg:size-[calc(var(--u)*1.875)]",
-                    pictures && "absolute right-4 top-4 bg-card shadow-md lg:right-[calc(var(--u)*0.833)] lg:top-[calc(var(--u)*0.833)]",
+                    pictures && "absolute right-4 top-4 bg-card shadow-md ring-1 ring-mist lg:right-[calc(var(--u)*0.833)] lg:top-[calc(var(--u)*0.833)]",
                   )}
                 >
                   {isRight && <Check aria-hidden="true" strokeWidth={3} className="size-4 text-primary lg:size-[calc(var(--u)*1.042)]" />}
