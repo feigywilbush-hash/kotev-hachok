@@ -22,7 +22,7 @@ export type SocialActivity =
       question: string;
       /** Each answer can open with an emoji, shown large, or a picture: picture answers show as
        *  cards side by side, the picture above the text. */
-      answers: { text: string; icon?: string; image?: string }[];
+      answers: { text: string; icon?: string; image?: string; /** CSS object-position, so a tall card keeps the picture's subject in view. */ imageFocus?: string }[];
       correct: number;
       /** Shown once the right answer is picked. */
       explain: string;
@@ -232,14 +232,15 @@ function ChoiceActivity({ activity, onSolved, done }: { activity: Extract<Social
   };
 
   return (
-    <div className="motion-safe:animate-fade-up">
+    // On desktop, picture answers stretch to fill the height the stage leaves them.
+    <div className={cn("motion-safe:animate-fade-up", pictures && "lg:flex lg:min-h-0 lg:flex-1 lg:flex-col")}>
       <p className={QUESTION}>{activity.question}</p>
       <div
         role="radiogroup"
         aria-label="בחר תשובה"
         className={cn(
           "mt-3 flex gap-2 lg:mt-[calc(var(--u)*0.833)] lg:gap-[calc(var(--u)*0.625)]",
-          pictures ? "grid grid-cols-1 sm:grid-cols-3" : icons ? "flex-row" : "flex-col",
+          pictures ? "grid grid-cols-1 sm:grid-cols-3 lg:min-h-0 lg:flex-1" : icons ? "flex-row" : "flex-col",
         )}
       >
         {activity.answers.map((a, i) => {
@@ -266,8 +267,9 @@ function ChoiceActivity({ activity, onSolved, done }: { activity: Extract<Social
                 <img
                   src={a.image}
                   alt=""
+                  style={a.imageFocus ? { objectPosition: a.imageFocus } : undefined}
                   draggable={false}
-                  className="aspect-[4/3] w-full rounded-[12px] object-cover lg:rounded-[calc(var(--u)*0.729)]"
+                  className="aspect-[4/3] w-full rounded-[12px] object-cover lg:aspect-auto lg:min-h-0 lg:flex-1 lg:rounded-[calc(var(--u)*0.729)]"
                 />
               )}
               {/* With a picture, the mark sits on the picture's corner and the text under it. */}
