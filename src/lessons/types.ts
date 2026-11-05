@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import type { PyramidRound } from "@/components/kotev/steps/PyramidStep";
 import type { QuizQuestion } from "@/components/kotev/steps/QuizStep";
 import type { TopicRound } from "@/components/kotev/steps/TopicBubbleStep";
+import type { SpaceRound } from "@/components/kotev/steps/SpaceChoiceStep";
 import type { SocialPart } from "@/components/kotev/steps/SocialVideosStep";
 
 type Picture = { src: string; alt: string };
@@ -27,5 +28,7 @@ export type LessonContent = {
   pyramid?: { instruction: ReactNode; rounds: PyramidRound[] };
   /** When set, the "משחק ותרגול" step is the speech-bubble topic game (law 3). */
   topicGame?: { instruction: ReactNode; scene: Picture; bubble: string; rounds: TopicRound[] };
+  /** When set, the "משחק ותרגול" step is the pick-the-right-picture personal-space game (law 4). */
+  spaceGame?: { instruction: ReactNode; rounds: SpaceRound[] };
   home: { text: ReactNode; sheet: Picture; downloadHref: string; downloadName: string };
 };
