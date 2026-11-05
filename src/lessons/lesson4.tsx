@@ -31,11 +31,10 @@ export const lesson4: LessonContent = {
   },
   drive: {
     title: "שמירת מרחב",
-    game: "hierarchy",
+    game: "distance",
     instruction: (
       <>
-        בוא נצא לנסיעה! בכל צומת בחר למי מקשיבים: <br className="max-lg:hidden" />
-        <span className="lg:whitespace-nowrap">קודם לשוטר, אחר כך לרמזור ואחר כך לתמרור&nbsp;👮</span>
+        נוסעים מאחורי רכב אחר ושומרים מרחק! הישאר תמיד מאחורי הקו של 2 השניות: האט כשהרכב שלפניך מאט, ואל תיצמד אליו&nbsp;🚗
       </>
     ),
   },

@@ -18,7 +18,7 @@ export type LessonContent = {
    * `title` replaces the law's name on this step only, e.g. a shorter one that fits beside the game.
    * `game` picks the driving game; the no-entry one when left out.
    */
-  drive: { instruction: ReactNode; title?: string; game?: "no-entry" | "hierarchy" | "merge" };
+  drive: { instruction: ReactNode; title?: string; game?: "no-entry" | "hierarchy" | "merge" | "distance" };
   video: { instruction: string; title: string; src: string; poster: string };
   /** When set, the "בכביש החברתי" step is these short videos, each followed by an activity, instead of the one video. */
   socialParts?: SocialPart[];
