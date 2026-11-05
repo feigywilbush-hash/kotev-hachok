@@ -16,6 +16,7 @@ import { TopicBubbleStep } from "@/components/kotev/steps/TopicBubbleStep";
 import { lesson1 } from "@/lessons/lesson1";
 import { lesson2 } from "@/lessons/lesson2";
 import { lesson3 } from "@/lessons/lesson3";
+import { lesson4 } from "@/lessons/lesson4";
 import type { LessonContent } from "@/lessons/types";
 
 const LESSON_STEPS = ["הקדמה", "בכביש התנועה", "בכביש החברתי", "משחק ותרגול", "יישום בבית"];
@@ -26,7 +27,7 @@ const STEP_PROGRESS = [0.18, 0.16, 0.066, 0.122, 0];
 const LESSON_COUNT = 30;
 
 /** The laws that are built, in order. */
-const BUILT_LESSONS: LessonContent[] = [lesson1, lesson2, lesson3];
+const BUILT_LESSONS: LessonContent[] = [lesson1, lesson2, lesson3, lesson4];
 
 /** Built laws open from their card; the rest keep an empty picture frame and a placeholder name until they're written. */
 const LESSONS: Lesson[] = Array.from({ length: LESSON_COUNT }, (_, i) => {
