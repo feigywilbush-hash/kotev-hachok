@@ -162,8 +162,8 @@ export const lesson4: LessonContent = {
         </p>
       </>
     ),
-    sheet: { src: "./assets/personal-space-sheet.webp", alt: "דף \"מרחב אישי\": שלושה כללים וילד עם חישוק, הקו המרכזי, החלל שבין החישוק לגוף וכפות הידיים" },
-    downloadHref: "./files/personal-space.pdf",
+    sheet: { src: "./assets/personal-space-sheet-v3.webp", alt: "דף \"מרחב אישי\": שלושה כללים וילד עם חישוק, הקו המרכזי, החלל שבין החישוק לגוף וכפות הידיים" },
+    downloadHref: "./files/personal-space-v3.pdf",
     downloadName: "personal-space.pdf",
   },
 };
