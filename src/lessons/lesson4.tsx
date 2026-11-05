@@ -8,7 +8,7 @@ export const lesson4: LessonContent = {
   title: "שמירת מרחב",
   cardImage: { src: "./assets/lesson-4.webp", alt: "ילד עם תיק על הגב עומד ליד הכביש ופורש את ידיו לצדדים מתחת לחץ אדום כפול" },
   intro: {
-    image: { src: "./assets/intro-lesson-2.webp", alt: "שוטר מסביר משהו לילד שמקשיב לו ליד הכביש" },
+    image: { src: "./assets/intro-lesson-4.webp", alt: "ילד עם תיק על הגב עומד על הכביש ופורש את ידיו לצדדים, ומעליו חץ אדום כפול שמראה את המרחב סביבו" },
     trafficText: (
       <>
         חובה לשמור על מרחק עצירה בטוח מהרכב שמלפנים.
