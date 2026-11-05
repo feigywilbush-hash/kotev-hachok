@@ -154,21 +154,14 @@ export const lesson4: LessonContent = {
   home: {
     text: (
       <>
-        <p>
-          מצורפת חוברת צביעה של היררכיות.
-          <br />
-          בכל עמוד יש היררכיה של מקום אחר: בבית, בבית הספר, בביקור אצל חבר, במטוס, בסופר ובכביש.
-        </p>
+        <p>מצורף קובץ סיכום לשמירת מרחב אישי.</p>
         <p className="mt-[1.5em] font-bold">
-          צבעו את הדמויות, ובכל פירמידה שימו לב: מי נמצא למעלה ומחליט, ומי מקשיב?
-          <br />
-          בעמוד היררכיה נוספת רשמו היררכיה של מקום נוסף מהחיים שלכם.
+          תלו את הדף במקום בולט בבית, ונסו לשמור על המרחב האישי שלכם ושל האחרים.
         </p>
-        <p>את העמוד האחרון, עם כל ההיררכיות, תלו במקום בולט בבית!</p>
       </>
     ),
-    sheet: { src: "./assets/hierarchies-sheet.webp", alt: "דף עם שש פירמידות היררכיה לצביעה: בבית, בבית הספר, בביקור אצל חבר, במטוס, בסופר ובכביש" },
-    downloadHref: "./files/hierarchies-coloring-book.pdf",
-    downloadName: "hierarchies-coloring-book.pdf",
+    sheet: { src: "./assets/personal-space-sheet.webp", alt: "דף \"מרחב אישי\": שלושה כללים וילד עם חישוק, הקו המרכזי, החלל שבין החישוק לגוף וכפות הידיים" },
+    downloadHref: "./files/personal-space.pdf",
+    downloadName: "personal-space.pdf",
   },
 };
