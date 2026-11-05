@@ -41,7 +41,8 @@ type SpaceChoiceStepProps = {
 
 export function SpaceChoiceStep({ lawNumber, title, instruction, rounds, step, totalSteps, onNext, onSolve }: SpaceChoiceStepProps) {
   const [round, setRound] = useState(0);
-  const [solved, setSolved] = useState(false);
+  // Questions answered so far: going back to one shows it answered, and "next" waits for an answer.
+  const [done, setDone] = useState<Set<number>>(() => new Set());
   const [hint, setHint] = useState<string | null>(null);
   const [shaking, setShaking] = useState<number | null>(null);
   const [wrong, setWrong] = useState<number | null>(null);
@@ -49,11 +50,12 @@ export function SpaceChoiceStep({ lawNumber, title, instruction, rounds, step, t
 
   const current = rounds[round];
   const last = round === rounds.length - 1;
+  const solved = done.has(round);
 
   const choose = (i: number) => {
     if (solved) return;
     if (i === current.correct) {
-      setSolved(true);
+      setDone((d) => new Set(d).add(round));
       setHint(null);
       setWrong(null);
       playSuccess();
@@ -69,7 +71,6 @@ export function SpaceChoiceStep({ lawNumber, title, instruction, rounds, step, t
   };
 
   const goRound = (to: number) => {
-    setSolved(false);
     setHint(null);
     setShaking(null);
     setWrong(null);
@@ -118,7 +119,7 @@ export function SpaceChoiceStep({ lawNumber, title, instruction, rounds, step, t
 
       {/* Game column (left on desktop): the two pictures and the buttons under them */}
       <div className="contents lg:flex lg:w-[calc(var(--u)*53.23)] lg:shrink-0 lg:flex-col lg:gap-[calc(var(--u)*1.51)]">
-        <div key={`pictures-${round}`} className="order-3 grid grid-cols-2 gap-3 md:gap-6 lg:gap-[calc(var(--u)*2.29)]">
+        <div key={`pictures-${round}`} className="order-3 grid grid-cols-2 gap-3 motion-safe:animate-fade-in-scale md:gap-6 lg:gap-[calc(var(--u)*2.29)]">
           {current.options.map((o, i) => {
             const right = solved && i === current.correct;
             const dim = solved && i !== current.correct;
@@ -134,23 +135,29 @@ export function SpaceChoiceStep({ lawNumber, title, instruction, rounds, step, t
                 disabled={solved}
                 onClick={() => choose(i)}
                 className={cn(
-                  "group relative aspect-[489/524] overflow-hidden rounded-[22px] bg-card motion-safe:animate-fade-in-scale transition-[transform,box-shadow,opacity,filter] duration-300 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring md:rounded-[36px] lg:rounded-[calc(var(--u)*2.6)]",
+                  "group relative aspect-[489/524] overflow-hidden rounded-[22px] bg-card transition-[transform,box-shadow,opacity,filter] duration-300 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring md:rounded-[36px] lg:rounded-[calc(var(--u)*2.6)]",
                   !solved && "cursor-pointer hover:-translate-y-1 hover:shadow-[0_14px_32px_hsl(var(--mist)/0.7)]",
                   right && "ring-4 ring-[#5cb87a] lg:ring-[calc(var(--u)*0.31)]",
                   wrong === i && !solved && "ring-4 ring-alert/60 lg:ring-[calc(var(--u)*0.31)]",
-                  dim && "opacity-45 grayscale-[40%]",
                   shaking === i && "motion-safe:animate-shake",
                 )}
               >
-                <img src={o.src} alt="" draggable={false} className="absolute inset-0 size-full object-cover" />
-                {right && (
-                  <span
-                    aria-hidden="true"
-                    className="absolute left-1/2 top-1/2 flex size-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#5cb87a] text-[30px] font-bold text-white shadow-lg motion-safe:animate-fade-in-scale md:size-20 md:text-[44px] lg:size-[calc(var(--u)*5.2)] lg:text-[calc(var(--u)*2.9)]"
-                  >
-                    ✓
-                  </span>
-                )}
+                <img src={o.src} alt="" draggable={false} className={cn("absolute inset-0 size-full object-cover transition-[opacity,filter] duration-300", dim && "opacity-45 grayscale-[40%]")} />
+                {/* Checklist circle at the top of the picture: empty until picked, a green check on the right one, a red x on a wrong pick */}
+                <span
+                  aria-hidden="true"
+                  key={right ? "right" : wrong === i ? "wrong" : "empty"}
+                  className={cn(
+                    "absolute left-1/2 top-3 flex size-9 -translate-x-1/2 items-center justify-center rounded-full border-[3px] text-[20px] font-bold leading-none shadow-[0_4px_12px_rgba(0,0,0,0.18)] transition-colors duration-200 md:top-5 md:size-12 md:text-[26px] lg:top-[calc(var(--u)*1.25)] lg:size-[calc(var(--u)*3.1)] lg:border-[calc(var(--u)*0.21)] lg:text-[calc(var(--u)*1.75)]",
+                    right
+                      ? "border-white bg-[#5cb87a] text-white motion-safe:animate-fade-in-scale"
+                      : wrong === i && !solved
+                        ? "border-white bg-alert text-white motion-safe:animate-fade-in-scale"
+                        : "border-white bg-white/70 text-transparent group-hover:bg-white",
+                  )}
+                >
+                  {right ? "✓" : wrong === i && !solved ? "✗" : ""}
+                </span>
               </button>
             );
           })}
@@ -164,9 +171,9 @@ export function SpaceChoiceStep({ lawNumber, title, instruction, rounds, step, t
             </NavButton>
           )}
           {last ? (
-            <NextStepButton step={step} totalSteps={totalSteps} onNext={onNext} />
+            <NextStepButton step={step} totalSteps={totalSteps} onNext={onNext} disabled={!solved} />
           ) : (
-            <NavButton tone="next" onClick={() => goRound(round + 1)} className="md:ms-auto md:w-[calc(50%-7px)] md:max-w-none lg:w-[calc(50%-var(--u)*0.365)]">
+            <NavButton tone="next" onClick={() => goRound(round + 1)} disabled={!solved} className="md:ms-auto md:w-[calc(50%-7px)] md:max-w-none lg:w-[calc(50%-var(--u)*0.365)]">
               לשאלה הבאה
             </NavButton>
           )}
