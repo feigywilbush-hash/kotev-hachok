@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
+import { Check, X } from "lucide-react";
+
 import { burstConfetti } from "@/lib/confetti";
 import { cn } from "@/lib/utils";
 import { playFail, playSuccess } from "../games/driveSounds";
@@ -38,6 +40,9 @@ type SpaceChoiceStepProps = {
   onNext?: () => void;
   onSolve?: (round: number) => void;
 };
+
+/** The pictures' rounded corners: 52px on the 489×524 picture, as a share of its width and height. */
+const PICTURE_RADIUS = `${(52 / 489) * 100}% / ${(52 / 524) * 100}%`;
 
 export function SpaceChoiceStep({ lawNumber, title, instruction, rounds, step, totalSteps, onNext, onSolve }: SpaceChoiceStepProps) {
   const [round, setRound] = useState(0);
@@ -134,29 +139,33 @@ export function SpaceChoiceStep({ lawNumber, title, instruction, rounds, step, t
                 aria-pressed={right}
                 disabled={solved}
                 onClick={() => choose(i)}
+                // The radius is the pictures' own rounded corners (52px on the 489×524 picture), so the frame follows them exactly.
+                style={{ borderRadius: PICTURE_RADIUS }}
                 className={cn(
-                  "group relative aspect-[489/524] overflow-hidden rounded-[22px] bg-card transition-[transform,box-shadow,opacity,filter] duration-300 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring md:rounded-[36px] lg:rounded-[calc(var(--u)*2.6)]",
+                  "group relative aspect-[489/524] overflow-hidden transition-[transform,box-shadow] duration-300 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring",
                   !solved && "cursor-pointer hover:-translate-y-1 hover:shadow-[0_14px_32px_hsl(var(--mist)/0.7)]",
-                  right && "ring-4 ring-[#5cb87a] lg:ring-[calc(var(--u)*0.31)]",
-                  wrong === i && !solved && "ring-4 ring-alert/60 lg:ring-[calc(var(--u)*0.31)]",
                   shaking === i && "motion-safe:animate-shake",
                 )}
               >
                 <img src={o.src} alt="" draggable={false} className={cn("absolute inset-0 size-full object-cover transition-[opacity,filter] duration-300", dim && "opacity-45 grayscale-[40%]")} />
-                {/* Checklist circle at the top of the picture: empty until picked, a green check on the right one, a red x on a wrong pick */}
+                {/* The frame: drawn inside the picture's edge with the same rounded corners; coral on the right one, red on a wrong pick */}
+                {(right || (wrong === i && !solved)) && (
+                  <span
+                    aria-hidden="true"
+                    style={{ borderRadius: PICTURE_RADIUS }}
+                    className={cn(
+                      "pointer-events-none absolute inset-0 border-4 motion-safe:animate-fade-in-scale md:border-[5px] lg:border-[calc(var(--u)*0.31)]",
+                      right ? "border-primary" : "border-alert/70",
+                    )}
+                  />
+                )}
+                {/* Checklist circle at the top of the picture, like the quiz answers: empty until picked, a coral check on the right one, a red x on a wrong pick */}
                 <span
                   aria-hidden="true"
-                  key={right ? "right" : wrong === i ? "wrong" : "empty"}
-                  className={cn(
-                    "absolute left-1/2 top-3 flex size-9 -translate-x-1/2 items-center justify-center rounded-full border-[3px] text-[20px] font-bold leading-none shadow-[0_4px_12px_rgba(0,0,0,0.18)] transition-colors duration-200 md:top-5 md:size-12 md:text-[26px] lg:top-[calc(var(--u)*1.25)] lg:size-[calc(var(--u)*3.1)] lg:border-[calc(var(--u)*0.21)] lg:text-[calc(var(--u)*1.75)]",
-                    right
-                      ? "border-white bg-[#5cb87a] text-white motion-safe:animate-fade-in-scale"
-                      : wrong === i && !solved
-                        ? "border-white bg-alert text-white motion-safe:animate-fade-in-scale"
-                        : "border-white bg-white/70 text-transparent group-hover:bg-white",
-                  )}
+                  className="absolute left-1/2 top-3 flex size-9 -translate-x-1/2 items-center justify-center rounded-full bg-card shadow-[0_4px_12px_hsl(var(--mist)/0.8)] md:top-5 md:size-12 lg:top-[calc(var(--u)*1.25)] lg:size-[calc(var(--u)*2.76)]"
                 >
-                  {right ? "✓" : wrong === i && !solved ? "✗" : ""}
+                  {right && <Check strokeWidth={3} className="size-5 text-primary motion-safe:animate-fade-in-scale md:size-6 lg:size-[calc(var(--u)*1.25)]" />}
+                  {wrong === i && !solved && <X strokeWidth={3} className="size-5 text-alert motion-safe:animate-fade-in-scale md:size-6 lg:size-[calc(var(--u)*1.25)]" />}
                 </span>
               </button>
             );
