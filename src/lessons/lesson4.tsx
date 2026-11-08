@@ -40,10 +40,10 @@ export const lesson4: LessonContent = {
   },
   video: {
     instruction:
-      "צפה בסרטון שבו כותב החוק מגלה מי מחליט בבית, בבית הספר ובחנות. תבין למה כדאי להקשיב לכללים של המקום שבו אתה נמצא.",
-    title: "כותב החוק מסביר: מי מחליט?",
-    src: "./assets/who-decides.mp4",
-    poster: "./assets/who-decides-poster.jpg",
+      "צפה בסרטון שבו כותב החוק מסביר מהו מרחב אישי, איך יודעים שמישהו רוצה שנתרחק קצת, ומה עושים כשמתקרבים אלינו יותר מדי.",
+    title: "כותב החוק מסביר: שמירת מרחב",
+    src: "./assets/personal-space.mp4",
+    poster: "./assets/personal-space-poster.jpg",
   },
   quiz: [
     {
