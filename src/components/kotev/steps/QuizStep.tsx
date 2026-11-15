@@ -71,8 +71,12 @@ export function QuizStep({ lawNumber, title, questions, step, totalSteps, onFini
   const last = index === questions.length - 1;
   const solved = solvedSet.has(index);
 
+  // The question just answered right moves on by itself (not when coming back to an answered one).
+  const [justSolved, setJustSolved] = useState<number | null>(null);
+
   const markSolved = () => {
     setSolvedSet((s) => new Set(s).add(index));
+    setJustSolved(index);
     onSolve?.(index);
   };
 
@@ -88,6 +92,7 @@ export function QuizStep({ lawNumber, title, questions, step, totalSteps, onFini
   };
 
   const go = (to: number) => {
+    setJustSolved(null);
     setIndex(to);
     setWrong([]);
     setBubbles([]);
@@ -109,6 +114,13 @@ export function QuizStep({ lawNumber, title, questions, step, totalSteps, onFini
       { duration: loud ? 400 : 220, easing: "ease-in-out" },
     );
   };
+
+  // A right answer moves on to the next question by itself, after the success sound and check mark.
+  useEffect(() => {
+    if (justSolved === null || justSolved !== index || last) return;
+    const t = window.setTimeout(() => go(index + 1), 2000);
+    return () => window.clearTimeout(t);
+  }, [justSolved, index, last]);
 
   useEffect(() => {
     if (!bubbles.length) return;
