@@ -42,8 +42,8 @@ const threadHash = (id: string) => `${FORUM_HASH}/${encodeURIComponent(id)}`;
 export function ForumBanner() {
   return (
     <header className="flex h-full flex-col justify-center text-right motion-safe:animate-fade-up">
-      <p className="font-hand text-[8.6vw] leading-normal md:text-[6.25vw] lg:text-[3.15vw]">פורום לילדים</p>
-      <h1 className="-mt-1 text-[8vw] font-bold leading-tight text-primary md:-mt-2 md:text-[5.6vw] lg:-mt-[0.5vw] lg:text-[3.3vw]">
+      <p className="font-hand text-[11vw] leading-normal md:text-[8vw] lg:text-[4.4vw]">פורום לילדים</p>
+      <h1 className="-mt-4 text-[8vw] font-bold leading-tight text-primary md:-mt-7 md:text-[5.6vw] lg:-mt-[1.9vw] lg:text-[3.3vw]">
         שואלים, עונים ולומדים ביחד.
       </h1>
     </header>
