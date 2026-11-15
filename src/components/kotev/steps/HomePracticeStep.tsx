@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { FileDown } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -26,11 +26,33 @@ type HomePracticeStepProps = {
   onNextLaw?: () => void;
 };
 
+/** The sheet picture's width / height. */
+const SHEET_RATIO = 480 / 678;
+
 export function HomePracticeStep({ lawNumber, title, text, sheet, downloadHref, downloadName, onNextLaw }: HomePracticeStepProps) {
+  // On desktop the sheet is as tall as the text column, so it starts with the title and ends with the
+  // bottom of the "next law" button. The column's height depends on the law's text, so it is measured.
+  const columnRef = useRef<HTMLDivElement>(null);
+  const [sheetWidth, setSheetWidth] = useState<number | null>(null);
+  useLayoutEffect(() => {
+    const column = columnRef.current;
+    if (!column) return;
+    const desktop = window.matchMedia("(min-width: 1024px)");
+    const measure = () => setSheetWidth(desktop.matches ? column.getBoundingClientRect().height * SHEET_RATIO : null);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(column);
+    desktop.addEventListener("change", measure);
+    return () => {
+      observer.disconnect();
+      desktop.removeEventListener("change", measure);
+    };
+  }, []);
+
   return (
     <div className="flex flex-col gap-6 px-4 pb-10 pt-6 md:gap-8 md:px-8 md:pt-10 lg:flex-row lg:items-center lg:gap-[calc(var(--u)*4.01)] lg:py-[calc(var(--u)*1.5)] lg:pl-[2.9vw] lg:pr-[3.6vw]">
       {/* Text column: on mobile its children join the outer column so the sheet can sit after the title. */}
-      <div className="contents lg:order-1 lg:flex lg:min-w-0 lg:flex-1 lg:flex-col">
+      <div ref={columnRef} className="contents lg:order-1 lg:flex lg:min-h-[calc(var(--u)*35.3)] lg:min-w-0 lg:flex-1 lg:flex-col">
         <LawTitle lawNumber={lawNumber} title={title} className="order-1" />
 
         <div className="order-3 text-right text-[18px] leading-normal motion-safe:animate-fade-up motion-safe:[animation-delay:120ms] md:text-[22px] lg:max-w-[calc(var(--u)*41.719)] lg:self-start lg:text-[calc(var(--u)*1.25)]">
@@ -51,6 +73,8 @@ export function HomePracticeStep({ lawNumber, title, text, sheet, downloadHref, 
           </span>
         </a>
 
+        {/* A short text leaves the room above the next-law button, so the sheet never gets smaller than before */}
+        <div aria-hidden="true" className="hidden lg:order-5 lg:block lg:grow" />
         <button
           type="button"
           onClick={onNextLaw}
@@ -71,7 +95,9 @@ export function HomePracticeStep({ lawNumber, title, text, sheet, downloadHref, 
         </button>
       </div>
 
-      <figure className="order-2 mx-auto w-full max-w-[300px] motion-safe:animate-fade-in-scale motion-safe:[animation-delay:80ms] md:max-w-[360px] lg:order-none lg:mx-0 lg:w-[calc(var(--u)*25)] lg:max-w-none lg:shrink-0">
+      <figure
+        style={sheetWidth ? { width: sheetWidth } : undefined}
+        className="order-2 mx-auto w-full max-w-[300px] motion-safe:animate-fade-in-scale motion-safe:[animation-delay:80ms] md:max-w-[360px] lg:order-none lg:mx-0 lg:w-[calc(var(--u)*25)] lg:max-w-none lg:shrink-0">
         <img
           src={sheet.src}
           alt={sheet.alt}
