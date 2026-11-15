@@ -5,6 +5,8 @@ import { HierarchyDriveGame } from "@/components/kotev/games/HierarchyDriveGame"
 import { MergeDriveGame } from "@/components/kotev/games/MergeDriveGame";
 import { NoEntryDriveGame } from "@/components/kotev/games/NoEntryDriveGame";
 import { KotevLayout } from "@/components/kotev/KotevLayout";
+import { ForumBanner, ForumPage } from "@/components/kotev/pages/ForumPage";
+import { FORUM_HASH, isForumHash } from "@/forum/forumData";
 import { LessonsBanner, LessonsPage, type Lesson } from "@/components/kotev/pages/LessonsPage";
 import { HomePracticeStep } from "@/components/kotev/steps/HomePracticeStep";
 import { IntroStep } from "@/components/kotev/steps/IntroStep";
@@ -41,6 +43,7 @@ const LESSONS: Lesson[] = Array.from({ length: LESSON_COUNT }, (_, i) => {
 
 const LESSONS_HASH = "#lessons";
 const isLessonsPage = () => window.location.hash === LESSONS_HASH;
+const isForumPage = () => isForumHash(window.location.hash);
 
 /** Law 1 keeps its short address (#step-2); later laws add their number (#lesson-2-step-2). */
 function stepHash(lesson: number, step: number) {
@@ -63,6 +66,7 @@ const Index = () => {
   const { step } = place;
   const lesson = BUILT_LESSONS[place.lesson];
   const [showLessons, setShowLessons] = useState(isLessonsPage);
+  const [showForum, setShowForum] = useState(isForumPage);
 
   // Snail points: start at 0, one for each step finished and each success inside a step.
   // Each success counts once (keyed), so replaying the game or revisiting a step doesn't add more.
@@ -84,6 +88,7 @@ const Index = () => {
   useEffect(() => {
     const onHash = () => {
       setShowLessons(isLessonsPage());
+      setShowForum(isForumPage());
       setPlace(placeFromHash());
       window.scrollTo({ top: 0 });
     };
@@ -100,6 +105,14 @@ const Index = () => {
       goTo(step + 1);
     },
   };
+
+  if (showForum) {
+    return (
+      <KotevLayout user={{ name: "דניאל", points }} banner={<ForumBanner />} activeHref={FORUM_HASH}>
+        <ForumPage userName="דניאל" onEarn={earn} />
+      </KotevLayout>
+    );
+  }
 
   if (showLessons) {
     return (

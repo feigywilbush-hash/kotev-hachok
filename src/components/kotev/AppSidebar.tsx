@@ -4,6 +4,7 @@ import { Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import {
+  ForumIcon,
   HomeIcon,
   KotevLogo,
   LessonsIcon,
@@ -11,7 +12,6 @@ import {
   ParentsIcon,
   PrintIcon,
   SettingsIcon,
-  TrophyIcon,
 } from "./icons";
 
 /*
@@ -34,7 +34,7 @@ type NavItem = {
 const NAV_ITEMS: NavItem[] = [
   { label: "דף הבית", href: "/", icon: HomeIcon },
   { label: "שיעורים", href: "#lessons", icon: LessonsIcon },
-  { label: "משימות", href: "/tasks", icon: TrophyIcon },
+  { label: "פורום לילדים", href: "#forum", icon: ForumIcon, fullSize: true },
   { label: "קבצים להדפסה", href: "/printables", icon: PrintIcon },
   { label: "הדרכה להורים", href: "/parents", icon: ParentsIcon },
   { label: "הגדרות", href: "/settings", icon: SettingsIcon, fullSize: true },
