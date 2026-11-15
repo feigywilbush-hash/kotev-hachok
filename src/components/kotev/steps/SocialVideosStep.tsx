@@ -102,10 +102,10 @@ export function SocialVideosStep({ lawNumber, title, parts, step, totalSteps, on
   };
 
   return (
-    <div className="flex flex-col gap-6 px-4 pb-10 pt-6 md:gap-8 md:px-8 md:pt-10 lg:flex-row lg:items-center lg:gap-[calc(var(--u)*3)] lg:py-[calc(var(--u)*1.5)] lg:pl-[2vw] lg:pr-[4.427vw]">
-      {/* Right column: title, the part's instruction and the buttons, so the stage on the left can
-          take the whole height of the step. */}
-      <div className="contents lg:flex lg:w-[calc(var(--u)*22.813)] lg:shrink-0 lg:flex-col">
+    <div className="flex flex-col gap-6 px-4 pb-10 pt-6 md:gap-8 md:px-8 md:pt-10 lg:flex-row-reverse lg:items-center lg:gap-[calc(var(--u)*3)] lg:py-[calc(var(--u)*1.5)] lg:pl-[2.448vw] lg:pr-[2.448vw]">
+      {/* Left column on desktop: title and the part's instruction at the top, the buttons at the bottom
+          (level with the stage's bottom edge), so the stage on the right can take the whole height. */}
+      <div className="contents lg:flex lg:w-[calc(var(--u)*22.813)] lg:shrink-0 lg:flex-col lg:self-stretch">
         <LawTitle lawNumber={lawNumber} title={title} className="order-1" />
         <div key={part} className="order-2 text-right motion-safe:animate-fade-up lg:mt-[calc(var(--u)*1.25)]">
           <p className="text-[15px] font-bold text-primary md:text-[18px] lg:text-[calc(var(--u)*1.042)]">
@@ -123,10 +123,10 @@ export function SocialVideosStep({ lawNumber, title, parts, step, totalSteps, on
             totalSteps={totalSteps}
             onNext={onNext}
             disabled={!videoOnly && !partDone}
-            className="order-5 lg:mt-[calc(var(--u)*2.083)]"
+            className="order-5 lg:mt-auto"
           />
         ) : (
-          <div className="order-5 flex flex-col-reverse gap-3 md:flex-row md:items-center md:justify-between md:gap-[14px] lg:mt-[calc(var(--u)*2.083)] lg:flex-col-reverse lg:items-stretch lg:gap-[calc(var(--u)*0.729)]">
+          <div className="order-5 flex flex-col-reverse gap-3 md:flex-row md:items-center md:justify-between md:gap-[14px] lg:mt-auto lg:flex-col-reverse lg:items-stretch lg:gap-[calc(var(--u)*0.729)]">
             {view === "activity" && activity > 0 && (
               <NavButton tone="back" onClick={() => goActivity(activity - 1)} className="md:max-w-none md:flex-1 lg:w-full">
                 לשאלה הקודמת
@@ -164,7 +164,7 @@ export function SocialVideosStep({ lawNumber, title, parts, step, totalSteps, on
         )}
       </div>
 
-      <div className="contents lg:flex lg:min-w-0 lg:flex-1 lg:justify-end">
+      <div className="contents lg:flex lg:min-w-0 lg:flex-1 lg:justify-start">
 
         <div
           className={cn(
