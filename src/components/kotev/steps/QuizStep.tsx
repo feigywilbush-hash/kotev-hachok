@@ -6,6 +6,7 @@ import { ArrowLeftIcon } from "../icons";
 import { playFail, playSuccess } from "../games/driveSounds";
 import { LawTitle, NextStepButton, TiltedPhoto } from "./StepParts";
 import { KnockActivity, type DoorEffect } from "./quiz/KnockActivity";
+import { ChoiceActivity } from "./SocialVideosStep";
 
 /*
  * "משחק ותרגול" step: a short quiz about respecting a "no entry" in social life.
@@ -13,6 +14,8 @@ import { KnockActivity, type DoorEffect } from "./quiz/KnockActivity";
  *  - choice: three answers, the learner picks the one that respects the "no entry". A wrong pick
  *    shakes and is crossed out, the right one gets a check.
  *  - knock: the learner practises knocking politely on the door in the photo.
+ *  - pictures: a choice question whose answers are picture cards, laid out as the questions after
+ *    the videos of law 3 (title on the right, question and cards on the left, no side photo).
  * Solving a question unlocks "לשאלה הבאה"; from the second question on, "לשאלה הקודמת" goes back.
  * The last question ends the step with the wide yellow "התקדם לשלב הבא" button instead.
  * Sizes: px on mobile/tablet; on desktop multiples of --u (1vw on a 16:9 screen, smaller on short
@@ -32,7 +35,14 @@ export type QuizQuestion =
       correct: number;
       image: Photo;
     }
-  | { kind: "knock"; question: string; instruction: string; image: Photo };
+  | { kind: "knock"; question: string; instruction: string; image: Photo }
+  | {
+      kind: "pictures";
+      question: string;
+      /** Listed right to left as they appear on screen. */
+      answers: { text: string; image: string; imageFocus?: string }[];
+      correct: number;
+    };
 
 type QuizStepProps = {
   lawNumber: number;
@@ -106,6 +116,58 @@ export function QuizStep({ lawNumber, title, questions, step, totalSteps, onFini
     return () => window.clearTimeout(t);
   }, [bubbles]);
 
+  const navButtons = last ? (
+    // The last question ends the step: one wide "next step" button, as on the other steps.
+    <NextStepButton
+      step={step}
+      totalSteps={totalSteps}
+      onNext={() => solved && onFinish?.()}
+      disabled={!solved}
+      className={cn("order-6", q.kind === "choice" && "lg:mt-[calc(var(--u)*1.406)]")}
+    />
+  ) : (
+    <div
+      className={cn(
+        "order-6 flex flex-col-reverse gap-3 md:flex-row md:items-center md:justify-between md:gap-[14px] lg:gap-[calc(var(--u)*0.729)]",
+        q.kind === "choice" && "lg:mt-[calc(var(--u)*1.406)]",
+      )}
+    >
+      {index > 0 && (
+        <NavButton tone="back" onClick={() => go(index - 1)}>
+          לשאלה הקודמת
+        </NavButton>
+      )}
+      <NavButton tone="next" onClick={next} disabled={!solved} className="md:ms-auto">
+        לשאלה הבאה
+      </NavButton>
+    </div>
+  );
+
+  if (q.kind === "pictures") {
+    // Same layout as the questions after the videos of law 3: title and question dots on the
+    // right, the question with its picture cards and the buttons on the left.
+    return (
+      <div className="flex flex-col gap-6 px-4 pb-10 pt-6 md:gap-8 md:px-8 md:pt-10 lg:flex-row lg:items-stretch lg:gap-[calc(var(--u)*4.5)] lg:py-[calc(var(--u)*1.5)] lg:pl-[2.448vw] lg:pr-[4.427vw]">
+        <div className="contents lg:flex lg:w-[calc(var(--u)*22.813)] lg:shrink-0 lg:flex-col lg:justify-center lg:gap-[calc(var(--u)*2)]">
+          <LawTitle lawNumber={lawNumber} title={title} className="order-1" />
+          <QuizProgress total={questions.length} current={index} className="order-3 w-full max-w-[505px] self-end lg:order-2 lg:max-w-none" />
+        </div>
+        <div className="contents lg:mr-auto lg:flex lg:min-w-0 lg:max-w-[calc(var(--u)*50.466)] lg:flex-1 lg:flex-col lg:justify-center lg:pt-[calc(var(--u)*1.2)]">
+          <div key={`p${index}`} className="relative order-4 w-full lg:aspect-video">
+            <div className="flex h-full flex-col py-2 lg:absolute lg:inset-0 lg:py-[calc(var(--u)*0.5)]">
+              <ChoiceActivity
+                activity={{ kind: "choice", question: q.question, answers: q.answers, correct: q.correct }}
+                onSolved={markSolved}
+                done={solved}
+              />
+            </div>
+          </div>
+          <div className="order-5 lg:mt-[calc(var(--u)*1.042)]">{navButtons}</div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-6 px-4 pb-10 pt-6 md:gap-8 md:px-8 md:pt-10 lg:flex-row lg:items-center lg:gap-[calc(var(--u)*2.865)] lg:py-[calc(var(--u)*1.5)] lg:pl-[2.865vw] lg:pr-[4.115vw]">
       {/* Text column: on mobile its children join the outer column so the photo can sit after the title. */}
@@ -176,32 +238,7 @@ export function QuizStep({ lawNumber, title, questions, step, totalSteps, onFini
           </div>
         )}
 
-        {last ? (
-          // The last question ends the step: one wide "next step" button, as on the other steps.
-          <NextStepButton
-            step={step}
-            totalSteps={totalSteps}
-            onNext={() => solved && onFinish?.()}
-            disabled={!solved}
-            className={cn("order-6", q.kind === "choice" && "lg:mt-[calc(var(--u)*1.406)]")}
-          />
-        ) : (
-        <div
-          className={cn(
-            "order-6 flex flex-col-reverse gap-3 md:flex-row md:items-center md:justify-between md:gap-[14px] lg:gap-[calc(var(--u)*0.729)]",
-            q.kind === "choice" && "lg:mt-[calc(var(--u)*1.406)]",
-          )}
-        >
-          {index > 0 && (
-            <NavButton tone="back" onClick={() => go(index - 1)}>
-              לשאלה הקודמת
-            </NavButton>
-          )}
-          <NavButton tone="next" onClick={next} disabled={!solved} className="md:ms-auto">
-            לשאלה הבאה
-          </NavButton>
-        </div>
-        )}
+        {navButtons}
       </div>
 
       <div className="relative order-2 mx-auto w-full max-w-[280px] md:max-w-[340px] lg:order-none lg:mx-0 lg:w-[calc(var(--u)*25.625)] lg:max-w-none lg:shrink-0">

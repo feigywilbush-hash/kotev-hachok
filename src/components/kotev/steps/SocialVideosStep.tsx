@@ -25,7 +25,7 @@ export type SocialActivity =
       answers: { text: string; icon?: string; image?: string; /** CSS object-position, so a tall card keeps the picture's subject in view. */ imageFocus?: string; /** "contain" shows the whole picture (for objects on white). */ imageFit?: "contain" }[];
       correct: number;
       /** Shown once the right answer is picked. */
-      explain: string;
+      explain?: string;
     }
   | {
       kind: "order";
@@ -223,7 +223,7 @@ const QUESTION = "text-right text-[4.6vw] font-bold leading-snug md:text-[2.865v
 const EXPLAIN =
   "mt-3 text-right text-[4.1vw] leading-snug motion-safe:animate-fade-up md:text-[2.344vw] lg:mt-[calc(var(--u)*0.833)] lg:text-[min(1.146vw,calc(var(--u)*1.146))]";
 
-function ChoiceActivity({ activity, onSolved, done }: { activity: Extract<SocialActivity, { kind: "choice" }>; onSolved: () => void; done: boolean }) {
+export function ChoiceActivity({ activity, onSolved, done }: { activity: Extract<SocialActivity, { kind: "choice" }>; onSolved: () => void; done: boolean }) {
   const [wrong, setWrong] = useState<number[]>([]);
   const [right, setRight] = useState(done);
   const icons = activity.answers.some((a) => a.icon);
@@ -315,7 +315,7 @@ function ChoiceActivity({ activity, onSolved, done }: { activity: Extract<Social
         })}
       </div>
       <p role="status" className={cn(right ? EXPLAIN : "sr-only")}>
-        {right ? `נכון! ${activity.explain}` : wrong.length ? "לא בדיוק, נסו תשובה אחרת" : ""}
+        {right ? `נכון! ${activity.explain ?? ""}`.trim() : wrong.length ? "לא בדיוק, נסו תשובה אחרת" : ""}
       </p>
     </div>
   );
