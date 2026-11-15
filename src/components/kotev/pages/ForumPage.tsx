@@ -639,8 +639,8 @@ export function ForumPage({ userName, onEarn }: { userName: string; onEarn?: (ke
   }, [threadId]);
 
   return (
-    <div className="px-4 pb-12 pt-6 md:px-8 md:pt-10 lg:px-[3.5vw] lg:pb-[4vw] lg:pt-[2.6vw]">
-      <div className="mx-auto grid max-w-[1260px] items-start gap-6 lg:grid-cols-[minmax(0,1fr)_380px] lg:gap-8">
+    <div className="px-4 pb-12 pt-6 md:px-14 md:pt-10 lg:px-[5.385vw] lg:pb-[4vw] lg:pt-[2.6vw]">
+      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_380px] lg:gap-8">
         <div className="min-w-0">
           {threadId && !thread ? (
             <div className="flex flex-col items-center gap-3 rounded-[32px] bg-card px-6 py-12 text-center">
