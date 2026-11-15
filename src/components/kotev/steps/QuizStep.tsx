@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Check, X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -148,7 +148,8 @@ export function QuizStep({ lawNumber, title, questions, step, totalSteps, onFini
     // column, so the picture cards on the left can take the whole height of the step.
     return (
       <div className="flex flex-col gap-6 px-4 pb-10 pt-6 md:gap-8 md:px-8 md:pt-10 lg:flex-row lg:items-center lg:gap-[calc(var(--u)*3)] lg:py-[calc(var(--u)*1.5)] lg:pl-[2vw] lg:pr-[4.427vw]">
-        <div className="contents lg:flex lg:w-[calc(var(--u)*22.813)] lg:shrink-0 lg:flex-col">
+        {/* Title and question at the top of the column, the buttons (side by side) at its bottom. */}
+        <div className="contents lg:flex lg:w-[calc(var(--u)*22.813)] lg:shrink-0 lg:flex-col lg:self-stretch">
           <LawTitle lawNumber={lawNumber} title={title} className="order-1" />
           <p
             key={`q${index}`}
@@ -156,22 +157,17 @@ export function QuizStep({ lawNumber, title, questions, step, totalSteps, onFini
           >
             {q.question}
           </p>
-          <QuizProgress
-            total={questions.length}
-            current={index}
-            className="order-3 w-full max-w-[505px] self-end lg:mt-[calc(var(--u)*1.667)] lg:max-w-none"
-          />
-          <div className="order-5 flex flex-col-reverse gap-3 lg:mt-[calc(var(--u)*1.667)] lg:gap-[calc(var(--u)*0.729)]">
+          <div className="order-5 flex flex-col-reverse gap-3 md:flex-row lg:mt-auto lg:gap-[calc(var(--u)*0.729)]">
             {last ? (
               <NextStepButton step={step} totalSteps={totalSteps} onNext={() => solved && onFinish?.()} disabled={!solved} />
             ) : (
               <>
                 {index > 0 && (
-                  <NavButton tone="back" onClick={() => go(index - 1)} className="md:max-w-none lg:w-full">
+                  <NavButton tone="back" onClick={() => go(index - 1)} className="md:max-w-none md:flex-1 lg:w-auto lg:min-w-0 lg:flex-1 lg:gap-[calc(var(--u)*0.5)] lg:p-[calc(var(--u)*0.5)] lg:[&>span:first-child]:whitespace-nowrap lg:[&>span:first-child]:text-[calc(var(--u)*0.95)] lg:[&>span:last-child]:size-[calc(var(--u)*2.2)]">
                     לשאלה הקודמת
                   </NavButton>
                 )}
-                <NavButton tone="next" onClick={next} disabled={!solved} className="md:max-w-none lg:w-full">
+                <NavButton tone="next" onClick={next} disabled={!solved} className="md:max-w-none md:flex-1 lg:w-auto lg:min-w-0 lg:flex-1 lg:gap-[calc(var(--u)*0.5)] lg:p-[calc(var(--u)*0.5)] lg:[&>span:first-child]:whitespace-nowrap lg:[&>span:first-child]:text-[calc(var(--u)*0.95)] lg:[&>span:last-child]:size-[calc(var(--u)*2.2)]">
                   לשאלה הבאה
                 </NavButton>
               </>
@@ -194,16 +190,9 @@ export function QuizStep({ lawNumber, title, questions, step, totalSteps, onFini
     <div className="flex flex-col gap-6 px-4 pb-10 pt-6 md:gap-8 md:px-8 md:pt-10 lg:flex-row lg:items-center lg:gap-[calc(var(--u)*2.865)] lg:py-[calc(var(--u)*1.5)] lg:pl-[2.865vw] lg:pr-[4.115vw]">
       {/* Text column: on mobile its children join the outer column so the photo can sit after the title. */}
       <div className="contents lg:order-1 lg:flex lg:min-w-0 lg:flex-1 lg:flex-col">
-        {/* Title and question dots share a row on desktop: the dots sit at the far left and shrink
-            on narrow windows, always keeping a gap from the title. */}
         <div className="contents lg:flex lg:items-end lg:justify-between lg:gap-[calc(var(--u)*2)]">
           <LawTitle lawNumber={lawNumber} title={title} className="order-1 lg:shrink-0" />
 
-          <QuizProgress
-            total={questions.length}
-            current={index}
-            className="order-3 w-full max-w-[505px] self-end lg:order-2 lg:mb-[calc(var(--u)*1.563)] lg:w-auto lg:min-w-[calc(var(--u)*6)] lg:max-w-none lg:shrink lg:basis-[calc(var(--u)*26.302)]"
-          />
         </div>
 
         <p
@@ -322,38 +311,5 @@ export function NavButton({
         />
       </span>
     </button>
-  );
-}
-
-/** A dot per question on a faint track; the yellow line grows from the right as questions go by. */
-function QuizProgress({ total, current, className }: { total: number; current: number; className?: string }) {
-  // A dot per question; the yellow line reaches the current question's dot.
-  const step = 100 / Math.max(total - 1, 1);
-  const reached = current;
-  return (
-    <div
-      role="progressbar"
-      aria-valuemin={1}
-      aria-valuemax={total}
-      aria-valuenow={current + 1}
-      aria-label={`שאלה ${current + 1} מתוך ${total}`}
-      className={cn("relative h-[15px] lg:h-[calc(var(--u)*0.768)]", className)}
-    >
-      <div className="absolute inset-x-0 top-1/2 h-2.5 -translate-y-1/2 rounded-full bg-progress-track/[0.31] lg:h-[calc(var(--u)*0.521)]" />
-      {/* Dot centres run between the two end dots, so the inner strip is inset by half a dot. */}
-      <div className="absolute inset-y-0 left-[7.5px] right-[7.5px] lg:left-[calc(var(--u)*0.384)] lg:right-[calc(var(--u)*0.384)]">
-        <div
-          className="absolute -right-[4px] top-1/2 h-[3px] w-[calc(var(--done)+8px)] -translate-y-1/2 rounded-full bg-brand-sun transition-[width] duration-500 ease-out lg:-right-[calc(var(--u)*0.19)] lg:h-[calc(var(--u)*0.156)] lg:w-[calc(var(--done)+calc(var(--u)*0.38))]"
-          style={{ "--done": `${reached * step}%` } as CSSProperties}
-        />
-        {Array.from({ length: total }, (_, i) => (
-          <span
-            key={i}
-            className="absolute top-0 size-[15px] translate-x-1/2 rounded-full bg-brand-sun lg:size-[calc(var(--u)*0.768)]"
-            style={{ right: `${i * step}%` }}
-          />
-        ))}
-      </div>
-    </div>
   );
 }
