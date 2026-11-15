@@ -197,8 +197,8 @@ export function TopicBubbleStep({ lawNumber, title, instruction, scene, bubble, 
         {/* Questions move on by themselves; only the last one has buttons: the next step, and play again */}
         {last && (
           <div className="order-5 flex flex-col gap-3 md:flex-row md:gap-[14px] lg:mt-auto lg:flex-col lg:gap-[calc(var(--u)*0.729)]">
-            <NextStepButton step={step} totalSteps={totalSteps} onNext={onNext} />
             <ReplayButton onClick={() => goRound(0)} />
+            <NextStepButton step={step} totalSteps={totalSteps} onNext={onNext} />
           </div>
         )}
       </div>
