@@ -43,7 +43,7 @@ export function ForumBanner() {
   return (
     <header className="flex h-full flex-col justify-center text-right motion-safe:animate-fade-up">
       <p className="font-hand text-[8.6vw] leading-normal md:text-[6.25vw] lg:text-[3.15vw]">פורום לילדים</p>
-      <h1 className="-mt-1 text-[6.4vw] font-bold leading-tight text-primary md:-mt-2 md:text-[4.3vw] lg:-mt-[0.5vw] lg:text-[2.3vw]">
+      <h1 className="-mt-1 text-[8vw] font-bold leading-tight text-primary md:-mt-2 md:text-[5.6vw] lg:-mt-[0.5vw] lg:text-[3.3vw]">
         שואלים, עונים ולומדים ביחד.
       </h1>
     </header>
@@ -119,7 +119,7 @@ function PillIcon({ children }: { children: ReactNode }) {
 
 const RULES = [
   { icon: Smile, text: "מדברים יפה, גם כשלא מסכימים." },
-  { icon: Lock, text: "לא כותבים טלפון, כתובת או שם משפחה." },
+  { icon: Lock, text: "לא כותבים טלפון, מייל, כתובת או שם משפחה." },
   { icon: ThumbsUp, text: "תשובה שעזרה לך? לוחצים \"עזר לי\"." },
   { icon: ShieldCheck, text: "כותב החוק קורא הכל ועונה מדי פעם." },
 ];
@@ -165,7 +165,10 @@ function Composer({
   }, [autoFocus]);
 
   const isQuestion = kind === "question";
-  const warning = personalInfoWarning(`${title} ${text}`);
+  // Personal details (phone, email, address) block sending; see forum/personalInfo for the rules.
+  const titleBlocked = isQuestion && !!personalInfoWarning(title);
+  const textBlocked = !!personalInfoWarning(text);
+  const warning = personalInfoWarning(`${title}\n${text}`);
   const missing = isQuestion
     ? !topic
       ? "בחר נושא לשאלה"
@@ -194,6 +197,8 @@ function Composer({
 
   const field =
     "w-full rounded-[20px] border-2 border-transparent bg-answer px-4 py-3 text-[17px] text-foreground placeholder:text-foreground/50 transition-colors focus:border-primary/60 focus:bg-card focus:outline-none";
+
+  const blockedField = "border-alert/70 bg-alert/5 focus:border-alert focus:bg-alert/5";
 
   return (
     <form onSubmit={submit} className={cn("rounded-[32px] bg-card p-5 md:p-6", softCard, softShadow)} noValidate>
@@ -243,7 +248,8 @@ function Composer({
               onChange={(e) => setTitle(e.target.value)}
               maxLength={80}
               placeholder="מה רצית לשאול? (כותרת קצרה)"
-              className={field}
+              aria-invalid={titleBlocked}
+              className={cn(field, titleBlocked && blockedField)}
             />
           </label>
         )}
@@ -256,17 +262,27 @@ function Composer({
             maxLength={600}
             rows={isQuestion ? 4 : 3}
             placeholder={isQuestion ? "ספר מה קרה ומה היית רוצה לדעת..." : "איך היית עוזר לו? כתוב בנחמדות 🙂"}
-            className={cn(field, "resize-none leading-relaxed")}
+            aria-invalid={textBlocked}
+            className={cn(field, "resize-none leading-relaxed", textBlocked && blockedField)}
           />
         </label>
       </div>
 
+      {warning && (
+        <div role="alert" className="mt-4 flex items-start gap-3 rounded-[20px] bg-alert/10 p-4 text-[16px] leading-snug text-alert motion-safe:animate-shake">
+          <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-card">
+            <Lock className="size-5" />
+          </span>
+          <p className="pt-1.5">{warning}</p>
+        </div>
+      )}
+
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
         <p
-          role={warning || (tried && missing) ? "alert" : undefined}
-          className={cn("min-h-6 text-[15px]", warning ? "text-alert" : tried && missing ? "text-primary" : "opacity-60")}
+          role={!warning && tried && missing ? "alert" : undefined}
+          className={cn("min-h-6 text-[15px]", tried && missing ? "text-primary" : "opacity-60")}
         >
-          {warning || (tried && missing) || (isQuestion ? "ילדים אחרים וכותב החוק יענו לך." : `${text.length}/600`)}
+          {(tried && missing) || (isQuestion ? "ילדים אחרים וכותב החוק יענו לך." : `${text.length}/600`)}
         </p>
         <button type="submit" className={yellowPill} disabled={!!warning}>
           <PillIcon>
@@ -590,6 +606,7 @@ export function ForumPage({ userName, onEarn }: { userName: string; onEarn?: (ke
   const me: Author = { name: userName };
 
   const ask = (d: { topic: TopicId; title: string; text: string }) => {
+    if (personalInfoWarning(`${d.title}\n${d.text}`)) return;
     const id = `my-${Date.now()}`;
     update({ ...stored, threads: [{ id, topic: d.topic, title: d.title, text: d.text, author: me, at: Date.now(), replies: [] }, ...stored.threads] });
     onEarn?.(`forum-${id}`);
@@ -598,7 +615,7 @@ export function ForumPage({ userName, onEarn }: { userName: string; onEarn?: (ke
   };
 
   const reply = (text: string) => {
-    if (!thread) return;
+    if (!thread || personalInfoWarning(text)) return;
     const r: Reply = { id: `my-${Date.now()}`, author: me, text, at: Date.now(), helpful: 0 };
     const own = stored.threads.find((t) => t.id === thread.id);
     update(

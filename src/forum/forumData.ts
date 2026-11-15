@@ -208,10 +208,4 @@ export function timeAgo(at: number, now = Date.now()) {
   return weeks === 1 ? "לפני שבוע" : `לפני ${weeks} שבועות`;
 }
 
-/** A gentle check before posting: kids shouldn't share phone numbers, emails or addresses. */
-export function personalInfoWarning(text: string) {
-  if (/\d[\d\s-]{6,}\d/.test(text)) return "נראה שכתבת מספר טלפון. בפורום לא משתפים מספרי טלפון 🙏";
-  if (/\S+@\S+\.\S+/.test(text)) return "נראה שכתבת כתובת מייל. בפורום לא משתפים כתובות מייל 🙏";
-  if (/(רחוב|רח'|כתובת שלי|גר ב)/.test(text)) return "נראה שכתבת איפה אתה גר. את זה שומרים רק לחברים שמכירים 🙏";
-  return null;
-}
+export { personalInfoWarning } from "./personalInfo";
