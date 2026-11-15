@@ -156,7 +156,7 @@ const Index = () => {
           onSolve={(i) => earnHere(`social-${i}`)}
         />
       )}
-      {step === 2 && !lesson.socialParts && (
+      {step === 2 && !lesson.socialParts && lesson.video && (
         <StageStep
           key={`social-${lesson.number}`}
           {...shared}
@@ -214,7 +214,7 @@ const Index = () => {
           onSolve={(i) => earnHere(`pyramid-${i}`)}
         />
       )}
-      {step === 3 && !lesson.spaceGame && !lesson.topicGame && !lesson.pyramid && (
+      {step === 3 && !lesson.spaceGame && !lesson.topicGame && !lesson.pyramid && lesson.quiz && (
         <QuizStep
           key={`quiz-${lesson.number}`}
           lawNumber={shared.lawNumber}

@@ -20,10 +20,12 @@ export type LessonContent = {
    * `game` picks the driving game; the no-entry one when left out.
    */
   drive: { instruction: ReactNode; title?: string; game?: "no-entry" | "hierarchy" | "merge" | "distance" };
-  video: { instruction: string; title: string; src: string; poster: string };
+  /** The one "בכביש החברתי" video; left out when `socialParts` replaces it. */
+  video?: { instruction: string; title: string; src: string; poster: string };
   /** When set, the "בכביש החברתי" step is these short videos, each followed by an activity, instead of the one video. */
   socialParts?: SocialPart[];
-  quiz: QuizQuestion[];
+  /** The "משחק ותרגול" quiz; left out when one of the games below replaces it. */
+  quiz?: QuizQuestion[];
   /** When set, the "משחק ותרגול" step is the pyramid game instead of the quiz. */
   pyramid?: { instruction: ReactNode; rounds: PyramidRound[] };
   /** When set, the "משחק ותרגול" step is the speech-bubble topic game (law 3). */

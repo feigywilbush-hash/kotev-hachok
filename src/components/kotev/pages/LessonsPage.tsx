@@ -22,7 +22,7 @@ export type Lesson = {
 export function LessonsBanner() {
   return (
     <header className="flex h-full flex-col justify-center text-right motion-safe:animate-fade-up">
-      <p className="font-hand text-[7.18vw] leading-normal md:text-[5.208vw] lg:text-[2.6vw]">אנציקלופדיה חברתית</p>
+      <p className="font-hand text-[8.6vw] leading-normal md:text-[6.25vw] lg:text-[3.15vw]">אנציקלופדיה חברתית</p>
       <h1 className="-mt-1 text-[6.4vw] font-bold leading-tight text-primary md:-mt-2 md:text-[4.3vw] lg:-mt-[0.5vw] lg:text-[2.3vw]">
         חוקי הכביש מלמדים אותנו קודים חברתיים.
       </h1>

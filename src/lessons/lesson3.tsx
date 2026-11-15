@@ -1,7 +1,5 @@
 import type { LessonContent } from "./types";
 
-const DOOR = { src: "./assets/quiz-door.webp", alt: "ילד עומד מול דלת סגורה של בית" };
-
 /** Law 3: for now a copy of law 2, to be adjusted. */
 export const lesson3: LessonContent = {
   number: 3,
@@ -38,13 +36,6 @@ export const lesson3: LessonContent = {
         רווח גדול&nbsp;🚗
       </>
     ),
-  },
-  video: {
-    instruction:
-      "צפה בסרטון שבו כותב החוק מגלה מי מחליט בבית, בבית הספר ובחנות. תבין למה כדאי להקשיב לכללים של המקום שבו אתה נמצא.",
-    title: "כותב החוק מסביר: מי מחליט?",
-    src: "./assets/who-decides.mp4",
-    poster: "./assets/who-decides-poster.jpg",
   },
   socialParts: [
     {
@@ -119,48 +110,6 @@ export const lesson3: LessonContent = {
       activities: [],
     },
   ],
-  quiz: [
-    {
-      kind: "choice",
-      question: "קבעתי עם יוני שאבוא אליו אחר הצהריים. אני מגיע לבית שלו והדלת סגורה.\nאם קבענו, זה אומר שאפשר פשוט לפתוח ולהיכנס? 🤔",
-      answers: [
-        "אני אפתח את הדלת ואכנס לבד. יוני הזמין אותי, אז בטח אפשר להיכנס גם בלי לדפוק.",
-        "לא פותחים דלת בלי לדפוק, אבל אם הדלת פתוחה אני פשוט אכנס.",
-        "זה לא הבית שלי, אז אני אדפוק בדלת ואחכה שיפתחו לי ויזמינו אותי להיכנס.",
-      ],
-      correct: 2,
-      image: DOOR,
-    },
-    {
-      kind: "knock",
-      question: "יוני עוד לא פתח לי את הדלת אז אדפוק ואחכה בסבלנות שיפתחו לי 😊\nאבל רגע… איך דופקים בצורה נעימה ומקובלת?",
-      instruction:
-        "נסו לדפוק על הדלת בעזרת הכפתורים. שימו לב לעוצמה ולקצב:\nלא חזק מדי, לא מהר מדי ולא בלי הפסקה. דפיקות נעימות עוזרות לאנשים להרגיש בנוח לפתוח את הדלת.",
-      image: { src: "./assets/quiz-knock-door.webp", alt: "דלת כניסה סגורה של בית" },
-    },
-    {
-      kind: "choice",
-      question: "בבית של יוני אני רואה יומן שכתוב עליו: \"היומן האישי שלי\".\nהאם מותר להציץ ביומן של מישהו אחר? 🤔",
-      answers: [
-        "יוני חבר ממש טוב שלי, לכן אני חושב שמותר לי לפתוח ולהסתכל ביומן שלו.",
-        "היומן שייך ליוני, וזה חפץ אישי שלו, ולכן אני לא נוגע ולא מסתכל בו.",
-        "ליד יוני אני לא אסתכל כדי שלא יכעס, אבל כשלא יראה אני אציץ קצת.",
-      ],
-      correct: 1,
-      image: { src: "./assets/quiz-diary.webp", alt: "ילד מביט ביומן אישי שמונח על שולחן" },
-    },
-    {
-      kind: "choice",
-      question: "רציתי לשאול את יוני כמה הוא קיבל במבחן בחשבון.\nאבל שמתי לב שיוני לא מעוניין לדבר על זה. האם עדיין מתאים לשאול אותו? 🤔",
-      answers: [
-        "כיוון שיוני לא מעוניין לדבר על המבחן אני אהיה רגיש ולא אשאל אותו כמה קיבל.",
-        "אני אשאל אותו, כי אני כבר סיפרתי לו כמה אני קיבלתי, אז גם הוא צריך לספר לי.",
-        "כיוון שיוני לא מעוניין לספר זה נעשה מעניין יותר ולכן אני אשכנע אותו לספר לי.",
-      ],
-      correct: 0,
-      image: { src: "./assets/quiz-friends.webp", alt: "שני ילדים יושבים ומדברים בחדר" },
-    },
-  ],
   topicGame: {
     instruction: "החברים מדברים על נושא מסוים. גררו לבועה של הילד שרוצה להצטרף תמונה שקשורה למה שהם מדברים עליו!",
     scene: { src: "./assets/game-scene.webp", alt: "שני ילדים יושבים על ספסל ומדברים, וילד שלישי עומד לידם ורוצה להצטרף" },
@@ -198,6 +147,39 @@ export const lesson3: LessonContent = {
         correct: "police",
         hint: "זה לא קשור לשיחה. על מה החברים מדברים? נסו שוב!",
         praise: "נכון! הם מדברים על תאונה, ושוטר מתאים לשיחה.",
+      },
+      {
+        topic: { src: "./assets/game-topic-rain.webp", alt: "החברים מדברים על גשם: ענן עם טיפות גשם ושלולית" },
+        options: [
+          { id: "cake", image: { src: "./assets/game-cake.webp", alt: "עוגת יום הולדת עם בלונים" } },
+          { id: "umbrella", image: { src: "./assets/game-umbrella.webp", alt: "מטרייה פתוחה" } },
+          { id: "slide", image: { src: "./assets/game-slide.webp", alt: "מגלשה" } },
+        ],
+        correct: "umbrella",
+        hint: "זה לא קשור לשיחה. על מה החברים מדברים? נסו שוב!",
+        praise: "נכון! הם מדברים על גשם, ומטרייה מתאימה לשיחה.",
+      },
+      {
+        topic: { src: "./assets/game-topic-beach.webp", alt: "החברים מדברים על הים: חוף עם גלים, עץ דקל ושמש" },
+        options: [
+          { id: "car", image: { src: "./assets/game-car.webp", alt: "מכונית אדומה" } },
+          { id: "police", image: { src: "./assets/game-police.webp", alt: "שוטר" } },
+          { id: "sandcastle", image: { src: "./assets/game-sandcastle.webp", alt: "ארמון חול עם דלי ואת" } },
+        ],
+        correct: "sandcastle",
+        hint: "זה לא קשור לשיחה. על מה החברים מדברים? נסו שוב!",
+        praise: "נכון! הם מדברים על הים, וארמון חול מתאים לשיחה.",
+      },
+      {
+        topic: { src: "./assets/game-topic-space.webp", alt: "החברים מדברים על החלל: חללית, כוכב לכת וכוכבים" },
+        options: [
+          { id: "helmet", image: { src: "./assets/game-helmet.webp", alt: "קסדה של אסטרונאוט" } },
+          { id: "snake", image: { src: "./assets/game-snake.webp", alt: "נחש ירוק" } },
+          { id: "ball", image: { src: "./assets/game-ball.webp", alt: "כדורגל" } },
+        ],
+        correct: "helmet",
+        hint: "זה לא קשור לשיחה. על מה החברים מדברים? נסו שוב!",
+        praise: "נכון! הם מדברים על החלל, וקסדת אסטרונאוט מתאימה לשיחה.",
       },
     ],
   },
