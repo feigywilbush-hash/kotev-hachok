@@ -126,15 +126,15 @@ const RULES = [
 
 function RulesCard({ className }: { className?: string }) {
   return (
-    <aside className={cn("rounded-[32px] bg-surface p-5 md:p-6", className)} aria-label="כללי הפורום">
-      <p className="font-hand text-[30px] leading-none">כללי הפורום</p>
-      <ul className="mt-4 flex flex-col gap-3">
+    <aside className={cn("rounded-[32px] bg-surface p-6 md:p-8", className)} aria-label="כללי הפורום">
+      <p className="text-[26px] font-bold leading-tight md:text-[28px]">כללי הפורום</p>
+      <ul className="mt-6 flex flex-col gap-5">
         {RULES.map(({ icon: Icon, text }) => (
-          <li key={text} className="flex items-start gap-3 text-[16px] leading-snug">
-            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-card text-primary">
-              <Icon className="size-4" />
+          <li key={text} className="flex items-start gap-4 text-[19px] leading-snug md:text-[20px]">
+            <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-card text-primary">
+              <Icon className="size-6" />
             </span>
-            <span className="pt-1">{text}</span>
+            <span className="pt-2">{text}</span>
           </li>
         ))}
       </ul>
@@ -623,7 +623,7 @@ export function ForumPage({ userName, onEarn }: { userName: string; onEarn?: (ke
 
   return (
     <div className="px-4 pb-12 pt-6 md:px-8 md:pt-10 lg:px-[3.5vw] lg:pb-[4vw] lg:pt-[2.6vw]">
-      <div className="mx-auto grid max-w-[1180px] items-start gap-6 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-8">
+      <div className="mx-auto grid max-w-[1260px] items-start gap-6 lg:grid-cols-[minmax(0,1fr)_380px] lg:gap-8">
         <div className="min-w-0">
           {threadId && !thread ? (
             <div className="flex flex-col items-center gap-3 rounded-[32px] bg-card px-6 py-12 text-center">
