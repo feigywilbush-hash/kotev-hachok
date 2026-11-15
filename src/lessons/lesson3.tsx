@@ -148,6 +148,39 @@ export const lesson3: LessonContent = {
         hint: "זה לא קשור לשיחה. על מה החברים מדברים? נסו שוב!",
         praise: "נכון! הם מדברים על תאונה, ושוטר מתאים לשיחה.",
       },
+      {
+        topic: { src: "./assets/game-topic-rain.webp", alt: "החברים מדברים על גשם: ענן עם טיפות גשם ושלולית" },
+        options: [
+          { id: "cake", image: { src: "./assets/game-cake.webp", alt: "עוגת יום הולדת עם בלונים" } },
+          { id: "umbrella", image: { src: "./assets/game-umbrella.webp", alt: "מטרייה פתוחה" } },
+          { id: "slide", image: { src: "./assets/game-slide.webp", alt: "מגלשה" } },
+        ],
+        correct: "umbrella",
+        hint: "זה לא קשור לשיחה. על מה החברים מדברים? נסו שוב!",
+        praise: "נכון! הם מדברים על גשם, ומטרייה מתאימה לשיחה.",
+      },
+      {
+        topic: { src: "./assets/game-topic-beach.webp", alt: "החברים מדברים על הים: חוף עם גלים, עץ דקל ושמש" },
+        options: [
+          { id: "car", image: { src: "./assets/game-car.webp", alt: "מכונית אדומה" } },
+          { id: "police", image: { src: "./assets/game-police.webp", alt: "שוטר" } },
+          { id: "sandcastle", image: { src: "./assets/game-sandcastle.webp", alt: "ארמון חול עם דלי ואת" } },
+        ],
+        correct: "sandcastle",
+        hint: "זה לא קשור לשיחה. על מה החברים מדברים? נסו שוב!",
+        praise: "נכון! הם מדברים על הים, וארמון חול מתאים לשיחה.",
+      },
+      {
+        topic: { src: "./assets/game-topic-space.webp", alt: "החברים מדברים על החלל: חללית, כוכב לכת וכוכבים" },
+        options: [
+          { id: "helmet", image: { src: "./assets/game-helmet.webp", alt: "קסדה של אסטרונאוט" } },
+          { id: "snake", image: { src: "./assets/game-snake.webp", alt: "נחש ירוק" } },
+          { id: "ball", image: { src: "./assets/game-ball.webp", alt: "כדורגל" } },
+        ],
+        correct: "helmet",
+        hint: "זה לא קשור לשיחה. על מה החברים מדברים? נסו שוב!",
+        praise: "נכון! הם מדברים על החלל, וקסדת אסטרונאוט מתאימה לשיחה.",
+      },
     ],
   },
   home: {
