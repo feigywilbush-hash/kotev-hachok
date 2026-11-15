@@ -120,7 +120,7 @@ function PillIcon({ children }: { children: ReactNode }) {
 const RULES = [
   { icon: Smile, text: "מדברים יפה, גם כשלא מסכימים." },
   { icon: Lock, text: "לא כותבים טלפון, מייל, כתובת או שם משפחה." },
-  { icon: ThumbsUp, text: "תשובה שעזרה לך? לוחצים \"עזר לי\"." },
+  { icon: ThumbsUp, text: "תשובה שעזרה לך? לוחצים \"עזר\u00a0לי\"." },
   { icon: ShieldCheck, text: "כותב החוק קורא הכל ועונה מדי פעם." },
 ];
 
@@ -130,7 +130,7 @@ function RulesCard({ className }: { className?: string }) {
       <p className="text-[26px] font-bold leading-tight md:text-[28px]">כללי הפורום</p>
       <ul className="mt-6 flex flex-col gap-5">
         {RULES.map(({ icon: Icon, text }) => (
-          <li key={text} className="flex items-start gap-4 text-[19px] leading-snug md:text-[20px]">
+          <li key={text} className="flex items-start gap-4 text-[18px] leading-snug">
             <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-card text-primary">
               <Icon className="size-6" />
             </span>
