@@ -102,22 +102,73 @@ export function SocialVideosStep({ lawNumber, title, parts, step, totalSteps, on
   };
 
   return (
-    <div className="flex flex-col gap-6 px-4 pb-10 pt-6 md:gap-8 md:px-8 md:pt-10 lg:flex-row lg:items-stretch lg:gap-[calc(var(--u)*4.5)] lg:py-[calc(var(--u)*1.5)] lg:pl-[2.448vw] lg:pr-[4.427vw]">
-      <div className="contents lg:flex lg:w-[calc(var(--u)*22.813)] lg:shrink-0 lg:flex-col lg:justify-between">
+    <div className="flex flex-col gap-6 px-4 pb-10 pt-6 md:gap-8 md:px-8 md:pt-10 lg:flex-row lg:items-center lg:gap-[calc(var(--u)*3)] lg:py-[calc(var(--u)*1.5)] lg:pl-[2vw] lg:pr-[4.427vw]">
+      {/* Right column: title, the part's instruction and the buttons, so the stage on the left can
+          take the whole height of the step. */}
+      <div className="contents lg:flex lg:w-[calc(var(--u)*22.813)] lg:shrink-0 lg:flex-col">
         <LawTitle lawNumber={lawNumber} title={title} className="order-1" />
-        <div key={part} className="order-2 text-right motion-safe:animate-fade-up lg:pb-[calc(var(--u)*1.667)]">
+        <div key={part} className="order-2 text-right motion-safe:animate-fade-up lg:mt-[calc(var(--u)*1.25)]">
           <p className="text-[15px] font-bold text-primary md:text-[18px] lg:text-[calc(var(--u)*1.042)]">
             סרטון {part + 1} מתוך {parts.length}: {p.label}
           </p>
           <p className="mt-1 text-[17px] leading-normal md:text-[20px] lg:mt-[calc(var(--u)*0.26)] lg:text-[calc(var(--u)*1.042)]">{p.instruction}</p>
         </div>
+        {/* Buttons under the instruction, as in the quiz: "לשאלה הבאה" moves from the video to its questions and
+            between them, "לסרטון הבא" opens the next video, and the last question of the last video
+            ends the step with the wide "התקדם לשלב הבא" button. */}
+        {lastPart && (videoOnly || (view === "activity" && lastActivity)) ? (
+          // A last video with no questions has nothing to wait for: one wide button, no back button.
+          <NextStepButton
+            step={step}
+            totalSteps={totalSteps}
+            onNext={onNext}
+            disabled={!videoOnly && !partDone}
+            className="order-5 lg:mt-[calc(var(--u)*2.083)]"
+          />
+        ) : (
+          <div className="order-5 flex flex-col-reverse gap-3 md:flex-row md:items-center md:justify-between md:gap-[14px] lg:mt-[calc(var(--u)*2.083)] lg:flex-col-reverse lg:items-stretch lg:gap-[calc(var(--u)*0.729)]">
+            {view === "activity" && activity > 0 && (
+              <NavButton tone="back" onClick={() => goActivity(activity - 1)} className="md:max-w-none md:flex-1 lg:w-full">
+                לשאלה הקודמת
+              </NavButton>
+            )}
+            {/* From the first question, back goes to the video it is about. */}
+            {view === "activity" && activity === 0 && (
+              <NavButton tone="back" onClick={() => goPart(part)} className="md:max-w-none md:flex-1 lg:w-full">
+                לסרטון הקודם
+              </NavButton>
+            )}
+            {view === "video" && part > 0 && (
+              <NavButton tone="back" onClick={() => goPart(part - 1)} className="md:max-w-none md:flex-1 lg:w-full">
+                לסרטון הקודם
+              </NavButton>
+            )}
+            {view === "video" && videoOnly ? (
+              <NavButton tone="next" onClick={() => goPart(part + 1, true)} className="md:max-w-none md:flex-1 lg:w-full">
+                לסרטון הבא
+              </NavButton>
+            ) : view === "video" ? (
+              <NavButton tone="next" onClick={() => goActivity(0)} className="md:max-w-none md:flex-1 lg:w-full">
+                לשאלה הבאה
+              </NavButton>
+            ) : lastActivity ? (
+              <NavButton tone="next" onClick={() => goPart(part + 1, true)} disabled={!partDone} className="md:max-w-none md:flex-1 lg:w-full">
+                לסרטון הבא
+              </NavButton>
+            ) : (
+              <NavButton tone="next" onClick={() => goActivity(activity + 1)} disabled={!answered} className="md:max-w-none md:flex-1 lg:w-full">
+                לשאלה הבאה
+              </NavButton>
+            )}
+          </div>
+        )}
       </div>
 
-      <div className="contents lg:mr-auto lg:flex lg:min-w-0 lg:max-w-[calc(var(--u)*50.466)] lg:flex-1 lg:flex-col lg:pt-[calc(var(--u)*1.2)]">
+      <div className="contents lg:flex lg:min-w-0 lg:flex-1 lg:justify-end">
 
         <div
           className={cn(
-            "relative order-4 w-full motion-safe:animate-fade-in-scale lg:aspect-video",
+            "relative order-4 w-full motion-safe:animate-fade-in-scale lg:aspect-video lg:max-w-[calc(var(--u)*38*16/9)]",
             // The video sits in a rounded stage; the questions sit straight on the page.
             view === "video" && "aspect-video overflow-hidden rounded-[32px] bg-stage md:rounded-[48px] lg:rounded-[calc(var(--u)*3.125)]",
           )}
@@ -154,55 +205,6 @@ export function SocialVideosStep({ lawNumber, title, parts, step, totalSteps, on
           )}
         </div>
 
-        {/* Bottom buttons, as in the quiz: "לשאלה הבאה" moves from the video to its questions and
-            between them, "לסרטון הבא" opens the next video, and the last question of the last video
-            ends the step with the wide "התקדם לשלב הבא" button. */}
-        {lastPart && (videoOnly || (view === "activity" && lastActivity)) ? (
-          // A last video with no questions has nothing to wait for: one wide button, no back button.
-          <NextStepButton
-            step={step}
-            totalSteps={totalSteps}
-            onNext={onNext}
-            disabled={!videoOnly && !partDone}
-            className="order-5 lg:mt-[calc(var(--u)*1.042)]"
-          />
-        ) : (
-          <div className="order-5 flex flex-col-reverse gap-3 md:flex-row md:items-center md:justify-between md:gap-[14px] lg:mt-[calc(var(--u)*1.042)] lg:gap-[calc(var(--u)*0.729)]">
-            {view === "activity" && activity > 0 && (
-              <NavButton tone="back" onClick={() => goActivity(activity - 1)} className="md:max-w-none md:flex-1 lg:w-auto">
-                לשאלה הקודמת
-              </NavButton>
-            )}
-            {/* From the first question, back goes to the video it is about. */}
-            {view === "activity" && activity === 0 && (
-              <NavButton tone="back" onClick={() => goPart(part)} className="md:max-w-none md:flex-1 lg:w-auto">
-                לסרטון הקודם
-              </NavButton>
-            )}
-            {view === "video" && part > 0 && (
-              <NavButton tone="back" onClick={() => goPart(part - 1)} className="md:max-w-none md:flex-1 lg:w-auto">
-                לסרטון הקודם
-              </NavButton>
-            )}
-            {view === "video" && videoOnly ? (
-              <NavButton tone="next" onClick={() => goPart(part + 1, true)} className="md:ms-auto md:max-w-none md:flex-1 lg:w-auto">
-                לסרטון הבא
-              </NavButton>
-            ) : view === "video" ? (
-              <NavButton tone="next" onClick={() => goActivity(0)} className="md:ms-auto md:max-w-none md:flex-1 lg:w-auto">
-                לשאלה הבאה
-              </NavButton>
-            ) : lastActivity ? (
-              <NavButton tone="next" onClick={() => goPart(part + 1, true)} disabled={!partDone} className="md:ms-auto md:max-w-none md:flex-1 lg:w-auto">
-                לסרטון הבא
-              </NavButton>
-            ) : (
-              <NavButton tone="next" onClick={() => goActivity(activity + 1)} disabled={!answered} className="md:ms-auto md:max-w-none md:flex-1 lg:w-auto">
-                לשאלה הבאה
-              </NavButton>
-            )}
-          </div>
-        )}
       </div>
     </div>
   );
@@ -223,7 +225,18 @@ const QUESTION = "text-right text-[4.6vw] font-bold leading-snug md:text-[2.865v
 const EXPLAIN =
   "mt-3 text-right text-[4.1vw] leading-snug motion-safe:animate-fade-up md:text-[2.344vw] lg:mt-[calc(var(--u)*0.833)] lg:text-[min(1.146vw,calc(var(--u)*1.146))]";
 
-export function ChoiceActivity({ activity, onSolved, done }: { activity: Extract<SocialActivity, { kind: "choice" }>; onSolved: () => void; done: boolean }) {
+export function ChoiceActivity({
+  activity,
+  onSolved,
+  done,
+  hideQuestion,
+}: {
+  activity: Extract<SocialActivity, { kind: "choice" }>;
+  onSolved: () => void;
+  done: boolean;
+  /** The question is shown elsewhere on the page (e.g. under the law's title). */
+  hideQuestion?: boolean;
+}) {
   const [wrong, setWrong] = useState<number[]>([]);
   const [right, setRight] = useState(done);
   const icons = activity.answers.some((a) => a.icon);
@@ -244,12 +257,13 @@ export function ChoiceActivity({ activity, onSolved, done }: { activity: Extract
   return (
     // On desktop, picture answers stretch to fill the height the stage leaves them.
     <div className={cn("motion-safe:animate-fade-up", pictures && "lg:flex lg:min-h-0 lg:flex-1 lg:flex-col")}>
-      <p className={QUESTION}>{activity.question}</p>
+      {!hideQuestion && <p className={QUESTION}>{activity.question}</p>}
       <div
         role="radiogroup"
-        aria-label="בחר תשובה"
+        aria-label={hideQuestion ? activity.question : "בחר תשובה"}
         className={cn(
-          "mt-3 flex gap-2 lg:mt-[calc(var(--u)*0.833)] lg:gap-[calc(var(--u)*0.625)]",
+          !hideQuestion && "mt-3 lg:mt-[calc(var(--u)*0.833)]",
+          "flex gap-2 lg:gap-[calc(var(--u)*0.625)]",
           pictures ? "grid grid-cols-1 sm:grid-cols-3 lg:min-h-0 lg:flex-1" : icons ? "flex-row" : "flex-col",
         )}
       >
@@ -314,7 +328,8 @@ export function ChoiceActivity({ activity, onSolved, done }: { activity: Extract
           );
         })}
       </div>
-      <p role="status" className={cn(right ? EXPLAIN : "sr-only")}>
+      {/* Without an explanation (the law 1 quiz) the card's check mark is enough: "נכון!" stays for screen readers only. */}
+      <p role="status" className={cn(right && activity.explain ? EXPLAIN : "sr-only")}>
         {right ? `נכון! ${activity.explain ?? ""}`.trim() : wrong.length ? "לא בדיוק, נסו תשובה אחרת" : ""}
       </p>
     </div>

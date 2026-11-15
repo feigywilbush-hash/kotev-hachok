@@ -27,6 +27,11 @@ type StageStepProps = {
   stageClassName?: string;
   /** Extra classes for the stage + button column on desktop (e.g. a max width for a fixed-ratio video). */
   columnClassName?: string;
+  /**
+   * "video": on desktop the instruction and the next-step button sit under the title on the right,
+   * so the 16:9 video on the left can take the whole height and grow much larger.
+   */
+  layout?: "game" | "video";
 };
 
 export function StageStep({
@@ -40,7 +45,28 @@ export function StageStep({
   instructionClassName = "lg:pb-[calc(var(--u)*1.042)]",
   stageClassName = "aspect-[4/3]",
   columnClassName,
+  layout = "game",
 }: StageStepProps) {
+  if (layout === "video") {
+    return (
+      <div className="flex flex-col gap-6 px-4 pb-10 pt-6 md:gap-8 md:px-8 md:pt-10 lg:flex-row lg:items-center lg:gap-[calc(var(--u)*3)] lg:py-[calc(var(--u)*1.5)] lg:pl-[2vw] lg:pr-[4.427vw]">
+        <div className="contents lg:flex lg:w-[calc(var(--u)*22.813)] lg:shrink-0 lg:flex-col">
+          <LawTitle lawNumber={lawNumber} title={title} className="order-1" />
+          <p className="order-2 text-right text-[17px] leading-normal motion-safe:animate-fade-up motion-safe:[animation-delay:120ms] md:text-[20px] lg:mt-[calc(var(--u)*1.25)] lg:text-[calc(var(--u)*1.042)]">
+            {instruction}
+          </p>
+          <NextStepButton step={step} totalSteps={totalSteps} onNext={onNext} className="order-4 lg:mt-[calc(var(--u)*2.083)]" />
+        </div>
+        {/* The video keeps 16:9 and fills the rest of the row, never taller than the step allows. */}
+        <div className="contents lg:flex lg:min-w-0 lg:flex-1 lg:justify-end">
+          <div className="relative order-3 aspect-video w-full overflow-hidden rounded-[32px] bg-stage motion-safe:animate-fade-in-scale motion-safe:[animation-delay:80ms] md:rounded-[48px] lg:max-w-[calc(var(--u)*38*16/9)] lg:rounded-[calc(var(--u)*2.604)]">
+            {children}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-6 px-4 pb-10 pt-6 md:gap-8 md:px-8 md:pt-10 lg:flex-row lg:items-stretch lg:gap-[calc(var(--u)*5.781)] lg:py-[calc(var(--u)*1.5)] lg:pl-[2.448vw] lg:pr-[4.427vw]">
       {/* Title and instruction: on mobile its children join the outer column so the stage can follow them. */}
