@@ -1,3 +1,5 @@
+import { RotateCcw } from "lucide-react";
+
 import { burstConfetti } from "@/lib/confetti";
 import { cn } from "@/lib/utils";
 import { playWin } from "../games/driveSounds";
@@ -25,16 +27,14 @@ export function LawTitle({ lawNumber, title, className }: { lawNumber: number; t
   );
 }
 
-/** Yellow pill: step counter on the right, "התקדם לשלב הבא" and an arrow on the left. */
+/** Yellow pill: "התקדם לשלב הבא" on the right, an arrow on the left. (step/totalSteps are kept for the callers but no longer shown.) */
 export function NextStepButton({
-  step,
-  totalSteps,
   onNext,
   disabled,
   className,
 }: {
-  step: number;
-  totalSteps: number;
+  step?: number;
+  totalSteps?: number;
   onNext?: () => void;
   disabled?: boolean;
   className?: string;
@@ -55,14 +55,28 @@ export function NextStepButton({
         className,
       )}
     >
-      <span className="flex w-12 justify-center text-[18px] md:w-16 md:text-[24px] lg:w-[calc(var(--u)*3.333)] lg:text-[calc(var(--u)*1.25)]">
-        {step}/{totalSteps}
+      <span className="ps-3 text-[18px] md:ps-4 md:text-[24px] lg:ps-[calc(var(--u)*0.833)] lg:text-[calc(var(--u)*1.25)]">התקדם לשלב הבא</span>
+      <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-card md:size-[53px] lg:size-[calc(var(--u)*2.76)]">
+        <ArrowLeftIcon className="size-6 text-primary transition-transform duration-300 ease-out motion-safe:group-enabled:group-hover:-translate-x-1 lg:size-[calc(var(--u)*1.25)] lg:motion-safe:group-enabled:group-hover:-translate-x-[calc(var(--u)*0.26)]" />
       </span>
-      <span className="flex items-center gap-3 md:gap-6 lg:gap-[calc(var(--u)*1.25)]">
-        <span className="text-[18px] md:text-[24px] lg:text-[calc(var(--u)*1.25)]">התקדם לשלב הבא</span>
-        <span className="flex size-11 items-center justify-center rounded-full bg-card md:size-[53px] lg:size-[calc(var(--u)*2.76)]">
-          <ArrowLeftIcon className="size-6 text-primary transition-transform duration-300 ease-out motion-safe:group-enabled:group-hover:-translate-x-1 lg:size-[calc(var(--u)*1.25)] lg:motion-safe:group-enabled:group-hover:-translate-x-[calc(var(--u)*0.26)]" />
-        </span>
+    </button>
+  );
+}
+
+/** Light-green pill under a finished game: "לשחק שוב" and a replay icon, starts the game from its first question. */
+export function ReplayButton({ onClick, className }: { onClick: () => void; className?: string }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn(
+        "group flex w-full items-center justify-between gap-3 rounded-full bg-lime-soft p-3 text-right transition-[filter,transform] duration-200 hover:brightness-[1.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.99] motion-safe:animate-fade-up motion-safe:[animation-delay:300ms] md:p-4 lg:p-[calc(var(--u)*0.833)]",
+        className,
+      )}
+    >
+      <span className="ps-3 text-[18px] md:ps-4 md:text-[24px] lg:ps-[calc(var(--u)*0.833)] lg:text-[calc(var(--u)*1.25)]">לשחק שוב</span>
+      <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-card md:size-[53px] lg:size-[calc(var(--u)*2.76)]">
+        <RotateCcw className="size-6 text-primary transition-transform duration-500 ease-out motion-safe:group-hover:-rotate-180 lg:size-[calc(var(--u)*1.25)]" />
       </span>
     </button>
   );

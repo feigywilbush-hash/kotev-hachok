@@ -3,8 +3,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { burstConfetti } from "@/lib/confetti";
 import { cn } from "@/lib/utils";
 import { playFail, playSuccess } from "../games/driveSounds";
-import { NavButton } from "./QuizStep";
-import { LawTitle, NextStepButton } from "./StepParts";
+import { LawTitle, NextStepButton, ReplayButton } from "./StepParts";
 
 /*
  * "משחק ותרגול" step of the joining-a-group law (Figma "משחק ותרגול חוק 3/4/5"): two friends talk on a
@@ -168,7 +167,7 @@ export function TopicBubbleStep({ lawNumber, title, instruction, scene, bubble, 
   const answer = current.options.find((o) => o.id === current.correct)!;
 
   return (
-    <div className="flex flex-col gap-6 px-4 pb-10 pt-6 md:gap-8 md:px-8 md:pt-10 lg:flex-row lg:items-center lg:gap-[calc(var(--u)*3)] lg:py-[calc(var(--u)*1.5)] lg:pl-[2vw] lg:pr-[4.427vw]">
+    <div className="flex flex-col gap-6 px-4 pb-10 pt-6 md:gap-8 md:px-8 md:pt-10 lg:flex-row lg:items-center lg:gap-[calc(var(--u)*3)] lg:py-[calc(var(--u)*1.5)] lg:pl-[2.9vw] lg:pr-[3.6vw]">
       {/* Text column (right on desktop): the law's title, the game's explanation and feedback under it,
           then the buttons, so the game on the left can take the whole height of the step */}
       <div className="contents lg:flex lg:w-[calc(var(--u)*22.813)] lg:shrink-0 lg:flex-col">
@@ -195,22 +194,13 @@ export function TopicBubbleStep({ lawNumber, title, instruction, scene, bubble, 
             )}
           </p>
         </div>
-        {/* Buttons under the text: next above back; the last round has only the wide yellow next-step button */}
-        <div className="order-5 flex flex-col-reverse gap-3 md:flex-row md:gap-[14px] lg:mt-[calc(var(--u)*2.083)] lg:flex-col-reverse lg:gap-[calc(var(--u)*0.729)]">
-          {round > 0 && !last && (
-            <NavButton tone="back" onClick={() => goRound(round - 1)} className="md:max-w-none md:flex-1 lg:w-full">
-              לשאלה הקודמת
-            </NavButton>
-          )}
-          {last ? (
-            // The last round ends the step: one wide button, no back button.
+        {/* Questions move on by themselves; only the last one has buttons: the next step, and play again */}
+        {last && (
+          <div className="order-5 flex flex-col gap-3 md:flex-row md:gap-[14px] lg:mt-auto lg:flex-col lg:gap-[calc(var(--u)*0.729)]">
             <NextStepButton step={step} totalSteps={totalSteps} onNext={onNext} />
-          ) : (
-            <NavButton tone="next" onClick={() => goRound(round + 1)} className="md:ms-auto md:w-[calc(50%-7px)] md:max-w-none lg:w-full">
-              לשאלה הבאה
-            </NavButton>
-          )}
-        </div>
+            <ReplayButton onClick={() => goRound(0)} />
+          </div>
+        )}
       </div>
 
       {/* Game column (left on desktop): the scene, the picture cards beside it, and the buttons under them */}

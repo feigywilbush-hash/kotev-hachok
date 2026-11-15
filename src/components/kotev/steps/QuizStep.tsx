@@ -4,7 +4,7 @@ import { Check, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ArrowLeftIcon } from "../icons";
 import { playFail, playSuccess } from "../games/driveSounds";
-import { LawTitle, NextStepButton, TiltedPhoto } from "./StepParts";
+import { LawTitle, NextStepButton, ReplayButton, TiltedPhoto } from "./StepParts";
 import { KnockActivity, type DoorEffect } from "./quiz/KnockActivity";
 import { ChoiceActivity } from "./SocialVideosStep";
 
@@ -98,10 +98,6 @@ export function QuizStep({ lawNumber, title, questions, step, totalSteps, onFini
     setBubbles([]);
   };
 
-  const next = () => {
-    if (solved) go(index + 1);
-  };
-
   const onDoor = (e: DoorEffect) => {
     const id = ++bubbleId.current;
     const loud = e.action === "hard";
@@ -128,38 +124,25 @@ export function QuizStep({ lawNumber, title, questions, step, totalSteps, onFini
     return () => window.clearTimeout(t);
   }, [bubbles]);
 
-  const navButtons = last ? (
-    // The last question ends the step: one wide "next step" button, as on the other steps.
-    <NextStepButton
-      step={step}
-      totalSteps={totalSteps}
-      onNext={() => solved && onFinish?.()}
-      disabled={!solved}
-      className={cn("order-6", q.kind === "choice" && "lg:mt-[calc(var(--u)*1.406)]")}
-    />
-  ) : (
-    <div
-      className={cn(
-        "order-6 flex flex-col-reverse gap-3 md:flex-row md:items-center md:justify-between md:gap-[14px] lg:gap-[calc(var(--u)*0.729)]",
-        q.kind === "choice" && "lg:mt-[calc(var(--u)*1.406)]",
-      )}
-    >
-      {index > 0 && (
-        <NavButton tone="back" onClick={() => go(index - 1)}>
-          לשאלה הקודמת
-        </NavButton>
-      )}
-      <NavButton tone="next" onClick={next} disabled={!solved} className="md:ms-auto">
-        לשאלה הבאה
-      </NavButton>
-    </div>
-  );
+  const replay = () => {
+    setSolvedSet(new Set());
+    go(0);
+  };
+
+  // Questions move on by themselves; only the last one has buttons: the next step, and play again.
+  const endButtons = (className?: string) =>
+    last ? (
+      <div className={cn("flex flex-col gap-3 md:flex-row md:gap-[14px] lg:flex-col lg:gap-[calc(var(--u)*0.729)]", className)}>
+        <NextStepButton step={step} totalSteps={totalSteps} onNext={() => solved && onFinish?.()} disabled={!solved} />
+        <ReplayButton onClick={replay} />
+      </div>
+    ) : null;
 
   if (q.kind === "pictures") {
     // Picture answers: the title, the question, the question dots and the buttons sit in the right
     // column, so the picture cards on the left can take the whole height of the step.
     return (
-      <div className="flex flex-col gap-6 px-4 pb-10 pt-6 md:gap-8 md:px-8 md:pt-10 lg:flex-row lg:items-center lg:gap-[calc(var(--u)*3)] lg:py-[calc(var(--u)*1.5)] lg:pl-[2vw] lg:pr-[4.427vw]">
+      <div className="flex flex-col gap-6 px-4 pb-10 pt-6 md:gap-8 md:px-8 md:pt-10 lg:flex-row lg:items-center lg:gap-[calc(var(--u)*3)] lg:py-[calc(var(--u)*1.5)] lg:pl-[2.9vw] lg:pr-[3.6vw]">
         {/* Title and question at the top of the column, the buttons (side by side) at its bottom. */}
         <div className="contents lg:flex lg:w-[calc(var(--u)*22.813)] lg:shrink-0 lg:flex-col lg:self-stretch">
           <LawTitle lawNumber={lawNumber} title={title} className="order-1" />
@@ -169,22 +152,7 @@ export function QuizStep({ lawNumber, title, questions, step, totalSteps, onFini
           >
             {q.question}
           </p>
-          <div className="order-5 flex flex-col-reverse gap-3 md:flex-row lg:mt-auto lg:gap-[calc(var(--u)*0.729)]">
-            {last ? (
-              <NextStepButton step={step} totalSteps={totalSteps} onNext={() => solved && onFinish?.()} disabled={!solved} />
-            ) : (
-              <>
-                {index > 0 && (
-                  <NavButton tone="back" onClick={() => go(index - 1)} className="md:max-w-none md:flex-1 lg:w-auto lg:min-w-0 lg:flex-1 lg:gap-[calc(var(--u)*0.5)] lg:p-[calc(var(--u)*0.5)] lg:[&>span:first-child]:whitespace-nowrap lg:[&>span:first-child]:text-[calc(var(--u)*0.95)] lg:[&>span:last-child]:size-[calc(var(--u)*2.2)]">
-                    לשאלה הקודמת
-                  </NavButton>
-                )}
-                <NavButton tone="next" onClick={next} disabled={!solved} className="md:max-w-none md:flex-1 lg:w-auto lg:min-w-0 lg:flex-1 lg:gap-[calc(var(--u)*0.5)] lg:p-[calc(var(--u)*0.5)] lg:[&>span:first-child]:whitespace-nowrap lg:[&>span:first-child]:text-[calc(var(--u)*0.95)] lg:[&>span:last-child]:size-[calc(var(--u)*2.2)]">
-                  לשאלה הבאה
-                </NavButton>
-              </>
-            )}
-          </div>
+          {endButtons("order-5 lg:mt-auto")}
         </div>
         <div key={`p${index}`} className="order-4 flex w-full flex-col lg:h-[calc(var(--u)*36)] lg:min-w-0 lg:flex-1">
           <ChoiceActivity
@@ -199,7 +167,7 @@ export function QuizStep({ lawNumber, title, questions, step, totalSteps, onFini
   }
 
   return (
-    <div className="flex flex-col gap-6 px-4 pb-10 pt-6 md:gap-8 md:px-8 md:pt-10 lg:flex-row lg:items-center lg:gap-[calc(var(--u)*2.865)] lg:py-[calc(var(--u)*1.5)] lg:pl-[2.865vw] lg:pr-[4.115vw]">
+    <div className="flex flex-col gap-6 px-4 pb-10 pt-6 md:gap-8 md:px-8 md:pt-10 lg:flex-row lg:items-center lg:gap-[calc(var(--u)*2.865)] lg:py-[calc(var(--u)*1.5)] lg:pl-[2.9vw] lg:pr-[3.6vw]">
       {/* Text column: on mobile its children join the outer column so the photo can sit after the title. */}
       <div className="contents lg:order-1 lg:flex lg:min-w-0 lg:flex-1 lg:flex-col">
         <div className="contents lg:flex lg:items-end lg:justify-between lg:gap-[calc(var(--u)*2)]">
@@ -261,7 +229,7 @@ export function QuizStep({ lawNumber, title, questions, step, totalSteps, onFini
           </div>
         )}
 
-        {navButtons}
+        {endButtons(cn("order-6", q.kind === "choice" && "lg:mt-[calc(var(--u)*1.406)]"))}
       </div>
 
       <div className="relative order-2 mx-auto w-full max-w-[280px] md:max-w-[340px] lg:order-none lg:mx-0 lg:w-[calc(var(--u)*25.625)] lg:max-w-none lg:shrink-0">
