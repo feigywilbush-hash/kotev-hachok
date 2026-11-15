@@ -71,7 +71,7 @@ export function IntroStep({
   onNext,
 }: IntroStepProps) {
   return (
-    <div className="flex flex-col gap-6 px-4 pb-10 pt-6 md:gap-8 md:px-8 md:pt-10 lg:flex-row lg:items-center lg:gap-[calc(var(--u)*3.906)] lg:py-[calc(var(--u)*1.5)] lg:pl-[2.865vw] lg:pr-[3.542vw]">
+    <div className="flex flex-col gap-6 px-4 pb-10 pt-6 md:gap-8 md:px-8 md:pt-10 lg:flex-row lg:items-center lg:gap-[calc(var(--u)*3.906)] lg:py-[calc(var(--u)*1.5)] lg:pl-[2.9vw] lg:pr-[3.6vw]">
       {/* Text column: on mobile its children join the outer column so the photo can sit between them. */}
       <div className="contents lg:order-1 lg:flex lg:min-w-0 lg:flex-1 lg:flex-col">
         <LawTitle lawNumber={lawNumber} title={title} className="order-1" />

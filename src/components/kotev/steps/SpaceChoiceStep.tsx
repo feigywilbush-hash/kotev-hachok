@@ -5,8 +5,7 @@ import { Check, X } from "lucide-react";
 import { burstConfetti } from "@/lib/confetti";
 import { cn } from "@/lib/utils";
 import { playFail, playSuccess } from "../games/driveSounds";
-import { NavButton } from "./QuizStep";
-import { LawTitle, NextStepButton } from "./StepParts";
+import { LawTitle, NextStepButton, ReplayButton } from "./StepParts";
 
 /*
  * "משחק ותרגול" step of the personal-space law (Figma "משחק ותרגול חוק 4"): two pictures side by side,
@@ -103,7 +102,7 @@ export function SpaceChoiceStep({ lawNumber, title, instruction, rounds, step, t
   }, [shaking]);
 
   return (
-    <div className="flex flex-col gap-6 px-4 pb-10 pt-6 md:gap-8 md:px-8 md:pt-10 lg:flex-row lg:items-center lg:gap-[calc(var(--u)*3)] lg:py-[calc(var(--u)*1.5)] lg:pl-[2vw] lg:pr-[4.427vw]">
+    <div className="flex flex-col gap-6 px-4 pb-10 pt-6 md:gap-8 md:px-8 md:pt-10 lg:flex-row lg:items-center lg:gap-[calc(var(--u)*3)] lg:py-[calc(var(--u)*1.5)] lg:pl-[2.9vw] lg:pr-[3.6vw]">
       {/* Text column (right on desktop): the law's title, the explanation and feedback at the top, the
           buttons at the bottom, so the two pictures on the left can take the whole height of the step */}
       <div className="contents lg:flex lg:w-[calc(var(--u)*22.813)] lg:shrink-0 lg:flex-col lg:self-stretch">
@@ -135,21 +134,18 @@ export function SpaceChoiceStep({ lawNumber, title, instruction, rounds, step, t
             )}
           </p>
         </div>
-        {/* Buttons at the bottom of the text column, side by side; the last question has only the wide yellow next-step button */}
-        <div className="order-5 flex flex-col-reverse gap-3 md:flex-row md:gap-[14px] lg:mt-auto lg:gap-[calc(var(--u)*0.729)]">
-          {round > 0 && !last && (
-            <NavButton tone="back" onClick={() => goRound(round - 1)} className="md:max-w-none md:flex-1 lg:w-auto lg:min-w-0 lg:flex-1 lg:gap-[calc(var(--u)*0.5)] lg:p-[calc(var(--u)*0.5)] lg:[&>span:first-child]:whitespace-nowrap lg:[&>span:first-child]:text-[calc(var(--u)*0.95)] lg:[&>span:last-child]:size-[calc(var(--u)*2.2)]">
-              לשאלה הקודמת
-            </NavButton>
-          )}
-          {last ? (
+        {/* Questions move on by themselves; only the last one has buttons: the next step, and play again */}
+        {last && (
+          <div className="order-5 flex flex-col gap-3 md:flex-row md:gap-[14px] lg:mt-auto lg:flex-col lg:gap-[calc(var(--u)*0.729)]">
             <NextStepButton step={step} totalSteps={totalSteps} onNext={onNext} disabled={!solved} />
-          ) : (
-            <NavButton tone="next" onClick={() => goRound(round + 1)} disabled={!solved} className="md:ms-auto md:w-[calc(50%-7px)] md:max-w-none lg:ms-0 lg:w-auto lg:min-w-0 lg:flex-1 lg:gap-[calc(var(--u)*0.5)] lg:p-[calc(var(--u)*0.5)] lg:[&>span:first-child]:whitespace-nowrap lg:[&>span:first-child]:text-[calc(var(--u)*0.95)] lg:[&>span:last-child]:size-[calc(var(--u)*2.2)]">
-              לשאלה הבאה
-            </NavButton>
-          )}
-        </div>
+            <ReplayButton
+              onClick={() => {
+                setDone(new Set());
+                goRound(0);
+              }}
+            />
+          </div>
+        )}
       </div>
 
       {/* Game column (left on desktop): the two pictures, as tall as the step allows */}

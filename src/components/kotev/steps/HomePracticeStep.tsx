@@ -28,7 +28,7 @@ type HomePracticeStepProps = {
 
 export function HomePracticeStep({ lawNumber, title, text, sheet, downloadHref, downloadName, onNextLaw }: HomePracticeStepProps) {
   return (
-    <div className="flex flex-col gap-6 px-4 pb-10 pt-6 md:gap-8 md:px-8 md:pt-10 lg:flex-row lg:items-center lg:gap-[calc(var(--u)*4.01)] lg:py-[calc(var(--u)*1.5)] lg:pl-[2.865vw] lg:pr-[3.594vw]">
+    <div className="flex flex-col gap-6 px-4 pb-10 pt-6 md:gap-8 md:px-8 md:pt-10 lg:flex-row lg:items-center lg:gap-[calc(var(--u)*4.01)] lg:py-[calc(var(--u)*1.5)] lg:pl-[2.9vw] lg:pr-[3.6vw]">
       {/* Text column: on mobile its children join the outer column so the sheet can sit after the title. */}
       <div className="contents lg:order-1 lg:flex lg:min-w-0 lg:flex-1 lg:flex-col">
         <LawTitle lawNumber={lawNumber} title={title} className="order-1" />
