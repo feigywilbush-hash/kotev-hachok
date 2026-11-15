@@ -108,6 +108,13 @@ export function TopicBubbleStep({ lawNumber, title, instruction, scene, bubble, 
     setRound(to);
   };
 
+  // A right pick moves on by itself to the next round, after the praise and confetti have shown.
+  useEffect(() => {
+    if (!solved || last) return;
+    const t = window.setTimeout(() => goRound(round + 1), 2200);
+    return () => window.clearTimeout(t);
+  }, [solved, last, round]);
+
   useEffect(() => {
     if (!shaking) return;
     const t = window.setTimeout(() => setShaking(null), 450);
@@ -161,19 +168,20 @@ export function TopicBubbleStep({ lawNumber, title, instruction, scene, bubble, 
   const answer = current.options.find((o) => o.id === current.correct)!;
 
   return (
-    <div className="flex flex-col gap-6 px-4 pb-10 pt-6 md:gap-8 md:px-8 md:pt-10 lg:flex-row lg:justify-between lg:gap-[calc(var(--u)*2.6)] lg:pb-[calc(var(--u)*1.5)] lg:pl-[calc(var(--u)*1.979)] lg:pr-[calc(var(--u)*3.75)] lg:pt-[calc(var(--u)*2.9)]">
-      {/* Text column (right on desktop): the law's title on top, the game's explanation and feedback below */}
-      <div className="contents lg:flex lg:min-w-0 lg:max-w-[calc(var(--u)*29.8)] lg:flex-1 lg:flex-col">
+    <div className="flex flex-col gap-6 px-4 pb-10 pt-6 md:gap-8 md:px-8 md:pt-10 lg:flex-row lg:items-center lg:gap-[calc(var(--u)*3)] lg:py-[calc(var(--u)*1.5)] lg:pl-[2vw] lg:pr-[4.427vw]">
+      {/* Text column (right on desktop): the law's title, the game's explanation and feedback under it,
+          then the buttons, so the game on the left can take the whole height of the step */}
+      <div className="contents lg:flex lg:w-[calc(var(--u)*22.813)] lg:shrink-0 lg:flex-col">
         <LawTitle lawNumber={lawNumber} title={title} className="order-1" />
-        <div className="order-2 flex flex-col gap-3 text-right lg:mt-auto lg:gap-[calc(var(--u)*1)] lg:pb-[calc(var(--u)*0.4)]">
-          <p className="text-[17px] leading-normal motion-safe:animate-fade-up motion-safe:[animation-delay:120ms] md:text-[20px] lg:text-[calc(var(--u)*1.25)]">
+        <div className="order-2 flex flex-col gap-3 text-right lg:mt-[calc(var(--u)*1.25)] lg:gap-[calc(var(--u)*1)]">
+          <p className="text-[17px] leading-normal motion-safe:animate-fade-up motion-safe:[animation-delay:120ms] md:text-[20px] lg:text-[calc(var(--u)*1.042)]">
             {instruction}
           </p>
           <p
             role="status"
             key={`${round}-${solved}-${hint}`}
             className={cn(
-              "min-h-[1.5em] text-[18px] font-bold leading-snug motion-safe:animate-fade-up md:text-[22px] lg:text-[calc(var(--u)*1.35)]",
+              "min-h-[1.5em] text-[18px] font-bold leading-snug motion-safe:animate-fade-up md:text-[22px] lg:text-[calc(var(--u)*1.146)]",
               solved ? "text-primary" : "text-alert",
             )}
           >
@@ -187,16 +195,32 @@ export function TopicBubbleStep({ lawNumber, title, instruction, scene, bubble, 
             )}
           </p>
         </div>
+        {/* Buttons under the text: next above back; the last round has only the wide yellow next-step button */}
+        <div className="order-5 flex flex-col-reverse gap-3 md:flex-row md:gap-[14px] lg:mt-[calc(var(--u)*2.083)] lg:flex-col-reverse lg:gap-[calc(var(--u)*0.729)]">
+          {round > 0 && !last && (
+            <NavButton tone="back" onClick={() => goRound(round - 1)} className="md:max-w-none md:flex-1 lg:w-full">
+              לשאלה הקודמת
+            </NavButton>
+          )}
+          {last ? (
+            // The last round ends the step: one wide button, no back button.
+            <NextStepButton step={step} totalSteps={totalSteps} onNext={onNext} />
+          ) : (
+            <NavButton tone="next" onClick={() => goRound(round + 1)} className="md:ms-auto md:w-[calc(50%-7px)] md:max-w-none lg:w-full">
+              לשאלה הבאה
+            </NavButton>
+          )}
+        </div>
       </div>
 
       {/* Game column (left on desktop): the scene, the picture cards beside it, and the buttons under them */}
-      <div className="contents lg:flex lg:w-[calc(var(--u)*47.9)] lg:shrink-0 lg:flex-col lg:gap-[calc(var(--u)*3.4)]">
-        <div className="contents lg:flex lg:items-stretch lg:gap-[calc(var(--u)*1.98)]">
+      <div className="contents lg:flex lg:min-w-0 lg:flex-1 lg:justify-end">
+        <div className="contents lg:flex lg:h-[calc(var(--u)*34)] lg:items-stretch lg:gap-[calc(var(--u)*1.98)]">
           {/* The picture cards: a row on mobile, a column beside the scene on desktop */}
           <div
             key={`cards-${round}`}
             // Lift the cards over the scene while one of them is dragged onto it
-            className={cn("relative order-4 grid grid-cols-3 gap-3 motion-safe:animate-fade-up md:gap-4 lg:order-none lg:flex lg:w-[calc(var(--u)*9.43)] lg:shrink-0 lg:flex-col lg:justify-between lg:gap-0", drag && "z-40")}
+            className={cn("relative order-4 grid grid-cols-3 gap-3 motion-safe:animate-fade-up md:gap-4 lg:order-none lg:flex lg:w-[calc(var(--u)*11.2)] lg:shrink-0 lg:flex-col lg:justify-between lg:gap-[calc(var(--u)*1.2)]", drag && "z-40")}
           >
             {current.options.map((o) => {
               const used = solved && o.id === current.correct;
@@ -216,7 +240,7 @@ export function TopicBubbleStep({ lawNumber, title, instruction, scene, bubble, 
                   }}
                   style={isDragged ? { transform: `translate(${drag.dx}px, ${drag.dy}px) scale(1.05)` } : undefined}
                   className={cn(
-                    "relative flex aspect-[181/170] touch-none items-center justify-center rounded-[22px] bg-card p-2 shadow-[4px_8px_50px_rgba(186,160,160,0.08),0_4px_14px_hsl(var(--mist)/0.35)] transition-[box-shadow,scale,opacity] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:rounded-[28px] lg:aspect-auto lg:h-[calc(var(--u)*8.85)] lg:rounded-[calc(var(--u)*1.5625)] lg:p-[calc(var(--u)*0.45)]",
+                    "relative flex aspect-[181/170] touch-none items-center justify-center rounded-[22px] bg-card p-2 shadow-[4px_8px_50px_rgba(186,160,160,0.08),0_4px_14px_hsl(var(--mist)/0.35)] transition-[box-shadow,scale,opacity] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:rounded-[28px] lg:aspect-auto lg:h-auto lg:min-h-0 lg:flex-1 lg:rounded-[calc(var(--u)*1.5625)] lg:p-[calc(var(--u)*0.45)]",
                     solved ? "cursor-default" : "cursor-grab hover:scale-[1.03]",
                     isDragged && "z-30 cursor-grabbing shadow-[0_14px_32px_hsl(var(--mist)/0.8)]",
                     used && "opacity-30",
@@ -233,7 +257,7 @@ export function TopicBubbleStep({ lawNumber, title, instruction, scene, bubble, 
           <div
             ref={sceneRef}
             className={cn(
-              "relative order-3 aspect-[682/545] w-full overflow-hidden rounded-[32px] motion-safe:animate-fade-in-scale md:rounded-[48px] lg:order-none lg:w-[calc(var(--u)*35.52)] lg:shrink-0 lg:rounded-[calc(var(--u)*3.125)]",
+              "relative order-3 aspect-[682/545] w-full overflow-hidden rounded-[32px] motion-safe:animate-fade-in-scale md:rounded-[48px] lg:order-none lg:h-full lg:w-auto lg:shrink-0 lg:rounded-[calc(var(--u)*3.125)]",
               over && "ring-4 ring-brand-sun",
             )}
           >
@@ -261,22 +285,6 @@ export function TopicBubbleStep({ lawNumber, title, instruction, scene, bubble, 
           </div>
         </div>
 
-        {/* Buttons: back on the right, next on the left; the last round has only the wide yellow next-step button */}
-        <div className="order-5 flex flex-col-reverse gap-3 md:flex-row md:gap-[14px] lg:gap-[calc(var(--u)*0.729)]">
-          {round > 0 && !last && (
-            <NavButton tone="back" onClick={() => goRound(round - 1)} className="md:max-w-none md:flex-1 lg:w-auto">
-              לשאלה הקודמת
-            </NavButton>
-          )}
-          {last ? (
-            // The last round ends the step: one wide button, no back button.
-            <NextStepButton step={step} totalSteps={totalSteps} onNext={onNext} />
-          ) : (
-            <NavButton tone="next" onClick={() => goRound(round + 1)} className="md:ms-auto md:w-[calc(50%-7px)] md:max-w-none lg:w-[calc(50%-var(--u)*0.365)]">
-              לשאלה הבאה
-            </NavButton>
-          )}
-        </div>
       </div>
     </div>
   );
