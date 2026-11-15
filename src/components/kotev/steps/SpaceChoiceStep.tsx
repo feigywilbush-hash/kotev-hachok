@@ -51,6 +51,8 @@ export function SpaceChoiceStep({ lawNumber, title, instruction, rounds, step, t
   const [hint, setHint] = useState<string | null>(null);
   const [shaking, setShaking] = useState<number | null>(null);
   const [wrong, setWrong] = useState<number | null>(null);
+  // The round just answered right, so it moves on by itself (not when coming back to an answered one).
+  const [justSolved, setJustSolved] = useState<number | null>(null);
   const cardRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const current = rounds[round];
@@ -61,6 +63,7 @@ export function SpaceChoiceStep({ lawNumber, title, instruction, rounds, step, t
     if (solved) return;
     if (i === current.correct) {
       setDone((d) => new Set(d).add(round));
+      setJustSolved(round);
       setHint(null);
       setWrong(null);
       playSuccess();
@@ -79,8 +82,19 @@ export function SpaceChoiceStep({ lawNumber, title, instruction, rounds, step, t
     setHint(null);
     setShaking(null);
     setWrong(null);
+    setJustSolved(null);
     setRound(to);
   };
+
+  // A right pick moves on to the next question by itself, after the praise and confetti have shown.
+  useEffect(() => {
+    if (justSolved === null || justSolved !== round || last) return;
+    const t = window.setTimeout(() => {
+      setJustSolved(null);
+      goRound(round + 1);
+    }, 2200);
+    return () => window.clearTimeout(t);
+  }, [justSolved, round, last]);
 
   useEffect(() => {
     if (shaking === null) return;
@@ -89,24 +103,25 @@ export function SpaceChoiceStep({ lawNumber, title, instruction, rounds, step, t
   }, [shaking]);
 
   return (
-    <div className="flex flex-col gap-6 px-4 pb-10 pt-6 md:gap-8 md:px-8 md:pt-10 lg:flex-row lg:justify-between lg:gap-[calc(var(--u)*2.6)] lg:pb-[calc(var(--u)*1.5)] lg:pl-[calc(var(--u)*1.979)] lg:pr-[calc(var(--u)*3.75)] lg:pt-[calc(var(--u)*2.9)]">
-      {/* Text column (right on desktop): the law's title on top, the game's explanation and feedback below */}
-      <div className="contents lg:flex lg:min-w-0 lg:max-w-[calc(var(--u)*29.8)] lg:flex-1 lg:flex-col">
+    <div className="flex flex-col gap-6 px-4 pb-10 pt-6 md:gap-8 md:px-8 md:pt-10 lg:flex-row lg:items-center lg:gap-[calc(var(--u)*3)] lg:py-[calc(var(--u)*1.5)] lg:pl-[2vw] lg:pr-[4.427vw]">
+      {/* Text column (right on desktop): the law's title, the explanation and feedback at the top, the
+          buttons at the bottom, so the two pictures on the left can take the whole height of the step */}
+      <div className="contents lg:flex lg:w-[calc(var(--u)*22.813)] lg:shrink-0 lg:flex-col lg:self-stretch">
         <LawTitle lawNumber={lawNumber} title={title} className="order-1" />
-        <div className="order-2 flex flex-col gap-3 text-right lg:mt-auto lg:gap-[calc(var(--u)*1)] lg:pb-[calc(var(--u)*0.4)]">
+        <div className="order-2 flex flex-col gap-3 text-right lg:mt-[calc(var(--u)*1.25)] lg:gap-[calc(var(--u)*0.8)]">
           {rounds.length > 1 && (
             <p className="text-[15px] text-muted-foreground md:text-[17px] lg:text-[calc(var(--u)*1.04)]">
               שאלה {round + 1} מתוך {rounds.length}
             </p>
           )}
-          <p className="text-[17px] leading-normal motion-safe:animate-fade-up motion-safe:[animation-delay:120ms] md:text-[20px] lg:text-[calc(var(--u)*1.25)]">
+          <p className="text-[17px] leading-normal motion-safe:animate-fade-up motion-safe:[animation-delay:120ms] md:text-[20px] lg:text-[calc(var(--u)*1.042)]">
             {instruction}
           </p>
           <p
             role="status"
             key={`${round}-${solved}-${hint}`}
             className={cn(
-              "min-h-[1.5em] text-[18px] font-bold leading-snug motion-safe:animate-fade-up md:text-[22px] lg:text-[calc(var(--u)*1.35)]",
+              "min-h-[1.5em] text-[18px] font-bold leading-snug motion-safe:animate-fade-up md:text-[22px] lg:text-[calc(var(--u)*1.146)]",
               solved ? "text-primary" : "text-alert",
             )}
           >
@@ -120,11 +135,26 @@ export function SpaceChoiceStep({ lawNumber, title, instruction, rounds, step, t
             )}
           </p>
         </div>
+        {/* Buttons at the bottom of the text column, side by side; the last question has only the wide yellow next-step button */}
+        <div className="order-5 flex flex-col-reverse gap-3 md:flex-row md:gap-[14px] lg:mt-auto lg:gap-[calc(var(--u)*0.729)]">
+          {round > 0 && !last && (
+            <NavButton tone="back" onClick={() => goRound(round - 1)} className="md:max-w-none md:flex-1 lg:w-auto lg:min-w-0 lg:flex-1 lg:gap-[calc(var(--u)*0.5)] lg:p-[calc(var(--u)*0.5)] lg:[&>span:first-child]:whitespace-nowrap lg:[&>span:first-child]:text-[calc(var(--u)*0.95)] lg:[&>span:last-child]:size-[calc(var(--u)*2.2)]">
+              לשאלה הקודמת
+            </NavButton>
+          )}
+          {last ? (
+            <NextStepButton step={step} totalSteps={totalSteps} onNext={onNext} disabled={!solved} />
+          ) : (
+            <NavButton tone="next" onClick={() => goRound(round + 1)} disabled={!solved} className="md:ms-auto md:w-[calc(50%-7px)] md:max-w-none lg:ms-0 lg:w-auto lg:min-w-0 lg:flex-1 lg:gap-[calc(var(--u)*0.5)] lg:p-[calc(var(--u)*0.5)] lg:[&>span:first-child]:whitespace-nowrap lg:[&>span:first-child]:text-[calc(var(--u)*0.95)] lg:[&>span:last-child]:size-[calc(var(--u)*2.2)]">
+              לשאלה הבאה
+            </NavButton>
+          )}
+        </div>
       </div>
 
-      {/* Game column (left on desktop): the two pictures and the buttons under them */}
-      <div className="contents lg:flex lg:w-[calc(var(--u)*53.23)] lg:shrink-0 lg:flex-col lg:gap-[calc(var(--u)*1.51)]">
-        <div key={`pictures-${round}`} className="order-3 grid grid-cols-2 gap-3 motion-safe:animate-fade-in-scale md:gap-6 lg:gap-[calc(var(--u)*2.29)]">
+      {/* Game column (left on desktop): the two pictures, as tall as the step allows */}
+      <div className="contents lg:flex lg:min-w-0 lg:flex-1 lg:justify-end">
+        <div key={`pictures-${round}`} className="order-3 grid grid-cols-2 gap-3 motion-safe:animate-fade-in-scale md:gap-6 lg:w-full lg:max-w-[calc(var(--u)*69.2)] lg:gap-[calc(var(--u)*2)]">
           {current.options.map((o, i) => {
             const right = solved && i === current.correct;
             const dim = solved && i !== current.correct;
@@ -172,21 +202,6 @@ export function SpaceChoiceStep({ lawNumber, title, instruction, rounds, step, t
           })}
         </div>
 
-        {/* Buttons: back on the right, next on the left; the last question has only the wide yellow next-step button */}
-        <div className="order-5 flex flex-col-reverse gap-3 md:flex-row md:gap-[14px] lg:gap-[calc(var(--u)*0.729)]">
-          {round > 0 && !last && (
-            <NavButton tone="back" onClick={() => goRound(round - 1)} className="md:max-w-none md:flex-1 lg:w-auto">
-              לשאלה הקודמת
-            </NavButton>
-          )}
-          {last ? (
-            <NextStepButton step={step} totalSteps={totalSteps} onNext={onNext} disabled={!solved} />
-          ) : (
-            <NavButton tone="next" onClick={() => goRound(round + 1)} disabled={!solved} className="md:ms-auto md:w-[calc(50%-7px)] md:max-w-none lg:w-[calc(50%-var(--u)*0.365)]">
-              לשאלה הבאה
-            </NavButton>
-          )}
-        </div>
       </div>
     </div>
   );
