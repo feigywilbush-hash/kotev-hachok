@@ -161,10 +161,7 @@ const Index = () => {
           key={`social-${lesson.number}`}
           {...shared}
           instruction={lesson.video.instruction}
-          instructionClassName="lg:pb-[calc(var(--u)*1.667)]"
-          stageClassName="aspect-video md:aspect-video lg:aspect-video lg:h-auto"
-          // Keeps the video's own 16:9 shape; on wide, short screens the column narrows so it still fits.
-          columnClassName="lg:mr-auto lg:max-w-[calc(var(--u)*50.466)]"
+          layout="video"
         >
           <LessonVideo
             title={lesson.video.title}

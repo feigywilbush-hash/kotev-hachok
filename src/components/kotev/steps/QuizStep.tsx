@@ -144,25 +144,47 @@ export function QuizStep({ lawNumber, title, questions, step, totalSteps, onFini
   );
 
   if (q.kind === "pictures") {
-    // Same layout as the questions after the videos of law 3: title and question dots on the
-    // right, the question with its picture cards and the buttons on the left.
+    // Picture answers: the title, the question, the question dots and the buttons sit in the right
+    // column, so the picture cards on the left can take the whole height of the step.
     return (
-      <div className="flex flex-col gap-6 px-4 pb-10 pt-6 md:gap-8 md:px-8 md:pt-10 lg:flex-row lg:items-stretch lg:gap-[calc(var(--u)*4.5)] lg:py-[calc(var(--u)*1.5)] lg:pl-[2.448vw] lg:pr-[4.427vw]">
-        <div className="contents lg:flex lg:w-[calc(var(--u)*22.813)] lg:shrink-0 lg:flex-col lg:justify-center lg:gap-[calc(var(--u)*2)]">
+      <div className="flex flex-col gap-6 px-4 pb-10 pt-6 md:gap-8 md:px-8 md:pt-10 lg:flex-row lg:items-center lg:gap-[calc(var(--u)*3)] lg:py-[calc(var(--u)*1.5)] lg:pl-[2vw] lg:pr-[4.427vw]">
+        <div className="contents lg:flex lg:w-[calc(var(--u)*22.813)] lg:shrink-0 lg:flex-col">
           <LawTitle lawNumber={lawNumber} title={title} className="order-1" />
-          <QuizProgress total={questions.length} current={index} className="order-3 w-full max-w-[505px] self-end lg:order-2 lg:max-w-none" />
-        </div>
-        <div className="contents lg:mr-auto lg:flex lg:min-w-0 lg:max-w-[calc(var(--u)*50.466)] lg:flex-1 lg:flex-col lg:justify-center lg:pt-[calc(var(--u)*1.2)]">
-          <div key={`p${index}`} className="relative order-4 w-full lg:aspect-video">
-            <div className="flex h-full flex-col py-2 lg:absolute lg:inset-0 lg:py-[calc(var(--u)*0.5)]">
-              <ChoiceActivity
-                activity={{ kind: "choice", question: q.question, answers: q.answers, correct: q.correct }}
-                onSolved={markSolved}
-                done={solved}
-              />
-            </div>
+          <p
+            key={`q${index}`}
+            className="order-2 whitespace-pre-line text-right text-[19px] font-bold leading-normal motion-safe:animate-fade-up md:text-[22px] lg:mt-[calc(var(--u)*0.833)] lg:text-[calc(var(--u)*1.25)]"
+          >
+            {q.question}
+          </p>
+          <QuizProgress
+            total={questions.length}
+            current={index}
+            className="order-3 w-full max-w-[505px] self-end lg:mt-[calc(var(--u)*1.667)] lg:max-w-none"
+          />
+          <div className="order-5 flex flex-col-reverse gap-3 lg:mt-[calc(var(--u)*1.667)] lg:gap-[calc(var(--u)*0.729)]">
+            {last ? (
+              <NextStepButton step={step} totalSteps={totalSteps} onNext={() => solved && onFinish?.()} disabled={!solved} />
+            ) : (
+              <>
+                {index > 0 && (
+                  <NavButton tone="back" onClick={() => go(index - 1)} className="md:max-w-none lg:w-full">
+                    לשאלה הקודמת
+                  </NavButton>
+                )}
+                <NavButton tone="next" onClick={next} disabled={!solved} className="md:max-w-none lg:w-full">
+                  לשאלה הבאה
+                </NavButton>
+              </>
+            )}
           </div>
-          <div className="order-5 lg:mt-[calc(var(--u)*1.042)]">{navButtons}</div>
+        </div>
+        <div key={`p${index}`} className="order-4 flex w-full flex-col lg:h-[calc(var(--u)*36)] lg:min-w-0 lg:flex-1">
+          <ChoiceActivity
+            activity={{ kind: "choice", question: q.question, answers: q.answers, correct: q.correct }}
+            onSolved={markSolved}
+            done={solved}
+            hideQuestion
+          />
         </div>
       </div>
     );
