@@ -133,8 +133,8 @@ export function QuizStep({ lawNumber, title, questions, step, totalSteps, onFini
   const endButtons = (className?: string) =>
     last ? (
       <div className={cn("flex flex-col gap-3 md:flex-row md:gap-[14px] lg:flex-col lg:gap-[calc(var(--u)*0.729)]", className)}>
-        <NextStepButton step={step} totalSteps={totalSteps} onNext={() => solved && onFinish?.()} disabled={!solved} />
         <ReplayButton onClick={replay} />
+        <NextStepButton step={step} totalSteps={totalSteps} onNext={() => solved && onFinish?.()} disabled={!solved} />
       </div>
     ) : null;
 
