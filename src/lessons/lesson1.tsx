@@ -53,15 +53,14 @@ export const lesson1: LessonContent = {
       image: { src: "./assets/quiz-knock-door.webp", alt: "דלת כניסה סגורה של בית" },
     },
     {
-      kind: "choice",
+      kind: "pictures",
       question: "בבית של יוני אני רואה יומן שכתוב עליו: \"היומן האישי שלי\".\nהאם מותר להציץ ביומן של מישהו אחר? 🤔",
       answers: [
-        "יוני חבר ממש טוב שלי, לכן אני חושב שמותר לי לפתוח ולהסתכל ביומן שלו.",
-        "היומן שייך ליוני, וזה חפץ אישי שלו, ולכן אני לא נוגע ולא מסתכל בו.",
-        "ליד יוני אני לא אסתכל כדי שלא יכעס, אבל כשלא יראה אני אציץ קצת.",
+        { image: "./assets/diary-answer-open.webp", text: "יוני חבר ממש טוב שלי, לכן אני חושב שמותר לי לפתוח ולהסתכל ביומן שלו." },
+        { image: "./assets/diary-answer-no-touch.webp", text: "היומן שייך ליוני, וזה חפץ אישי שלו, ולכן אני לא נוגע ולא מסתכל בו." },
+        { image: "./assets/diary-answer-peek.webp", text: "ליד יוני אני לא אסתכל כדי שלא יכעס, אבל כשלא יראה אני אציץ קצת." },
       ],
       correct: 1,
-      image: { src: "./assets/quiz-diary.webp", alt: "ילד מביט ביומן אישי שמונח על שולחן" },
     },
     {
       kind: "choice",
