@@ -19,7 +19,7 @@ export const softShadow =
 export function LawTitle({ lawNumber, title, className }: { lawNumber: number; title: string; className?: string }) {
   return (
     <header className={cn("text-right motion-safe:animate-fade-up", className)}>
-      <p className="font-hand text-[36px] leading-normal md:text-[56px] lg:text-[calc(var(--u)*5)]">חוק מספר {lawNumber}</p>
+      <p className="font-hand text-[42px] leading-normal md:text-[56px] lg:text-[calc(var(--u)*5)]">חוק מספר {lawNumber}</p>
       <h1 className="-mt-3 text-[48px] py-[0.2em] font-bold leading-[1.1] text-primary md:-mt-5 md:text-[64px] lg:-mt-[calc(var(--u)*2.969)] lg:py-[0.15em] lg:text-[calc(var(--u)*5.208)]">
         {title}
       </h1>
