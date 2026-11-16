@@ -23,8 +23,8 @@ export function LessonsBanner() {
   return (
     <header className="flex h-full flex-col justify-center text-right motion-safe:animate-fade-up">
       <p className="font-hand text-[40px] leading-normal md:text-[44px] lg:text-[3.9vw]">אנציקלופדיה חברתית</p>
-      <h1 className="-mt-7 py-[0.2em] text-[min(54px,calc((100vw-88px)/5.7))] font-bold leading-[1.1] text-primary md:-mt-6 md:text-[64px] lg:-mt-[2.4vw] lg:whitespace-nowrap lg:py-[0.15em] lg:text-[3.8vw]">
-        חוקי הכביש מלמדים אותנו קודים חברתיים.
+      <h1 className="-mt-7 whitespace-nowrap py-[0.2em] text-[min(54px,calc((100vw-88px)/5.7))] font-bold leading-[1.1] text-primary md:-mt-6 md:text-[64px] lg:-mt-[3.3vw] lg:py-[0.15em] lg:text-[5.208vw]">
+        השיעורים שלי
       </h1>
     </header>
   );
