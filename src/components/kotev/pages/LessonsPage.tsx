@@ -54,8 +54,8 @@ function LessonCard({ lesson, index }: { lesson: Lesson; index: number }) {
 
       <div className="px-1 pb-1 pt-2 sm:px-2 sm:pt-3">
         <div className="min-w-0 text-right">
-          <p className="font-hand text-[5.128vw] leading-normal md:text-[3.646vw] lg:text-[2.5vw] 2xl:text-[1.667vw]">חוק מספר {number}</p>
-          <h2 className="-mt-2 whitespace-nowrap text-[4.6vw] font-bold leading-snug text-primary sm:-mt-3 md:text-[3.906vw] lg:text-[2.656vw] 2xl:text-[1.771vw]">{title}</h2>
+          <p className="font-hand text-[8.5vw] leading-normal md:text-[4.7vw] lg:text-[3.2vw] 2xl:text-[2.15vw]">חוק מספר {number}</p>
+          <h2 className="-mt-[0.6em] whitespace-nowrap text-[8.5vw] font-bold leading-snug text-primary md:text-[3.906vw] lg:text-[2.656vw] 2xl:text-[1.771vw]">{title}</h2>
         </div>
       </div>
     </>
