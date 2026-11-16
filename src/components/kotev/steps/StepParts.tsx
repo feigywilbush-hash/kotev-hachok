@@ -98,7 +98,8 @@ export function TiltedPhoto({ image, wideOnPhone = false, className }: { image: 
       />
       <div
         className={cn(
-          "relative rounded-[40px] bg-card p-5 transition-transform duration-500 ease-out motion-safe:group-hover:-rotate-1 lg:rounded-[calc(var(--u)*3.125)] lg:p-[calc(var(--u)*1.5625)]",
+          "relative rounded-[40px] bg-card transition-transform duration-500 ease-out motion-safe:group-hover:-rotate-1 lg:rounded-[calc(var(--u)*3.125)] lg:p-[calc(var(--u)*1.5625)]",
+          wideOnPhone ? "p-3 md:p-5" : "p-5",
           softCard,
           softShadow,
         )}
@@ -108,7 +109,7 @@ export function TiltedPhoto({ image, wideOnPhone = false, className }: { image: 
           alt={image.alt}
           className={cn(
             "w-full rounded-[26px] object-cover lg:rounded-[calc(var(--u)*2.083)]",
-            wideOnPhone ? "aspect-[4/3] object-[50%_22%] md:aspect-[432/603] md:object-center" : "aspect-[432/603]",
+            wideOnPhone ? "aspect-[5/4] rounded-[30px] object-[50%_22%] md:aspect-[432/603] md:rounded-[26px] md:object-center" : "aspect-[432/603]",
           )}
         />
       </div>
