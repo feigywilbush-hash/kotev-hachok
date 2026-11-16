@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState, type ComponentType, type SVGProps } from "react";
-import { Menu } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -221,32 +220,45 @@ export function AppSidebar({ user, activeHref, onLogout }: AppSidebarProps) {
       </aside>
 
       <header className="sticky top-0 z-40 flex h-16 items-center justify-between bg-sidebar px-4 text-sidebar-foreground md:h-20 md:px-8 lg:hidden">
+        {/* Logo on the right; the points and the menu button on the left */}
+        <a href="/" aria-label="כותב החוק - דף הבית">
+          <KotevLogo className="h-[52px] w-auto md:h-16" />
+        </a>
         <div className="flex items-center gap-3 md:gap-4">
+          <PointsBadge
+            points={user.points}
+            className="h-10 min-w-[76px] gap-1 p-2 text-[18px] md:h-[49px] md:min-w-[90px] md:text-[20px]"
+            snailClassName="w-[34px] md:w-[42px]"
+          />
           <Sheet>
             <SheetTrigger
-              className="flex size-10 items-center justify-center rounded-full bg-sidebar-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:size-12"
+              className="flex size-10 items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:size-12"
               aria-label="פתיחת תפריט"
             >
-              <Menu className="size-6 md:size-7" />
+              <MenuIcon className="size-8 md:size-9" />
             </SheetTrigger>
             <SheetContent
-              side="right"
+              side="left"
               className="flex w-[300px] flex-col items-center overflow-y-auto border-none bg-sidebar px-0 py-10 text-sidebar-foreground md:w-[340px]"
             >
               <SheetTitle className="sr-only">תפריט</SheetTitle>
               <SidebarBody user={user} activeHref={activeHref} onLogout={onLogout} variant="drawer" />
             </SheetContent>
           </Sheet>
-          <a href="/" aria-label="כותב החוק - דף הבית">
-            <KotevLogo className="h-11 w-auto md:h-14" />
-          </a>
         </div>
-        <PointsBadge
-          points={user.points}
-          className="h-10 min-w-[76px] gap-1 p-2 text-[18px] md:h-[49px] md:min-w-[90px] md:text-[20px]"
-          snailClassName="w-[34px] md:w-[42px]"
-        />
       </header>
     </>
+  );
+}
+
+/** Three lines of different lengths, aligned to the left (the menu button on mobile). */
+function MenuIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 62 62" fill="none" aria-hidden="true" className={className}>
+      <path
+        d="M41.3332 18.0837H7.74984C6.32384 18.0837 5.1665 16.9263 5.1665 15.5003C5.1665 14.0743 6.32384 12.917 7.74984 12.917H41.3332C42.7592 12.917 43.9165 14.0743 43.9165 15.5003C43.9165 16.9263 42.7592 18.0837 41.3332 18.0837ZM56.8332 31.0003C56.8332 29.5743 55.6758 28.417 54.2498 28.417H7.74984C6.32384 28.417 5.1665 29.5743 5.1665 31.0003C5.1665 32.4263 6.32384 33.5837 7.74984 33.5837H54.2498C55.6758 33.5837 56.8332 32.4263 56.8332 31.0003ZM33.5832 46.5003C33.5832 45.0743 32.4258 43.917 30.9998 43.917H7.74984C6.32384 43.917 5.1665 45.0743 5.1665 46.5003C5.1665 47.9263 6.32384 49.0837 7.74984 49.0837H30.9998C32.4258 49.0837 33.5832 47.9263 33.5832 46.5003Z"
+        fill="#286B85"
+      />
+    </svg>
   );
 }
