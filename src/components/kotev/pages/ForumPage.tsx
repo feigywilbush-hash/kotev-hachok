@@ -43,8 +43,8 @@ export function ForumBanner() {
   // Same sizes and spacing as a law's title ("חוק מספר 1" over its name, see LawTitle), in vw like the banner.
   return (
     <header className="flex h-full flex-col justify-center text-right motion-safe:animate-fade-up">
-      <p className="font-hand text-[36px] leading-normal md:text-[44px] lg:text-[3.9vw]">שואלים, עונים ולומדים ביחד</p>
-      <h1 className="-mt-6 py-[0.2em] text-[48px] font-bold leading-[1.1] text-primary md:-mt-6 md:text-[64px] lg:-mt-[3.3vw] lg:py-[0.15em] lg:text-[5.208vw]">
+      <p className="font-hand text-[40px] leading-normal md:text-[44px] lg:text-[3.9vw]">שואלים, עונים ולומדים ביחד</p>
+      <h1 className="-mt-7 whitespace-nowrap py-[0.2em] text-[min(54px,calc((100vw-88px)/5.7))] font-bold leading-[1.1] text-primary md:-mt-6 md:text-[64px] lg:-mt-[3.3vw] lg:py-[0.15em] lg:text-[5.208vw]">
         פורום לילדים
       </h1>
     </header>
