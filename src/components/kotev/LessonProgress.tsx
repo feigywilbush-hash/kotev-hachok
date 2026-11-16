@@ -8,6 +8,8 @@ type LessonProgressProps = {
   progress?: number;
   /** When set, step names become buttons that open that step. */
   onStepSelect?: (index: number) => void;
+  /** Smaller snail, gaps and labels, for the fixed bottom bar on phones. */
+  compact?: boolean;
   className?: string;
 };
 
@@ -26,11 +28,14 @@ const GEOMETRY = cn(
   "lg:[--snail:2.917vw] lg:[--gap:0.99vw] lg:[--label:1.927vw] lg:[--tail:0.573vw] lg:[--over:0.385vw]",
 );
 
+/** Phone bottom bar: the same road, squeezed so the bar stays short. */
+const COMPACT_GEOMETRY = "[--snail:30px] [--gap:13px] [--label:26px] [--tail:14px] [--over:6px]";
+
 /**
  * The "road" at the top of the page: a track with a dot per step, a coral line
  * for what is done, and the snail sitting on the current step. Reads right to left.
  */
-export function LessonProgress({ steps, current, progress = 0, onStepSelect, className }: LessonProgressProps) {
+export function LessonProgress({ steps, current, progress = 0, onStepSelect, compact = false, className }: LessonProgressProps) {
   const last = Math.max(steps.length - 1, 1);
   const at = (i: number) => `${(i / last) * 100}%`;
   const done = Math.min(current + progress, last);
@@ -40,7 +45,7 @@ export function LessonProgress({ steps, current, progress = 0, onStepSelect, cla
     <div
       className={cn(
         "relative h-[calc(var(--snail)+var(--gap)+var(--label)+var(--tail))] [--track-y:calc(var(--snail)+var(--gap))]",
-        GEOMETRY,
+        compact ? COMPACT_GEOMETRY : GEOMETRY,
         className,
       )}
     >
@@ -67,7 +72,10 @@ export function LessonProgress({ steps, current, progress = 0, onStepSelect, cla
               style={{ right: at(i) }}
             />
             <Label
-              className="absolute top-[calc(var(--track-y)+var(--label))] w-max max-w-[20%] -translate-y-1/2 translate-x-1/2 text-balance text-center text-[13px] leading-tight transition-colors duration-200 group-hover:text-primary focus-visible:text-primary focus-visible:outline-none md:text-[16px] lg:max-w-none lg:text-[1.042vw]"
+              className={cn(
+                "absolute top-[calc(var(--track-y)+var(--label))] w-max max-w-[20%] -translate-y-1/2 translate-x-1/2 text-balance text-center leading-tight transition-colors duration-200 group-hover:text-primary focus-visible:text-primary focus-visible:outline-none",
+                compact ? "text-[12px]" : "text-[13px] md:text-[16px] lg:max-w-none lg:text-[1.042vw]",
+              )}
               style={{ right: at(i) }}
               {...(onStepSelect && { type: "button" as const, onClick: () => onStepSelect(i) })}
             >
