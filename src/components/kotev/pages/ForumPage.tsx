@@ -110,7 +110,7 @@ function TopicChip({ id, className }: { id: TopicId; className?: string }) {
 }
 
 const yellowPill =
-  "group inline-flex shrink-0 items-center gap-3 whitespace-nowrap rounded-full bg-brand-sun p-2 pe-5 text-[18px] transition-[filter,transform] duration-200 hover:brightness-[1.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:brightness-100 disabled:active:scale-100";
+  "group inline-flex shrink-0 items-center gap-3 whitespace-nowrap rounded-full bg-brand-sun p-2 ps-5 text-[18px] transition-[filter,transform] duration-200 hover:brightness-[1.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:brightness-100 disabled:active:scale-100";
 
 function PillIcon({ children }: { children: ReactNode }) {
   return <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-card text-primary">{children}</span>;
@@ -286,10 +286,10 @@ function Composer({
           {(tried && missing) || (isQuestion ? "ילדים אחרים וכותב החוק יענו לך." : `${text.length}/600`)}
         </p>
         <button type="submit" className={yellowPill} disabled={!!warning}>
+          {isQuestion ? "לשלוח שאלה" : "לשלוח תשובה"}
           <PillIcon>
             <Send className="size-5 -scale-x-100 transition-transform duration-300 group-enabled:group-hover:-translate-x-0.5" />
           </PillIcon>
-          {isQuestion ? "לשלוח שאלה" : "לשלוח תשובה"}
         </button>
       </div>
     </form>
@@ -402,10 +402,10 @@ function ForumList({
             <p className="mt-1 text-[16px] opacity-80">כאן כל ילד יכול לשאול, וחברים עוזרים לחברים.</p>
           </div>
           <button type="button" onClick={() => setAsking(true)} className={yellowPill}>
+            לשאול שאלה חדשה
             <PillIcon>
               <Plus className="size-5 transition-transform duration-300 group-hover:rotate-90" />
             </PillIcon>
-            לשאול שאלה חדשה
           </button>
         </div>
       )}
