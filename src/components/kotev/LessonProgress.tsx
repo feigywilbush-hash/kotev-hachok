@@ -50,10 +50,10 @@ export function LessonProgress({ steps, current, progress = 0, onStepSelect, com
       )}
     >
       {/* track */}
-      <div className="absolute -left-[var(--over)] -right-[var(--over)] top-[var(--track-y)] h-2 -translate-y-1/2 rounded-full bg-progress-track md:h-[10px] lg:h-[0.531vw]" />
+      <div className={cn("absolute -left-[var(--over)] -right-[var(--over)] top-[var(--track-y)] -translate-y-1/2 rounded-full bg-progress-track", compact ? "h-[5px]" : "h-2 md:h-[10px] lg:h-[0.531vw]")} />
       {/* completed part */}
       <div
-        className="absolute -right-[var(--over)] top-[var(--track-y)] h-1.5 -translate-y-1/2 origin-right rounded-full bg-primary transition-[width] duration-700 ease-out motion-safe:animate-grow-x motion-safe:[animation-delay:150ms] md:h-2 lg:h-[0.422vw]"
+        className={cn("absolute -right-[var(--over)] top-[var(--track-y)] -translate-y-1/2 origin-right rounded-full bg-primary transition-[width] duration-700 ease-out motion-safe:animate-grow-x motion-safe:[animation-delay:150ms]", compact ? "h-[3px]" : "h-1.5 md:h-2 lg:h-[0.422vw]")}
         style={{ width: `calc(${at(done)} + var(--over))` }}
       />
 
@@ -68,7 +68,7 @@ export function LessonProgress({ steps, current, progress = 0, onStepSelect, com
         {steps.map((label, i) => (
           <li key={label} aria-current={i === current ? "step" : undefined} className="group">
             <span
-              className="absolute top-[var(--track-y)] size-[12px] -translate-y-1/2 translate-x-1/2 rounded-full bg-primary transition-transform duration-200 ease-out group-hover:scale-150 md:size-[14px] lg:size-[0.766vw]"
+              className={cn("absolute top-[var(--track-y)] -translate-y-1/2 translate-x-1/2 rounded-full bg-primary transition-transform duration-200 ease-out group-hover:scale-150", compact ? "size-[8px]" : "size-[12px] md:size-[14px] lg:size-[0.766vw]")}
               style={{ right: at(i) }}
             />
             <Label
