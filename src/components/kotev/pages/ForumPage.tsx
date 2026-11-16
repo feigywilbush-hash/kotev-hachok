@@ -117,15 +117,15 @@ const RULES = [
 
 function RulesCard({ className }: { className?: string }) {
   return (
-    <aside className={cn("rounded-[32px] bg-surface p-6 md:p-8", className)} aria-label="כללי הפורום">
-      <p className="text-[26px] font-bold leading-tight md:text-[28px]">כללי הפורום</p>
-      <ul className="mt-6 flex flex-col gap-5">
+    <aside className={cn("rounded-[32px] bg-surface p-6 md:p-8 lg:p-6 2xl:p-8", className)} aria-label="כללי הפורום">
+      <p className="text-[26px] font-bold leading-tight md:text-[28px] lg:text-[24px] 2xl:text-[28px]">כללי הפורום</p>
+      <ul className="mt-6 flex flex-col gap-5 lg:mt-5 lg:gap-4 2xl:mt-6 2xl:gap-5">
         {RULES.map(({ icon: Icon, text }) => (
-          <li key={text} className="flex items-start gap-4 text-[18px] leading-snug">
-            <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-card text-primary">
-              <Icon className="size-6" />
+          <li key={text} className="flex items-start gap-4 text-[18px] leading-snug lg:gap-3 lg:text-[16px] 2xl:gap-4 2xl:text-[18px]">
+            <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-card text-primary lg:size-9 2xl:size-11">
+              <Icon className="size-6 lg:size-5 2xl:size-6" />
             </span>
-            <span className="pt-2">{text}</span>
+            <span className="pt-2 lg:pt-1.5 2xl:pt-2">{text}</span>
           </li>
         ))}
       </ul>
@@ -632,7 +632,7 @@ export function ForumPage({ userName, onEarn }: { userName: string; onEarn?: (ke
 
   return (
     <div className="px-4 pb-12 pt-6 md:px-14 md:pt-10 lg:px-[5.385vw] lg:pb-[4vw] lg:pt-[2.6vw]">
-      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_380px] lg:gap-8">
+      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_290px] lg:gap-6 2xl:grid-cols-[minmax(0,1fr)_380px] 2xl:gap-8">
         <div className="min-w-0">
           {threadId && !thread ? (
             <div className="flex flex-col items-center gap-3 rounded-[32px] bg-card px-6 py-12 text-center">
