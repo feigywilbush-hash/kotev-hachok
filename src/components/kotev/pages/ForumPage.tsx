@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { ArrowRight, Lock, MessageCircle, Plus, Search, Send, ShieldCheck, Smile, ThumbsUp, X } from "lucide-react";
+import { ArrowRight, Lock, MessageCircle, Plus, Search, ShieldCheck, Smile, ThumbsUp, X } from "lucide-react";
 
 import { burstConfetti } from "@/lib/confetti";
 import { cn } from "@/lib/utils";
@@ -20,7 +20,7 @@ import {
   type TopicId,
 } from "@/forum/forumData";
 import { playWin } from "../games/driveSounds";
-import { KotevLogo } from "../icons";
+import { ArrowLeftIcon, KotevLogo } from "../icons";
 import { softCard, softShadow } from "../steps/StepParts";
 
 /*
@@ -288,7 +288,7 @@ function Composer({
         <button type="submit" className={yellowPill} disabled={!!warning}>
           {isQuestion ? "לשלוח שאלה" : "לשלוח תשובה"}
           <PillIcon>
-            <Send className="size-5 -scale-x-100 transition-transform duration-300 group-enabled:group-hover:-translate-x-0.5" />
+            <ArrowLeftIcon className="size-5 transition-transform duration-300 ease-out motion-safe:group-enabled:group-hover:-translate-x-1" />
           </PillIcon>
         </button>
       </div>
