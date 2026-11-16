@@ -647,7 +647,7 @@ export function ForumPage({ userName, onEarn }: { userName: string; onEarn?: (ke
             <ForumList threads={threads} now={now} me={userName} onAsk={ask} />
           )}
         </div>
-        <RulesCard className="motion-safe:animate-fade-up motion-safe:[animation-delay:150ms] lg:sticky lg:top-6" />
+        <RulesCard className="order-first motion-safe:animate-fade-up motion-safe:[animation-delay:150ms] lg:sticky lg:top-6 lg:order-none" />
       </div>
 
       <div
