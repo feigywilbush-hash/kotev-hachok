@@ -73,8 +73,8 @@ export function LessonProgress({ steps, current, progress = 0, onStepSelect, com
             />
             <Label
               className={cn(
-                "absolute top-[calc(var(--track-y)+var(--label))] w-max max-w-[20%] -translate-y-1/2 translate-x-1/2 text-balance text-center leading-tight transition-colors duration-200 group-hover:text-primary focus-visible:text-primary focus-visible:outline-none",
-                compact ? "text-[12px]" : "text-[13px] md:text-[16px] lg:max-w-none lg:text-[1.042vw]",
+                "absolute top-[calc(var(--track-y)+var(--label))] max-w-[20%] -translate-y-1/2 translate-x-1/2 text-balance text-center leading-tight transition-colors duration-200 group-hover:text-primary focus-visible:text-primary focus-visible:outline-none",
+                compact ? "w-min text-[12px]" : "w-max text-[13px] md:text-[16px] lg:max-w-none lg:text-[1.042vw]",
               )}
               style={{ right: at(i) }}
               {...(onStepSelect && { type: "button" as const, onClick: () => onStepSelect(i) })}
