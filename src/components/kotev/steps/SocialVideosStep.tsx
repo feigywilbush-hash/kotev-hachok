@@ -102,7 +102,7 @@ export function SocialVideosStep({ lawNumber, title, parts, step, totalSteps, on
   };
 
   return (
-    <div className="flex flex-col gap-6 px-4 pb-10 pt-6 md:gap-8 md:px-8 md:pt-10 lg:flex-row-reverse lg:items-center lg:gap-[calc(var(--u)*1.5)] lg:py-[calc(var(--u)*1.5)] lg:pl-[2.9vw] lg:pr-[3.6vw]">
+    <div className="flex flex-col gap-6 px-4 pb-10 pt-6 md:gap-8 md:px-8 md:pt-10 lg:flex-row lg:items-center lg:gap-[calc(var(--u)*1.5)] lg:py-[calc(var(--u)*1.5)] lg:pl-[2.9vw] lg:pr-[3.6vw]">
       {/* Left column on desktop: title and the part's instruction at the top, the buttons at the bottom
           (level with the stage's bottom edge), so the stage on the right can take the whole height. */}
       <div className="contents lg:flex lg:w-[calc(var(--u)*22.813)] lg:shrink-0 lg:flex-col lg:self-stretch">
@@ -164,7 +164,7 @@ export function SocialVideosStep({ lawNumber, title, parts, step, totalSteps, on
         )}
       </div>
 
-      <div className="contents lg:flex lg:min-w-0 lg:flex-1 lg:justify-start">
+      <div className="contents lg:flex lg:min-w-0 lg:flex-1 lg:justify-end">
 
         <div
           className={cn(
