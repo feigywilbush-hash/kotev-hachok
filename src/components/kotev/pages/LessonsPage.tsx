@@ -22,8 +22,8 @@ export type Lesson = {
 export function LessonsBanner() {
   return (
     <header className="flex h-full flex-col justify-center text-right motion-safe:animate-fade-up">
-      <p className="font-hand text-[8.6vw] leading-normal md:text-[6.25vw] lg:text-[3.15vw]">אנציקלופדיה חברתית</p>
-      <h1 className="-mt-1 text-[6.4vw] font-bold leading-tight text-primary md:-mt-2 md:text-[4.3vw] lg:-mt-[0.5vw] lg:text-[2.3vw]">
+      <p className="font-hand text-[40px] leading-normal md:text-[44px] lg:text-[3.9vw]">אנציקלופדיה חברתית</p>
+      <h1 className="-mt-7 py-[0.2em] text-[min(54px,calc((100vw-88px)/5.7))] font-bold leading-[1.1] text-primary md:-mt-6 md:text-[64px] lg:-mt-[2.4vw] lg:whitespace-nowrap lg:py-[0.15em] lg:text-[3.8vw]">
         חוקי הכביש מלמדים אותנו קודים חברתיים.
       </h1>
     </header>
@@ -86,7 +86,7 @@ export function LessonsPage({ lessons }: { lessons: Lesson[] }) {
   return (
     <div className="px-4 pb-12 pt-6 md:px-8 md:pt-10 lg:px-[3.5vw] lg:pb-[4vw] lg:pt-[2.6vw]">
       {/* Gaps in vw on tablet and desktop, so they grow and shrink with the screen (32px at 768 and at 1920). */}
-      <ul className="grid grid-cols-2 gap-4 md:gap-[4.167vw] lg:grid-cols-3 lg:gap-[1.667vw] 2xl:grid-cols-4">
+      <ul className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-[4.167vw] lg:grid-cols-3 lg:gap-[1.667vw] 2xl:grid-cols-4">
         {lessons.map((lesson, i) => (
           <LessonCard key={lesson.number} lesson={lesson} index={i} />
         ))}

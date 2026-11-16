@@ -51,7 +51,7 @@ export function StageStep({
     return (
       // Desktop: the video on the right; the title and instruction at the top of the left column and
       // the next-step button at its bottom, level with the video's bottom edge.
-      <div className="flex flex-col gap-6 px-4 pb-10 pt-6 md:gap-8 md:px-8 md:pt-10 lg:flex-row-reverse lg:items-center lg:gap-[calc(var(--u)*1.5)] lg:py-[calc(var(--u)*1.5)] lg:pl-[2.9vw] lg:pr-[3.6vw]">
+      <div className="flex flex-col gap-6 px-4 pb-10 pt-6 md:gap-8 md:px-8 md:pt-10 lg:flex-row lg:items-center lg:gap-[calc(var(--u)*1.5)] lg:py-[calc(var(--u)*1.5)] lg:pl-[2.9vw] lg:pr-[3.6vw]">
         <div className="contents lg:flex lg:w-[calc(var(--u)*22.813)] lg:shrink-0 lg:flex-col lg:self-stretch">
           <LawTitle lawNumber={lawNumber} title={title} className="order-1" />
           <p className="order-2 text-right text-[17px] leading-normal motion-safe:animate-fade-up motion-safe:[animation-delay:120ms] md:text-[20px] lg:mt-[calc(var(--u)*1.25)] lg:text-[calc(var(--u)*1.042)]">
@@ -60,7 +60,7 @@ export function StageStep({
           <NextStepButton step={step} totalSteps={totalSteps} onNext={onNext} className="order-4 lg:mt-auto" />
         </div>
         {/* The video keeps 16:9 and fills the rest of the row, never taller than the step allows. */}
-        <div className="contents lg:flex lg:min-w-0 lg:flex-1 lg:justify-start">
+        <div className="contents lg:flex lg:min-w-0 lg:flex-1 lg:justify-end">
           <div className="relative order-3 aspect-video w-full overflow-hidden rounded-[32px] bg-stage motion-safe:animate-fade-in-scale motion-safe:[animation-delay:80ms] md:rounded-[48px] lg:max-w-[calc(var(--u)*38*16/9)] lg:rounded-[calc(var(--u)*2.604)]">
             {children}
           </div>
