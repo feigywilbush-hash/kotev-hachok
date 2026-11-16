@@ -83,13 +83,15 @@ export function ReplayButton({ onClick, className }: { onClick: () => void; clas
 }
 
 /** A photo in a white card with a tilted blue plate behind it. Width and placement come from className. */
-export function TiltedPhoto({ image, className }: { image: { src: string; alt: string }; className?: string }) {
+/** `wideOnPhone`: below md the photo is cropped to a landscape frame (and the plate tilts less) so it sits flatter in the page. */
+export function TiltedPhoto({ image, wideOnPhone = false, className }: { image: { src: string; alt: string }; wideOnPhone?: boolean; className?: string }) {
   return (
     <figure className={cn("group relative motion-safe:animate-fade-in-scale motion-safe:[animation-delay:80ms]", className)}>
       <div
         aria-hidden="true"
         className={cn(
-          "absolute inset-0 translate-y-[9px] rotate-[4.96deg] rounded-[40px] bg-plate transition-transform duration-500 ease-out motion-safe:group-hover:rotate-[7deg] lg:translate-x-[calc(var(--u)*0.039)] lg:translate-y-[calc(var(--u)*0.729)] lg:rounded-[calc(var(--u)*3.125)]",
+          "absolute inset-0 translate-y-[9px] rounded-[40px] bg-plate transition-transform duration-500 ease-out motion-safe:group-hover:rotate-[7deg] lg:translate-x-[calc(var(--u)*0.039)] lg:translate-y-[calc(var(--u)*0.729)] lg:rounded-[calc(var(--u)*3.125)]",
+          wideOnPhone ? "rotate-[2.5deg] md:rotate-[4.96deg]" : "rotate-[4.96deg]",
           softCard,
           softShadow,
         )}
@@ -101,7 +103,14 @@ export function TiltedPhoto({ image, className }: { image: { src: string; alt: s
           softShadow,
         )}
       >
-        <img src={image.src} alt={image.alt} className="aspect-[432/603] w-full rounded-[26px] object-cover lg:rounded-[calc(var(--u)*2.083)]" />
+        <img
+          src={image.src}
+          alt={image.alt}
+          className={cn(
+            "w-full rounded-[26px] object-cover lg:rounded-[calc(var(--u)*2.083)]",
+            wideOnPhone ? "aspect-[4/3] object-[50%_22%] md:aspect-[432/603] md:object-center" : "aspect-[432/603]",
+          )}
+        />
       </div>
     </figure>
   );
