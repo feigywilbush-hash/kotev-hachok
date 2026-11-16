@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Check, X } from "lucide-react";
 
+import { burstConfetti } from "@/lib/confetti";
 import { cn } from "@/lib/utils";
 import { ArrowLeftIcon } from "../icons";
 import { playFail, playSuccess } from "../games/driveSounds";
@@ -74,8 +75,15 @@ export function QuizStep({ lawNumber, title, questions, step, totalSteps, onFini
   // The question just answered right moves on by itself (not when coming back to an answered one).
   const [justSolved, setJustSolved] = useState<number | null>(null);
 
+  // The knock question stays put when it is solved (with confetti), and the learner can knock again.
+  const [knockRound, setKnockRound] = useState(0);
+
   const markSolved = () => {
     setSolvedSet((s) => new Set(s).add(index));
+    if (q.kind === "knock") {
+      const r = doorRef.current?.getBoundingClientRect();
+      if (r) burstConfetti({ x: r.left + r.width / 2, y: r.top + r.height / 2 });
+    }
     setJustSolved(index);
     onSolve?.(index);
   };
@@ -113,10 +121,10 @@ export function QuizStep({ lawNumber, title, questions, step, totalSteps, onFini
 
   // A right answer moves on to the next question by itself, after the success sound and check mark.
   useEffect(() => {
-    if (justSolved === null || justSolved !== index || last) return;
+    if (justSolved === null || justSolved !== index || last || q.kind === "knock") return;
     const t = window.setTimeout(() => go(index + 1), 2000);
     return () => window.clearTimeout(t);
-  }, [justSolved, index, last]);
+  }, [justSolved, index, last, q.kind]);
 
   useEffect(() => {
     if (!bubbles.length) return;
@@ -129,9 +137,28 @@ export function QuizStep({ lawNumber, title, questions, step, totalSteps, onFini
     go(0);
   };
 
+  const knockAgain = () => {
+    setSolvedSet((s) => {
+      const n = new Set(s);
+      n.delete(index);
+      return n;
+    });
+    setJustSolved(null);
+    setBubbles([]);
+    setKnockRound((k) => k + 1);
+  };
+
   // Questions move on by themselves; only the last one has buttons: the next step, and play again.
+  // The knock question doesn't move on by itself: knock again, or go on once it is solved.
   const endButtons = (className?: string) =>
-    last ? (
+    q.kind === "knock" && !last ? (
+      <div className={cn("flex flex-col gap-3 md:flex-row md:gap-[14px] lg:gap-[calc(var(--u)*0.729)]", className)}>
+        <ReplayButton onClick={knockAgain} className="md:flex-1" />
+        <NavButton tone="next" onClick={() => solved && go(index + 1)} disabled={!solved} className="md:max-w-none md:flex-1 lg:w-auto">
+          לשאלה הבאה
+        </NavButton>
+      </div>
+    ) : last ? (
       <div className={cn("flex flex-col gap-3 md:flex-row md:gap-[14px] lg:flex-col lg:gap-[calc(var(--u)*0.729)]", className)}>
         <ReplayButton onClick={replay} />
         <NextStepButton step={step} totalSteps={totalSteps} onNext={() => solved && onFinish?.()} disabled={!solved} />
@@ -225,7 +252,7 @@ export function QuizStep({ lawNumber, title, questions, step, totalSteps, onFini
             <p className="whitespace-pre-line text-right text-[16px] leading-normal md:text-[18px] lg:mt-[calc(var(--u)*0.755)] lg:text-[calc(var(--u)*1.042)]">
               {q.instruction}
             </p>
-            <KnockActivity solved={solved} onSolved={markSolved} onEffect={onDoor} className="mt-4 md:mt-5 lg:mt-[calc(var(--u)*1.302)]" />
+            <KnockActivity key={`knock${index}-${knockRound}`} solved={solved} onSolved={markSolved} onEffect={onDoor} className="mt-4 md:mt-5 lg:mt-[calc(var(--u)*1.302)]" />
           </div>
         )}
 

@@ -157,6 +157,14 @@ export function PyramidStep({ lawNumber, title, instruction, rounds, step, total
   };
   const nextRound = () => goRound(round + 1);
 
+  // A solved round moves on by itself to the next one, after the praise and confetti have shown;
+  // the buttons stay for anyone who wants to move sooner or go back.
+  useEffect(() => {
+    if (!solved || round >= rounds.length - 1) return;
+    const t = window.setTimeout(() => goRound(round + 1), 2200);
+    return () => window.clearTimeout(t);
+  }, [solved, round, rounds.length]);
+
   // Escape closes the hint popup
   useEffect(() => {
     if (!hint) return;
