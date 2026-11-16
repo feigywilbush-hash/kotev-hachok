@@ -219,7 +219,7 @@ export function AppSidebar({ user, activeHref, onLogout }: AppSidebarProps) {
         </div>
       </aside>
 
-      <header className="sticky top-0 z-40 flex h-16 items-center justify-between bg-sidebar px-4 text-sidebar-foreground md:h-20 md:px-8 lg:hidden">
+      <header className="sticky top-0 z-40 flex h-20 items-center justify-between bg-sidebar px-4 text-sidebar-foreground md:h-24 md:px-8 lg:hidden">
         {/* The menu button and the points on the right; the logo mark on the left */}
         <div className="flex items-center gap-3 md:gap-4">
           <Sheet>
