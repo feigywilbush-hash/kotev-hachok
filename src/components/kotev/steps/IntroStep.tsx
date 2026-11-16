@@ -92,7 +92,7 @@ export function IntroStep({
       <TiltedPhoto
         image={image}
         wideOnPhone
-        className="order-2 mx-auto w-full md:max-w-[380px] lg:order-none lg:mx-0 lg:w-[calc(var(--u)*25.625)] lg:max-w-none lg:shrink-0"
+        className="order-2 mx-auto mb-4 w-full md:mb-0 md:max-w-[380px] lg:order-none lg:mx-0 lg:w-[calc(var(--u)*25.625)] lg:max-w-none lg:shrink-0"
       />
     </div>
   );
