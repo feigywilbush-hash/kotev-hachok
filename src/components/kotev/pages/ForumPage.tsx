@@ -75,20 +75,10 @@ function Avatar({ author, size = "md" }: { author: Author; size?: "sm" | "md" })
   );
 }
 
-function AdminBadge() {
-  return (
-    <span className="inline-flex items-center gap-1 rounded-full bg-primary px-2.5 py-0.5 text-[13px] font-bold leading-5 text-primary-foreground md:text-[14px]">
-      <ShieldCheck className="size-3.5" />
-      מנהל האתר
-    </span>
-  );
-}
-
 function AuthorLine({ author, at, now, me }: { author: Author; at: number; now: number; me?: boolean }) {
   return (
     <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 leading-tight">
       <span className={cn("font-bold", author.admin && "text-primary")}>{author.name}</span>
-      {author.admin && <AdminBadge />}
       {me && <span className="rounded-full bg-lime px-2 py-0.5 text-[13px] leading-5">אני</span>}
       {author.grade && <span className="text-[14px] opacity-70">{author.grade}</span>}
       <span aria-hidden="true" className="opacity-40">·</span>
