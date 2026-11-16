@@ -91,7 +91,8 @@ export function IntroStep({
 
       <TiltedPhoto
         image={image}
-        className="order-2 mx-auto w-full max-w-[320px] md:max-w-[380px] lg:order-none lg:mx-0 lg:w-[calc(var(--u)*25.625)] lg:max-w-none lg:shrink-0"
+        wideOnPhone
+        className="order-2 mx-auto w-full md:max-w-[380px] lg:order-none lg:mx-0 lg:w-[calc(var(--u)*25.625)] lg:max-w-none lg:shrink-0"
       />
     </div>
   );
