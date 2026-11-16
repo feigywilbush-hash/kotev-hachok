@@ -110,7 +110,7 @@ function TopicChip({ id, className }: { id: TopicId; className?: string }) {
 }
 
 const yellowPill =
-  "group inline-flex items-center gap-3 rounded-full bg-brand-sun p-2 pe-5 text-[18px] transition-[filter,transform] duration-200 hover:brightness-[1.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:brightness-100 disabled:active:scale-100";
+  "group inline-flex shrink-0 items-center gap-3 whitespace-nowrap rounded-full bg-brand-sun p-2 pe-5 text-[18px] transition-[filter,transform] duration-200 hover:brightness-[1.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:brightness-100 disabled:active:scale-100";
 
 function PillIcon({ children }: { children: ReactNode }) {
   return <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-card text-primary">{children}</span>;
@@ -391,12 +391,13 @@ function ForumList({
       ) : (
         <div
           className={cn(
-            "flex flex-col items-start gap-4 rounded-[32px] bg-card p-5 motion-safe:animate-fade-up sm:flex-row sm:items-center sm:justify-between md:p-6",
+            // The button stays on one line; when the text and the button don't fit side by side, the button wraps below the text.
+            "flex flex-wrap items-center justify-between gap-4 rounded-[32px] bg-card p-5 motion-safe:animate-fade-up md:p-6",
             softCard,
             softShadow,
           )}
         >
-          <div>
+          <div className="min-w-0 grow basis-[22rem]">
             <p className="text-[20px] font-bold md:text-[22px]">משהו מציק לך? יש לך שאלה?</p>
             <p className="mt-1 text-[16px] opacity-80">כאן כל ילד יכול לשאול, וחברים עוזרים לחברים.</p>
           </div>
