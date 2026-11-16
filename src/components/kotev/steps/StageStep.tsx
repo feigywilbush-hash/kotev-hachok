@@ -1,4 +1,5 @@
-import type { ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import { Maximize2, Minimize2 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { LawTitle, NextStepButton } from "./StepParts";
@@ -47,6 +48,42 @@ export function StageStep({
   columnClassName,
   layout = "game",
 }: StageStepProps) {
+  const stageRef = useRef<HTMLDivElement>(null);
+  // The game can open to the whole screen: real fullscreen where the browser allows it on an element,
+  // otherwise (iPhone Safari) the stage covers the window with fixed positioning.
+  const [expanded, setExpanded] = useState(false);
+
+  useEffect(() => {
+    const onChange = () => {
+      if (!document.fullscreenElement) setExpanded(false);
+    };
+    document.addEventListener("fullscreenchange", onChange);
+    return () => document.removeEventListener("fullscreenchange", onChange);
+  }, []);
+
+  useEffect(() => {
+    if (!expanded) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setExpanded(false);
+    const overflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = overflow;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [expanded]);
+
+  const toggleExpanded = () => {
+    const el = stageRef.current;
+    if (expanded) {
+      setExpanded(false);
+      if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
+      return;
+    }
+    setExpanded(true);
+    el?.requestFullscreen?.().catch(() => {});
+  };
+
   if (layout === "video") {
     return (
       // Desktop: the video on the right; the title and instruction at the top of the left column and
@@ -86,12 +123,30 @@ export function StageStep({
 
       <div className={cn("contents lg:flex lg:min-w-0 lg:flex-1 lg:flex-col lg:pt-[calc(var(--u)*2.448)]", columnClassName)}>
         <div
+          ref={stageRef}
           className={cn(
             "relative order-3 w-full overflow-hidden rounded-[32px] bg-stage motion-safe:animate-fade-in-scale motion-safe:[animation-delay:80ms] md:aspect-[973/545] md:rounded-[48px] lg:aspect-auto lg:h-[calc(var(--u)*28.387)] lg:rounded-[calc(var(--u)*3.125)]",
             stageClassName,
+            expanded &&
+              "!fixed !inset-0 z-[60] !aspect-auto !h-dvh !w-screen !rounded-none motion-safe:!animate-none [&:fullscreen]:!h-full [&:fullscreen]:!w-full",
           )}
         >
           {children}
+          {children && (
+            <button
+              type="button"
+              onClick={toggleExpanded}
+              aria-label={expanded ? "יציאה ממסך מלא" : "הרחבה למסך מלא"}
+              aria-pressed={expanded}
+              className="absolute right-2 top-2 z-20 flex size-9 items-center justify-center rounded-full bg-card/85 text-primary shadow-sm transition-[transform,background-color] duration-200 hover:scale-110 hover:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-95 md:right-4 md:top-4 md:size-11 lg:right-[calc(var(--u)*1.042)] lg:top-[calc(var(--u)*1.042)] lg:size-[calc(var(--u)*2.5)]"
+            >
+              {expanded ? (
+                <Minimize2 aria-hidden="true" className="size-5 md:size-6 lg:size-[calc(var(--u)*1.25)]" />
+              ) : (
+                <Maximize2 aria-hidden="true" className="size-5 md:size-6 lg:size-[calc(var(--u)*1.25)]" />
+              )}
+            </button>
+          )}
         </div>
         <NextStepButton step={step} totalSteps={totalSteps} onNext={onNext} className="order-4 lg:mt-[calc(var(--u)*1.042)]" />
       </div>
