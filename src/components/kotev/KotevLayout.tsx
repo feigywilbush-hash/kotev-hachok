@@ -55,7 +55,7 @@ export function KotevLayout({
         {/* --u is the desktop size unit of the steps: 1vw, shrunk on short screens so the step (847px tall
             below the banner in Figma, 44.115 units) always fits the height left under the banner.
             The steps' outer side padding stays in vw so it follows the screen width. */}
-        <main className={cn("flex-1 lg:flex lg:flex-col lg:justify-center lg:[--u:min(1vw,calc((100dvh-var(--banner-h))/44.115))]", steps && "max-md:pb-[calc(112px+env(safe-area-inset-bottom))]")}>
+        <main className={cn("flex-1 lg:flex lg:flex-col lg:justify-center lg:[--u:min(1vw,calc((100dvh-var(--banner-h))/44.115))]", steps && "max-md:pb-[calc(128px+env(safe-area-inset-bottom))]")}>
           {children}
         </main>
 
@@ -63,7 +63,7 @@ export function KotevLayout({
         {steps && (
           <nav
             aria-label="התקדמות בשיעור"
-            className="fixed inset-x-0 bottom-0 z-40 rounded-t-[28px] bg-surface px-10 pb-[calc(10px+env(safe-area-inset-bottom))] pt-2 shadow-[0_-6px_24px_rgba(40,107,133,0.14)] md:hidden"
+            className="fixed inset-x-0 bottom-0 z-40 rounded-t-[28px] bg-surface px-10 pb-[calc(18px+env(safe-area-inset-bottom))] pt-4 shadow-[0_-6px_24px_rgba(40,107,133,0.14)] md:hidden"
           >
             <LessonProgress steps={steps} current={currentStep} progress={stepProgress} onStepSelect={onStepSelect} compact />
           </nav>
