@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 
+import { cn } from "@/lib/utils";
+
 import { AppSidebar, type SidebarUser } from "./AppSidebar";
 import { LessonProgress } from "./LessonProgress";
 
@@ -41,7 +43,7 @@ export function KotevLayout({
       <div className="flex min-w-0 flex-1 flex-col overflow-hidden rounded-tr-[32px] bg-background md:rounded-tr-[64px] lg:rounded-tr-[5.938vw]">
         <section
           aria-label={steps ? "התקדמות בשיעור" : undefined}
-          className="rounded-bl-[32px] rounded-tr-[32px] bg-surface px-11 pb-7 pt-5 md:rounded-bl-[64px] md:rounded-tr-[64px] md:px-14 md:pb-9 md:pt-8 lg:rounded-bl-[5.677vw] lg:rounded-tr-[5.885vw] lg:px-[5.385vw] lg:h-[var(--banner-h)] lg:pb-[2.708vw] lg:pt-[3.021vw]"
+          className={cn(steps && "max-md:hidden", "rounded-bl-[32px] rounded-tr-[32px] bg-surface px-11 pb-7 pt-5 md:rounded-bl-[64px] md:rounded-tr-[64px] md:px-14 md:pb-9 md:pt-8 lg:rounded-bl-[5.677vw] lg:rounded-tr-[5.885vw] lg:px-[5.385vw] lg:h-[var(--banner-h)] lg:pb-[2.708vw] lg:pt-[3.021vw]")}
         >
           {steps ? (
             <LessonProgress steps={steps} current={currentStep} progress={stepProgress} onStepSelect={onStepSelect} />
@@ -53,9 +55,19 @@ export function KotevLayout({
         {/* --u is the desktop size unit of the steps: 1vw, shrunk on short screens so the step (847px tall
             below the banner in Figma, 44.115 units) always fits the height left under the banner.
             The steps' outer side padding stays in vw so it follows the screen width. */}
-        <main className="flex-1 lg:flex lg:flex-col lg:justify-center lg:[--u:min(1vw,calc((100dvh-var(--banner-h))/44.115))]">
+        <main className={cn("flex-1 lg:flex lg:flex-col lg:justify-center lg:[--u:min(1vw,calc((100dvh-var(--banner-h))/44.115))]", steps && "max-md:pb-[calc(112px+env(safe-area-inset-bottom))]")}>
           {children}
         </main>
+
+        {/* Phones: the road moves out of the top band into a bar fixed to the bottom of the screen. */}
+        {steps && (
+          <nav
+            aria-label="התקדמות בשיעור"
+            className="fixed inset-x-0 bottom-0 z-40 rounded-t-[28px] bg-surface px-10 pb-[calc(10px+env(safe-area-inset-bottom))] pt-2 shadow-[0_-6px_24px_rgba(40,107,133,0.14)] md:hidden"
+          >
+            <LessonProgress steps={steps} current={currentStep} progress={stepProgress} onStepSelect={onStepSelect} compact />
+          </nav>
+        )}
       </div>
     </div>
   );
